@@ -1,0 +1,126 @@
+import { useState } from "react";
+import { Link, useLocation } from "react-router-dom";
+import { Menu, X, Trophy, Users, ExternalLink } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+
+const Header = () => {
+  const [isOpen, setIsOpen] = useState(false);
+  const location = useLocation();
+
+  const navigation = [
+    { name: "Home", href: "/" },
+    { name: "About", href: "/about" },
+    { name: "Rules", href: "/rules" },
+    { name: "Modes", href: "/modes" },
+    { name: "Events", href: "/events" },
+    { name: "Hall of Fame", href: "/hall-of-fame" },
+    { name: "Guides", href: "/guides" },
+    { name: "Stream", href: "/stream" },
+  ];
+
+  const isActive = (href: string) => location.pathname === href;
+
+  return (
+  <header className="bg-card border-b border-[var(--civ3-border)] sticky top-0 z-50" style={{ fontFamily: 'var(--civ3-font)' }}>
+  <div className="container mx-auto px-4">
+  <div className="flex items-center justify-between h-16">
+          {/* Logo */}
+          <Link to="/" className="flex items-center space-x-2 hover:opacity-80 transition-opacity">
+            <Trophy className="h-8 w-8" style={{ color: 'var(--civ3-gold)' }} />
+            <div>
+              <h1 className="text-xl font-bold" style={{ color: 'var(--civ3-gold)', letterSpacing: '0.04em', textShadow: '2px 2px 4px #000c' }}>CivPlayers</h1>
+              <p className="text-xs" style={{ color: 'var(--civ3-gold)', opacity: 0.7 }}>Civ3 League</p>
+            </div>
+          </Link>
+
+          {/* Desktop Navigation */}
+          <nav className="hidden md:flex items-center space-x-6">
+            {navigation.map((item) => (
+              <Link
+                key={item.name}
+                to={item.href}
+                className={`nav-link ${isActive(item.href) ? "text-primary" : ""}`}
+              >
+                {item.name}
+              </Link>
+            ))}
+          </nav>
+
+          {/* CTA Buttons */}
+          <div className="hidden md:flex items-center space-x-3">
+            <Button 
+              variant="outline" 
+              size="sm" 
+              asChild
+              className="border-primary/30 hover:bg-primary/10"
+            >
+              <a href="https://steamcommunity.com/groups/civplayers" target="_blank" rel="noopener noreferrer">
+                <Users className="w-4 h-4 mr-2" />
+                Join Steam
+                <ExternalLink className="w-3 h-3 ml-1" />
+              </a>
+            </Button>
+            <Button size="sm" className="btn-hero">
+              <a href="https://discord.gg/civplayers" target="_blank" rel="noopener noreferrer" className="flex items-center">
+                Discord
+                <ExternalLink className="w-3 h-3 ml-1" />
+              </a>
+            </Button>
+          </div>
+
+          {/* Mobile Menu */}
+          <div className="md:hidden">
+            <Sheet open={isOpen} onOpenChange={setIsOpen}>
+              <SheetTrigger asChild>
+                <Button variant="ghost" size="sm">
+                  <Menu className="h-5 w-5" />
+                </Button>
+              </SheetTrigger>
+              <SheetContent side="right" className="w-80">
+                <div className="flex flex-col space-y-4 mt-8">
+                  {navigation.map((item) => (
+                    <Link
+                      key={item.name}
+                      to={item.href}
+                      onClick={() => setIsOpen(false)}
+                      className={`text-lg py-2 px-3 rounded-md transition-colors ${
+                        isActive(item.href) 
+                          ? "bg-primary/20 text-primary" 
+                          : "hover:bg-muted"
+                      }`}
+                    >
+                      {item.name}
+                    </Link>
+                  ))}
+                  
+                  <div className="pt-4 border-t border-border space-y-3">
+                    <Button 
+                      variant="outline" 
+                      className="w-full border-primary/30 hover:bg-primary/10"
+                      asChild
+                    >
+                      <a href="https://steamcommunity.com/groups/civplayers" target="_blank" rel="noopener noreferrer">
+                        <Users className="w-4 h-4 mr-2" />
+                        Join Steam Community
+                        <ExternalLink className="w-3 h-3 ml-1" />
+                      </a>
+                    </Button>
+                    <Button className="w-full btn-hero" asChild>
+                      <a href="https://discord.gg/civplayers" target="_blank" rel="noopener noreferrer">
+                        Join Discord
+                        <ExternalLink className="w-3 h-3 ml-1" />
+                      </a>
+                    </Button>
+                  </div>
+                </div>
+              </SheetContent>
+            </Sheet>
+          </div>
+        </div>
+      </div>
+    </header>
+  );
+};
+
+export default Header;
