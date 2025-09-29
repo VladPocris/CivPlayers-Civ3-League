@@ -8,16 +8,15 @@ const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
 
-  const BASE_NAME = "/CivPlayers-Civ3-League";
   const navigation = [
-    { name: "Home", href: `${BASE_NAME}/` },
-    { name: "About", href: `${BASE_NAME}/about` },
-    { name: "Rules", href: `${BASE_NAME}/rules` },
-    { name: "Modes", href: `${BASE_NAME}/modes` },
-    { name: "Events", href: `${BASE_NAME}/events` },
-    { name: "Hall of Fame", href: `${BASE_NAME}/hall-of-fame` },
-    { name: "Guides", href: `${BASE_NAME}/guides` },
-    { name: "Stream", href: `${BASE_NAME}/stream` },
+    { name: "Home", href: "/" },
+    { name: "About", href: "/about" },
+    { name: "Rules", href: "/rules" },
+    { name: "Modes", href: "/modes" },
+    { name: "Events", href: "/events" },
+    { name: "Hall of Fame", href: "/hall-of-fame" },
+    { name: "Guides", href: "/guides" },
+    { name: "Stream", href: "/stream" },
   ];
 
   const isActive = (href: string) => location.pathname === href;
