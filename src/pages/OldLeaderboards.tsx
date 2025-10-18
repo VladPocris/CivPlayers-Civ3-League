@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, TouchEvent } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -27,6 +27,34 @@ const OldLeaderboards = () => {
 
   const [currentTab, setCurrentTab] = useState<keyof typeof leaderboardData>("QC");
   const [loadedImages, setLoadedImages] = useState<Record<string, boolean>>({});
+  const [touchStart, setTouchStart] = useState(0);
+  const [touchEnd, setTouchEnd] = useState(0);
+
+  const handleTouchStart = (e: TouchEvent) => {
+    setTouchStart(e.targetTouches[0].clientX);
+  };
+
+  const handleTouchMove = (e: TouchEvent) => {
+    setTouchEnd(e.targetTouches[0].clientX);
+  };
+
+  const handleTouchEnd = () => {
+    const minSwipeDistance = 50;
+    const swipeDistance = touchStart - touchEnd;
+
+    if (Math.abs(swipeDistance) > minSwipeDistance) {
+      const currentData = leaderboardData[currentTab];
+      const currentPage = currentPages[currentTab];
+
+      if (swipeDistance > 0 && currentPage < currentData.pages) {
+        // Swipe left - next page
+        handlePageChange(currentTab, currentPage + 1);
+      } else if (swipeDistance < 0 && currentPage > 1) {
+        // Swipe right - previous page
+        handlePageChange(currentTab, currentPage - 1);
+      }
+    }
+  };
 
   useEffect(() => {
     const loadImage = (src: string) =>
@@ -61,9 +89,6 @@ const OldLeaderboards = () => {
     <div className="min-h-screen bg-background">
       <Header />
       <main className="container mx-auto px-4 py-8">
-        <div className="text-center mb-4">
-          <div className="text-red-600 font-bold">DEBUG: currentTab = {currentTab}</div>
-        </div>
         <div className="text-center mb-12">
           <h1 className="text-4xl md:text-5xl font-bold text-gradient mb-4">
             Old Leaderboards
@@ -78,24 +103,26 @@ const OldLeaderboards = () => {
             <Tabs
               value={currentTab}
               onValueChange={(val) => {
-                console.log('Tab changed to:', val);
                 setCurrentTab(val as keyof typeof leaderboardData);
               }}
               className="w-full"
             >
-              <TabsList className="grid w-full grid-cols-4 mb-6">
+              <TabsList className="grid w-full grid-cols-2 sm:grid-cols-4 mb-12 gap-2">
                 {Object.entries(leaderboardData).map(([key]) => (
                   <TabsTrigger
                     key={key}
                     value={key}
                     className={cn(
-                      "active-leaderboard-tab font-bold border border-[var(--civ3-border)] shadow-md transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-[var(--civ3-border)] focus-visible:ring-offset-2",
+                      "active-leaderboard-tab font-bold border border-[var(--civ3-border)] shadow-md transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-[var(--civ3-border)] focus-visible:ring-offset-2 text-sm sm:text-base",
                       currentTab === key
                         ? ""
                         : "text-[var(--civ3-blue)] hover:bg-black hover:text-white"
                     )}
                   >
-                    {leaderboardData[key as keyof typeof leaderboardData].name}
+                    {key}
+                    <span className="hidden sm:inline">
+                      {" Leaderboard"}
+                    </span>
                   </TabsTrigger>
                 ))}
               </TabsList>
@@ -104,10 +131,15 @@ const OldLeaderboards = () => {
                 <TabsContent
                   key={key}
                   value={key}
-                  className="motion-safe:transition-opacity motion-safe:duration-300"
+                  className="motion-safe:transition-opacity motion-safe:duration-300 mt-4"
                 >
-                  <div className="flex flex-col items-center gap-6">
-                    <div className="w-full max-w-4xl mx-auto overflow-hidden rounded-lg shadow-lg relative aspect-[4/3] bg-background">
+                  <div className="flex flex-col items-center gap-4">
+                    <div 
+                      className="w-full max-w-4xl mx-auto overflow-hidden rounded-lg shadow-lg relative aspect-[1/1] sm:aspect-[4/3] bg-background"
+                      onTouchStart={handleTouchStart}
+                      onTouchMove={handleTouchMove}
+                      onTouchEnd={handleTouchEnd}
+                    >
                       {Array.from({ length: data.pages }, (_, i) => {
                         const pageNum = i + 1;
                         const src = `/CivPlayers-Civ3-League/civ3-assets/OldLeaderboard/${key}Leaderboard/Page_${pageNum}.webp`;
@@ -129,9 +161,10 @@ const OldLeaderboards = () => {
                     </div>
 
                     {/* Pagination */}
-                    <div className="flex flex-wrap justify-center gap-3 mt-4">
+                    <div className="flex flex-col sm:flex-row justify-center items-center gap-3 mt-4">
                       <Button
-                        className={controlButtonClasses}
+                        size="sm"
+                        className={`${controlButtonClasses} w-24 sm:w-auto`}
                         onClick={() =>
                           handlePageChange(
                             key as keyof typeof currentPages,
@@ -146,7 +179,7 @@ const OldLeaderboards = () => {
                         Previous
                       </Button>
 
-                      <div className="flex flex-wrap items-center justify-center gap-3">
+                      <div className="flex flex-wrap items-center justify-center gap-2">
                         {Array.from({ length: data.pages }, (_, i) => i + 1).map(
                           (pageNum) => {
                             const isActive =
@@ -154,7 +187,8 @@ const OldLeaderboards = () => {
                             return (
                               <Button
                                 key={pageNum}
-                                className={`border border-[var(--civ3-border)] font-bold shadow-md transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-[var(--civ3-border)] focus-visible:ring-offset-2 ${
+                                size="sm"
+                                className={`border border-[var(--civ3-border)] font-bold shadow-md transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-[var(--civ3-border)] focus-visible:ring-offset-2 w-8 h-8 p-0 ${
                                   isActive
                                     ? "bg-[var(--civ3-gold)] text-[var(--civ3-blue)] hover:bg-yellow-300 hover:text-[var(--civ3-blue)]"
                                     : "bg-yellow-200 text-[var(--civ3-blue)] hover:bg-[var(--civ3-gold)] hover:text-white"
@@ -175,7 +209,8 @@ const OldLeaderboards = () => {
                       </div>
 
                       <Button
-                        className={controlButtonClasses}
+                        size="sm"
+                        className={`${controlButtonClasses} w-24 sm:w-auto`}
                         onClick={() =>
                           handlePageChange(
                             key as keyof typeof currentPages,
