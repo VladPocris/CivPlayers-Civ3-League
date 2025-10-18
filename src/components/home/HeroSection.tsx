@@ -24,18 +24,20 @@ const HeroSection = () => {
               CivPlayers
             </h1>
             <h2 className="text-2xl md:text-3xl font-semibold text-foreground">
-              Civilization III League
+              Welcome to the League!
             </h2>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-              The premier competitive Civilization III multiplayer community. 
-              Join skilled players from around the world in strategic battles for supremacy.
+              We are a multiplayer league dedicated to the best strategy game of all time. After being almost dead back in 2014, a new ladder has now risen from the ashes. With a new generation of players alongside members of the old. Civ3 Multiplayer lives on!
+            </p>
+            <p className="text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+              Check out our rankings by mode here on this page. In order to be the best, you must build an empire every game that stands the test of time!
             </p>
           </div>
 
           {/* Call to Action Buttons */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
             <Button size="lg" className="btn-hero text-lg px-8 py-4" asChild>
-              <a href="https://discord.gg/civplayers" target="_blank" rel="noopener noreferrer">
+              <a href="https://discord.gg/teVt5pt" target="_blank" rel="noopener noreferrer">
                 Join Discord Community
                 <ExternalLink className="w-4 h-4 ml-2" />
               </a>
@@ -46,7 +48,7 @@ const HeroSection = () => {
               className="text-lg px-8 py-4 border-primary/30 hover:bg-primary/10"
               asChild
             >
-              <a href="https://steamcommunity.com/groups/civplayers" target="_blank" rel="noopener noreferrer">
+              <a href="https://steamcommunity.com/groups/CivPlayersCiv3" target="_blank" rel="noopener noreferrer">
                 <Users className="w-4 h-4 mr-2" />
                 Steam Group
                 <ExternalLink className="w-4 h-4 ml-2" />

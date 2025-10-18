@@ -116,7 +116,7 @@ const Leaderboard = () => {
                   asChild
                   className="w-full sm:w-auto truncate"
                 >
-                  <a href="/leaderboards/archive" className="flex items-center justify-center w-full">
+                  <a href="/CivPlayers-Civ3-League/old-leaderboards" className="flex items-center justify-center w-full">
                     <span className="truncate">Old Leaderboards</span>
                     <ExternalLink className="w-3 h-3 ml-1 flex-shrink-0" />
                   </a>
