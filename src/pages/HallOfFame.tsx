@@ -132,16 +132,16 @@ const HallOfFame = () => {
       <Header />
 
       <main className="container mx-auto px-4 py-12 space-y-12">
-        <section className="text-center space-y-2">
-          <h1 className="text-5xl font-bold text-gradient">Hall of Fame</h1>
-          <p className="text-muted-foreground text-lg">Celebrating champions and standout players through the years.</p>
+        <section className="text-center space-y-4">
+          <h1 className="text-5xl md:text-6xl font-extrabold tracking-tight text-gradient drop-shadow-sm">Hall of Fame</h1>
+          <p className="text-xl text-muted-foreground/90 leading-relaxed tracking-wide max-w-4xl mx-auto">Celebrating champions and standout players through the years.</p>
         </section>
 
         {/* Champions */}
         <Card className="gaming-card">
           <CardHeader className="text-center pb-6">
-            <CardTitle className="text-3xl font-bold text-primary mb-2">End of Year Champions</CardTitle>
-            <p className="text-muted-foreground">Celebrating our legendary champions through the years</p>
+            <CardTitle className="text-4xl font-extrabold tracking-tight text-primary mb-3">End of Year Champions</CardTitle>
+            <p className="text-lg text-muted-foreground/90 tracking-wide">Celebrating our legendary champions through the years</p>
           </CardHeader>
           <CardContent>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 items-start">

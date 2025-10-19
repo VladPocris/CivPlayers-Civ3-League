@@ -36,10 +36,15 @@ const About = () => {
       <main className="container mx-auto px-4 py-8">
         {/* Page Header */}
         <div className="text-center mb-12">
-          <h1 className="text-4xl md:text-5xl font-bold text-gradient mb-4">
+          <h1 className="text-5xl md:text-6xl font-extrabold tracking-tight text-gradient mb-6 drop-shadow-sm">
             About the League
           </h1>
-          <div className="flex flex-col md:flex-row justify-center items-stretch gap-8 mb-12">
+          <div className="max-w-4xl mx-auto mb-12">
+            <p className="text-xl text-muted-foreground/90 leading-relaxed mb-8 tracking-wide">
+              Welcome to the revived Civ 3 League - where strategy and community meet.
+            </p>
+          </div>
+          <div className="flex flex-col md:flex-row justify-center items-stretch gap-8 mb-12 max-w-7xl mx-auto">
             <div className="flex-1 flex">
               <Card className="gaming-card flex-1 flex flex-col">
                 <CardContent className="p-8 text-center flex-1 flex flex-col justify-center">
@@ -66,8 +71,8 @@ const About = () => {
         <Card className="gaming-card mb-12">
           <CardContent className="p-8 text-center">
             <Heart className="w-12 h-12 text-primary mx-auto mb-4" />
-            <h2 className="text-2xl font-bold text-foreground mb-4">Our Mission</h2>
-            <p className="text-lg text-muted-foreground leading-relaxed max-w-4xl mx-auto">
+            <h2 className="text-3xl font-bold text-foreground mb-6 tracking-tight">Our Mission</h2>
+            <p className="text-base md:text-lg text-foreground/90 leading-relaxed max-w-4xl mx-auto tracking-normal">
               CivPlayers Civ3 League exists to foster a competitive, fair, and welcoming environment 
               where players of all skill levels can enjoy the timeless strategy of Civilization III. 
               We believe in the power of strategic thinking, community building, and the endless 
@@ -148,7 +153,7 @@ const About = () => {
 
         {/* Our Values */}
         <div className="mb-12">
-          <h2 className="text-3xl font-bold text-primary mb-8 text-center">Our Values</h2>
+          <h2 className="text-4xl font-extrabold text-primary mb-10 text-center tracking-tight">Our Values</h2>
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             {values.map((value, index) => {
               const IconComponent = value.icon;

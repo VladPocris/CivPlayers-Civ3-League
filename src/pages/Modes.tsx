@@ -101,10 +101,10 @@ const Modes = () => {
       <main className="container mx-auto px-4 py-8">
         {/* Page Header */}
         <div className="text-center mb-12">
-          <h1 className="text-4xl md:text-5xl font-bold text-gradient mb-4">
+          <h1 className="text-4xl md:text-6xl font-extrabold text-gradient mb-6 tracking-tight">
             Our Game Modes
           </h1>
-          <p className="text-lg text-muted-foreground max-w-3xl mx-auto leading-relaxed">
+          <p className="text-lg md:text-xl text-muted-foreground/90 max-w-3xl mx-auto leading-8">
             The CivPlayers Civ3 League offers a variety of multiplayer modes — from
             ancient-era skirmishes to futuristic total wars. Each mode provides a
             unique strategic experience suited for different playstyles and time
@@ -114,7 +114,7 @@ const Modes = () => {
 
         {/* Main Modes */}
         <section className="mb-16">
-          <h2 className="text-3xl font-bold text-primary mb-8 text-center">
+          <h2 className="text-3xl md:text-4xl font-bold text-primary mb-8 text-center tracking-tight">
             Main Ladder Modes
           </h2>
           <div className="grid md:grid-cols-2 gap-8">
@@ -123,18 +123,18 @@ const Modes = () => {
               return (
                 <Card key={index} className="gaming-card flex flex-col">
                   <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                      <Icon className="w-6 h-6 text-primary" />
+                    <CardTitle className="flex items-center gap-3 text-2xl">
+                      <Icon className="w-7 h-7 text-primary" />
                       {mode.title}
                     </CardTitle>
                   </CardHeader>
-                  <CardContent className="flex flex-col gap-4">
-                    <p className="text-muted-foreground leading-relaxed">
+                  <CardContent className="flex flex-col gap-5">
+                    <p className="text-muted-foreground/90 leading-7 text-[1.05rem]">
                       {mode.description}
                     </p>
-                    <ul className="list-disc list-inside text-muted-foreground space-y-1">
+                    <ul className="list-disc list-inside text-muted-foreground/90 space-y-2">
                       {mode.details.map((d, i) => (
-                        <li key={i}>{d}</li>
+                        <li key={i} className="leading-7">{d}</li>
                       ))}
                     </ul>
                   </CardContent>
@@ -148,7 +148,7 @@ const Modes = () => {
 
         {/* Lesser Modes */}
         <section className="mb-16">
-          <h2 className="text-3xl font-bold text-primary mb-8 text-center">
+          <h2 className="text-3xl md:text-4xl font-bold text-primary mb-8 text-center tracking-tight">
             Lesser Modes
           </h2>
           <div className="grid md:grid-cols-2 gap-8">
@@ -157,18 +157,18 @@ const Modes = () => {
               return (
                 <Card key={index} className="gaming-card flex flex-col">
                   <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                      <Icon className="w-6 h-6 text-primary" />
+                    <CardTitle className="flex items-center gap-3 text-2xl">
+                      <Icon className="w-7 h-7 text-primary" />
                       {mode.title}
                     </CardTitle>
                   </CardHeader>
-                  <CardContent className="flex flex-col gap-4">
-                    <p className="text-muted-foreground leading-relaxed">
+                  <CardContent className="flex flex-col gap-5">
+                    <p className="text-muted-foreground/90 leading-7 text-[1.05rem]">
                       {mode.description}
                     </p>
-                    <ul className="list-disc list-inside text-muted-foreground space-y-1">
+                    <ul className="list-disc list-inside text-muted-foreground/90 space-y-2">
                       {mode.details.map((d, i) => (
-                        <li key={i}>{d}</li>
+                        <li key={i} className="leading-7">{d}</li>
                       ))}
                     </ul>
                   </CardContent>
@@ -182,10 +182,10 @@ const Modes = () => {
         <Card className="gaming-card text-center">
           <CardContent className="p-8">
             <FileText className="w-12 h-12 text-primary mx-auto mb-4" />
-            <h3 className="text-2xl font-bold mb-2 text-foreground">
+            <h3 className="text-2xl md:text-3xl font-bold mb-3 text-foreground tracking-tight">
               Mod Files & Resources
             </h3>
-            <p className="text-muted-foreground mb-4">
+            <p className="text-muted-foreground/90 mb-4 text-lg leading-7">
               The Google Drive for all official mods, BIQs, and map grids can be found here:
             </p>
             <a

@@ -118,10 +118,10 @@ const Rules = () => {
 
       <main className="container mx-auto px-4 py-8">
         <div className="text-center mb-12">
-          <h1 className="text-4xl md:text-5xl font-bold text-gradient mb-4">
+          <h1 className="text-5xl md:text-6xl font-extrabold tracking-tight text-gradient mb-6 drop-shadow-sm">
             Ladder Rules & Guidelines
           </h1>
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
+          <p className="text-xl text-muted-foreground/90 leading-relaxed tracking-wide max-w-3xl mx-auto">
             These are the official rules for all ladder games. Please read them carefully before playing.
             Hosts and players are expected to know and follow these rules at all times.
           </p>
@@ -134,17 +134,17 @@ const Rules = () => {
             return (
               <Card key={index} className="gaming-card">
                 <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <IconComponent className="w-6 h-6 text-primary" />
+                  <CardTitle className="flex items-center gap-3 text-2xl tracking-tight">
+                    <IconComponent className="w-7 h-7 text-primary" />
                     {category.title}
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <ul className="space-y-3">
+                  <ul className="space-y-4">
                     {category.rules.map((rule, ruleIndex) => (
-                      <li key={ruleIndex} className="flex items-start gap-3">
-                        <div className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></div>
-                        <span className="text-muted-foreground leading-relaxed">{rule}</span>
+                      <li key={ruleIndex} className="flex items-start gap-4">
+                        <div className="w-2 h-2 bg-primary rounded-full mt-2.5 flex-shrink-0"></div>
+                        <span className="text-base text-foreground/90 leading-relaxed tracking-normal">{rule}</span>
                       </li>
                     ))}
                   </ul>
