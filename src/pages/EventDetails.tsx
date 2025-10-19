@@ -88,7 +88,7 @@ export default function EventDetails() {
                   {title}
                 </h1>
               </div>
-              <div className="flex items-center justify-center gap-2 text-sm text-muted-foreground">
+              <div className="flex items-center justify-center gap-2 text-sm text-white">
                 <Calendar className="w-4 h-4" />
                 <span>{event.date}</span>
                 {statusBadge(event.status)}
@@ -102,7 +102,7 @@ export default function EventDetails() {
                   <CardTitle className="text-foreground">Winners</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-muted-foreground leading-relaxed">{event.winners || "TBD"}</p>
+                  <p className="text-white leading-relaxed">{event.winners || "TBD"}</p>
                 </CardContent>
               </Card>
               <Card className="gaming-card">
@@ -110,7 +110,7 @@ export default function EventDetails() {
                   <CardTitle className="text-foreground">Participants</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-muted-foreground">{event.participants || "—"} Players</p>
+                  <p className="text-white">{event.participants || "—"} Players</p>
                 </CardContent>
               </Card>
               <Card className="gaming-card">
@@ -118,7 +118,7 @@ export default function EventDetails() {
                   <CardTitle className="text-foreground">Prize</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-muted-foreground">{event.prize || "—"}</p>
+                  <p className="text-white">{event.prize || "—"}</p>
                 </CardContent>
               </Card>
             </div>
@@ -130,7 +130,7 @@ export default function EventDetails() {
                   <CardTitle className="text-foreground">Overview</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-muted-foreground leading-relaxed">{event.description}</p>
+                  <p className="text-white leading-relaxed">{event.description}</p>
                 </CardContent>
               </Card>
             )}
@@ -141,7 +141,7 @@ export default function EventDetails() {
                 </CardHeader>
                 <CardContent>
                   <div className="prose prose-invert max-w-none">
-                    <p className="text-muted-foreground leading-relaxed">{event.longDescription}</p>
+                    <p className="text-white leading-relaxed">{event.longDescription}</p>
                   </div>
                 </CardContent>
               </Card>
@@ -158,13 +158,14 @@ export default function EventDetails() {
                     <div className="flex gap-12 min-w-max pb-4">
                       {event.bracket.rounds.map((round, ri) => {
                         const hasNextRound = ri < event.bracket!.rounds.length - 1;
+                        const isGrandFinalRound = ri === event.bracket!.rounds.length - 1 && round.matches.length === 1;
                         
                         return (
                           <div key={ri} className="flex flex-col relative" style={{ minWidth: '250px' }}>
                             {/* Round Header */}
                             <div className="mb-6 text-center">
                               <h3 className="font-bold text-xl text-primary mb-1">{round.name}</h3>
-                              <p className="text-xs text-muted-foreground">
+                              <p className="text-xs text-white">
                                 {round.matches.length} {round.matches.length === 1 ? 'Match' : 'Matches'}
                               </p>
                             </div>
@@ -247,7 +248,7 @@ export default function EventDetails() {
                                   <div className="bg-muted/20 border-2 border-border rounded-lg overflow-hidden hover:border-primary/50 transition-colors">
                                   {/* Match Header */}
                                   <div className="bg-muted/40 px-3 py-1.5 border-b border-border flex items-center justify-between">
-                                    <span className="text-xs font-semibold text-muted-foreground">
+                                    <span className="text-xs font-semibold text-white">
                                       Match {mi + 1}
                                     </span>
                                     {match.score && (
@@ -265,9 +266,9 @@ export default function EventDetails() {
                                         ? "bg-primary/30 border-2 border-primary/60 shadow-lg shadow-primary/20"
                                         : "bg-background/80 border border-border/50"
                                     }`}>
-                                      {match.winner === "p1" && (
-                                        <Trophy className="w-4 h-4 text-primary flex-shrink-0" />
-                                      )}
+                                        {isGrandFinalRound && match.winner === "p1" && (
+                                          <Trophy className="w-4 h-4 text-primary flex-shrink-0" />
+                                        )}
                                       <span className={`text-sm flex-1 ${
                                         match.winner === "p1"
                                           ? "font-bold text-primary"
@@ -283,7 +284,7 @@ export default function EventDetails() {
                                         ? "bg-primary/30 border-2 border-primary/60 shadow-lg shadow-primary/20"
                                         : "bg-background/80 border border-border/50"
                                     }`}>
-                                      {match.winner === "p2" && (
+                                      {isGrandFinalRound && match.winner === "p2" && (
                                         <Trophy className="w-4 h-4 text-primary flex-shrink-0" />
                                       )}
                                       <span className={`text-sm flex-1 ${
@@ -307,7 +308,7 @@ export default function EventDetails() {
                   
                   {/* Bracket Legend */}
                   <div className="mt-6 pt-4 border-t border-border/50">
-                    <div className="flex items-center justify-center gap-6 text-xs text-muted-foreground">
+                    <div className="flex items-center justify-center gap-6 text-xs text-white">
                       <div className="flex items-center gap-2">
                         <Trophy className="w-4 h-4 text-primary" />
                         <span>Winner</span>
@@ -326,7 +327,7 @@ export default function EventDetails() {
                   <CardTitle className="text-foreground">Tournament Bracket</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-sm text-muted-foreground text-center py-8">
+                  <p className="text-sm text-white text-center py-8">
                     Bracket not available for this event.
                   </p>
                 </CardContent>
@@ -379,7 +380,7 @@ export default function EventDetails() {
             </div>
           </div>
         ) : (
-          <p className="text-muted-foreground">Loading...</p>
+          <p className="text-white">Loading...</p>
         )}
       </main>
       <Footer />

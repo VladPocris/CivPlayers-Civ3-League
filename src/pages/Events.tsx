@@ -122,32 +122,36 @@ const Events = () => {
                 </div>
 
                 <div className="flex flex-wrap gap-3">
-                  {event.youtubeLink !== "N/A" && (
+                  {event.youtubeLink && event.youtubeLink !== "N/A" && (
                     <Button
                       variant="outline"
-                      className="border-red-500/50 text-red-500 hover:bg-red-500/10 hover:text-red-400 hover:border-red-500"
                       asChild
+                      className="text-foreground hover:text-primary hover:bg-primary/10"
+                      disabled={event.status === "completed"}
+                      style={event.status === "completed" ? { opacity: 0.5, pointerEvents: 'none' } : {}}
                     >
                       <a href={event.youtubeLink} target="_blank" rel="noopener noreferrer">
-                        <Youtube className="w-4 h-4 mr-2" />
                         Watch on YouTube
+                        <ExternalLink className="w-4 h-4 ml-2" />
                       </a>
                     </Button>
                   )}
-                  
-                  {event.twitchLink !== "N/A" && (
+
+                  {event.twitchLink && event.twitchLink !== "N/A" && (
                     <Button
                       variant="outline"
-                      className="border-[#6441a5]/50 text-[#6441a5] hover:bg-[#6441a5]/10 hover:text-[#6441a5] hover:border-[#6441a5]"
                       asChild
+                      className="text-foreground hover:text-primary hover:bg-primary/10"
+                      disabled={event.status === "completed"}
+                      style={event.status === "completed" ? { opacity: 0.5, pointerEvents: 'none' } : {}}
                     >
                       <a href={event.twitchLink} target="_blank" rel="noopener noreferrer">
-                        <Twitch className="w-4 h-4 mr-2" />
                         Watch on Twitch
+                        <ExternalLink className="w-4 h-4 ml-2" />
                       </a>
                     </Button>
                   )}
-                  
+
                   <Button variant="outline" asChild>
                     <Link to={`/events/${event.id}`}>
                       Event Details
