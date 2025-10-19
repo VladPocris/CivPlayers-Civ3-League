@@ -1,3 +1,88 @@
+@font-face {
+  font-family: 'Adelle Sans';
+  src: url('/fonts/fonnts.com-Adelle_Sans_Thin.otf') format('opentype');
+  font-weight: 100;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Adelle Sans';
+  src: url('/fonts/fonnts.com-Adelle_Sans_Light.otf') format('opentype');
+  font-weight: 300;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Adelle Sans';
+  src: url('/fonts/fonnts.com-Adelle_Sans_Regular.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Adelle Sans';
+  src: url('/fonts/fonnts.com-Adelle_Sans_Semibold.otf') format('opentype');
+  font-weight: 600;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Adelle Sans';
+  src: url('/fonts/fonnts.com-Adelle_Sans_Bold.otf') format('opentype');
+  font-weight: 700;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Adelle Sans';
+  src: url('/fonts/fonnts.com-Adelle_Sans_Extrabold.otf') format('opentype');
+  font-weight: 800;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Adelle Sans';
+  src: url('/fonts/fonnts.com-Adelle_Sans_Heavy.otf') format('opentype');
+  font-weight: 900;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Adelle Sans';
+  src: url('/fonts/fonnts.com-Adelle_Sans_Thin_Italic.otf') format('opentype');
+  font-weight: 100;
+  font-style: italic;
+}
+@font-face {
+  font-family: 'Adelle Sans';
+  src: url('/fonts/fonnts.com-Adelle_Sans_Light_Italic.otf') format('opentype');
+  font-weight: 300;
+  font-style: italic;
+}
+@font-face {
+  font-family: 'Adelle Sans';
+  src: url('/fonts/fonnts.com-Adelle_Sans_Italic.otf') format('opentype');
+  font-weight: 400;
+  font-style: italic;
+}
+@font-face {
+  font-family: 'Adelle Sans';
+  src: url('/fonts/fonnts.com-Adelle_Sans_Semibold_Italic.otf') format('opentype');
+  font-weight: 600;
+  font-style: italic;
+}
+@font-face {
+  font-family: 'Adelle Sans';
+  src: url('/fonts/fonnts.com-Adelle_Sans_Bold_Italic.otf') format('opentype');
+  font-weight: 700;
+  font-style: italic;
+}
+@font-face {
+  font-family: 'Adelle Sans';
+  src: url('/fonts/fonnts.com-Adelle_Sans_Extrabold_Italic.otf') format('opentype');
+  font-weight: 800;
+  font-style: italic;
+}
+@font-face {
+  font-family: 'Adelle Sans';
+  src: url('/fonts/fonnts.com-Adelle_Sans_Heavy_Italic.otf') format('opentype');
+  font-weight: 900;
+  font-style: italic;
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -77,7 +162,10 @@
   .dark {
     --background: 222.2 84% 4.9%;
     --foreground: 210 40% 98%;
-
+      @apply bg-background text-foreground font-sans;
+      color: #fff;
+      font-family: 'Adelle Sans', adelle-sans, sans-serif;
+      font-size: 1.15rem;
     --card: 222.2 84% 4.9%;
     --card-foreground: 210 40% 98%;
 
@@ -120,6 +208,16 @@
 
   body {
     @apply bg-background text-foreground font-sans;
+    color: #fff;
+    font-family: 'Adelle Sans', adelle-sans, sans-serif;
+  }
+  h1, h2, h3, h4 {
+    color: #fff;
+    font-family: 'Cormorant Garamond', serif;
+  }
+  p, span, label, button, a, li, td, th {
+    color: #fff;
+    font-family: 'Adelle Sans', adelle-sans, sans-serif;
   }
 }
 
@@ -141,6 +239,8 @@
   
   .league-table th {
     @apply bg-muted text-left p-4 font-semibold border-b border-border;
+    color: #fff !important;
+    font-family: 'Adelle Sans', adelle-sans, sans-serif !important;
   }
   
   .league-table td {

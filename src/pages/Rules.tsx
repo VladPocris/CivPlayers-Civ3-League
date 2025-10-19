@@ -53,7 +53,7 @@ const Rules = () => {
           <h1 className="text-5xl md:text-6xl font-extrabold tracking-tight text-gradient mb-6 drop-shadow-sm">
             Ladder Rules & Guidelines
           </h1>
-          <p className="text-xl text-muted-foreground/90 leading-relaxed tracking-wide max-w-3xl mx-auto">
+          <p className="text-xl leading-relaxed tracking-wide max-w-3xl mx-auto" style={{ color: '#fff' }}>
             These are the official rules for all ladder games. Please read them carefully before playing.
             Hosts and players are expected to know and follow these rules at all times.
           </p>
@@ -66,7 +66,7 @@ const Rules = () => {
             return (
               <Card key={index} className="gaming-card">
                 <CardHeader>
-                  <CardTitle className="flex items-center gap-3 text-2xl tracking-tight">
+                  <CardTitle className="flex flex-wrap items-center gap-3 text-2xl tracking-tight">
                     <IconComponent className="w-7 h-7 text-primary" />
                     {category.title}
                   </CardTitle>
@@ -76,7 +76,7 @@ const Rules = () => {
                     {category.rules.map((rule, ruleIndex) => (
                       <li key={ruleIndex} className="flex items-start gap-4">
                         <div className="w-2 h-2 bg-primary rounded-full mt-2.5 flex-shrink-0"></div>
-                        <span className="text-base text-foreground/90 leading-relaxed tracking-normal">{rule}</span>
+                        <span className="flex-1 leading-relaxed tracking-normal" style={{ fontSize: '1.05rem', color: '#fff' }}>{rule}</span>
                       </li>
                     ))}
                   </ul>

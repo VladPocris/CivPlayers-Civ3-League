@@ -127,25 +127,70 @@ const Admin = () => {
     }
   };
 
+  const generateBracket = (eventId: number) => {
+    const numPlayers = bracketGenPlayers[eventId] || 8;
+    if (numPlayers < 2 || numPlayers > 64) {
+      setStatus("✗ Player count must be between 2 and 64");
+      return;
+    }
+    if (!Number.isInteger(Math.log2(numPlayers))) {
+      setStatus("✗ Player count must be a power of 2 (2, 4, 8, 16, 32, 64)");
+      return;
+    }
+
+    const rounds: Array<{ name: string; matches: Array<{ p1: string; p2: string }> }> = [];
+    let currentPlayers = numPlayers;
+    let roundNum = 1;
+
+    while (currentPlayers > 1) {
+      const matchesInRound = currentPlayers / 2;
+      const roundName =
+        currentPlayers === 2
+          ? "Finals"
+          : currentPlayers === 4
+          ? "Semi-Finals"
+          : currentPlayers === 8
+          ? "Quarter-Finals"
+          : `Round ${roundNum}`;
+
+      const matches = Array.from({ length: matchesInRound }, (_, i) => ({
+        p1: `Player ${i * 2 + 1}`,
+        p2: `Player ${i * 2 + 2}`,
+      }));
+
+      rounds.push({ name: roundName, matches });
+      currentPlayers /= 2;
+      roundNum++;
+    }
+
+    const copy = (eventsStructured || []).slice();
+    const idx = copy.findIndex((e) => e.id === eventId);
+    if (idx >= 0) {
+      copy[idx] = { ...copy[idx], bracket: { rounds } };
+      setEventsStructured(copy);
+      setStatus("✓ Bracket generated successfully");
+    }
+  };
+
   return (
     <div className="min-h-screen bg-background">
       <Header />
-      <main className="container mx-auto px-4 py-12">
+      <main className="container mx-auto px-4 py-8 md:py-12">
         {/* Page Header */}
-        <div className="text-center mb-8">
-          <div className="flex items-center justify-center gap-3 mb-4">
-            <Settings className="w-10 h-10 text-primary" />
-            <h1 className="text-4xl md:text-5xl font-bold text-gradient">
+        <div className="text-center mb-6 md:mb-8">
+          <div className="flex items-center justify-center gap-2 md:gap-3 mb-3 md:mb-4">
+            <Settings className="w-8 h-8 md:w-10 md:h-10 text-primary" />
+            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gradient">
               Admin Panel
             </h1>
           </div>
-          <p className="text-lg text-muted-foreground">
+          <p className="text-base md:text-lg text-muted-foreground px-4">
             Manage site content and configuration
           </p>
         </div>
 
         {/* Navigation Tabs */}
-        <div className="flex flex-wrap justify-center gap-3 mb-8">
+        <div className="flex flex-wrap justify-center gap-2 md:gap-3 mb-6 md:mb-8">
           {DATA_KEYS.map((k) => {
             const Icon = getIcon(k);
             return (
@@ -153,38 +198,48 @@ const Admin = () => {
                 key={k}
                 variant={k === active ? "default" : "outline"}
                 onClick={() => setActive(k)}
+                size="sm"
                 className={
                   k === active 
                     ? "bg-primary hover:bg-primary/90 text-white"
                     : "text-foreground hover:text-primary hover:bg-primary/10"
                 }
               >
-                <Icon className="w-4 h-4 mr-2" />
-                <span className="capitalize">{k}</span>
+                <Icon className="w-4 h-4 mr-1 md:mr-2" />
+                <span className="capitalize text-sm md:text-base">{k}</span>
               </Button>
             );
           })}
         </div>
 
         {/* Action Bar */}
-        <Card className="gaming-card mb-6">
-          <CardContent className="p-4">
-            <div className="flex flex-wrap items-center justify-between gap-4">
-              <div className="flex items-center gap-2 text-sm">
+        <Card className="gaming-card mb-4 md:mb-6">
+          <CardContent className="p-3 md:p-4">
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 md:gap-4">
+              <div className="flex items-center gap-2 text-xs md:text-sm">
                 {status && (
-                  <Badge variant={status.startsWith("✓") ? "default" : "destructive"} className="text-white">
+                  <Badge variant={status.startsWith("✓") ? "default" : "destructive"} className="text-white text-xs">
                     {status}
                   </Badge>
                 )}
               </div>
               <div className="flex gap-2">
-                <Button variant="outline" onClick={() => load(active)} className="text-foreground hover:text-primary">
-                  <RefreshCw className="w-4 h-4 mr-2" />
+                <Button 
+                  variant="outline" 
+                  onClick={() => load(active)} 
+                  size="sm"
+                  className="flex-1 sm:flex-none text-foreground hover:text-primary text-xs md:text-sm"
+                >
+                  <RefreshCw className="w-3 h-3 md:w-4 md:h-4 mr-1 md:mr-2" />
                   Reload
                 </Button>
-                <Button onClick={save} className="bg-primary hover:bg-primary/90 text-white">
-                  <Save className="w-4 h-4 mr-2" />
-                  Save & Download
+                <Button 
+                  onClick={save} 
+                  size="sm"
+                  className="flex-1 sm:flex-none bg-primary hover:bg-primary/90 text-white text-xs md:text-sm"
+                >
+                  <Save className="w-3 h-3 md:w-4 md:h-4 mr-1 md:mr-2" />
+                  Save
                 </Button>
               </div>
             </div>
@@ -194,13 +249,13 @@ const Admin = () => {
         {/* Content Editor */}
         <div>
           {active === "rules" && (
-            <div className="space-y-6">
+            <div className="space-y-4 md:space-y-6">
               {(rulesStructured || []).map((cat, ci) => (
                 <Card key={ci} className="gaming-card">
-                  <CardHeader>
-                    <div className="flex items-center gap-3">
+                  <CardHeader className="p-4 md:p-6">
+                    <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 md:gap-3">
                       <input
-                        className="w-32 p-2 border border-border rounded bg-background text-foreground"
+                        className="w-full sm:w-24 md:w-32 p-2 border border-border rounded bg-background text-foreground text-sm"
                         placeholder="Icon"
                         value={cat.icon}
                         onChange={(e) => {
@@ -210,7 +265,7 @@ const Admin = () => {
                         }}
                       />
                       <input
-                        className="flex-1 p-2 border border-border rounded bg-background text-foreground font-semibold text-lg"
+                        className="flex-1 p-2 border border-border rounded bg-background text-foreground font-semibold text-base md:text-lg"
                         placeholder="Category Title"
                         value={cat.title}
                         onChange={(e) => {
@@ -227,21 +282,21 @@ const Admin = () => {
                           copy.splice(ci, 1);
                           setRulesStructured(copy);
                         }}
-                        className="bg-red-600 hover:bg-red-700 text-white"
+                        className="bg-red-600 hover:bg-red-700 text-white w-full sm:w-auto text-xs md:text-sm"
                       >
-                        <Trash2 className="w-4 h-4 mr-1" />
-                        Remove Category
+                        <Trash2 className="w-3 h-3 md:w-4 md:h-4 mr-1" />
+                        Remove
                       </Button>
                     </div>
                   </CardHeader>
-                  <CardContent className="space-y-3">
+                  <CardContent className="p-4 md:p-6 space-y-3">
                     {(cat.rules || []).map((r, ri) => (
                       <div key={ri} className="flex gap-2 items-start">
-                        <Badge variant="outline" className="mt-2 flex-shrink-0 text-foreground">
+                        <Badge variant="outline" className="mt-2 flex-shrink-0 text-foreground text-xs">
                           {ri + 1}
                         </Badge>
                         <textarea
-                          className="flex-1 p-3 border border-border rounded bg-background text-foreground min-h-[80px]"
+                          className="flex-1 p-2 md:p-3 border border-border rounded bg-background text-foreground min-h-[80px] text-sm md:text-base"
                           placeholder="Rule description..."
                           value={r}
                           onChange={(e) => {
@@ -260,7 +315,7 @@ const Admin = () => {
                           }}
                           className="hover:bg-red-500/10"
                         >
-                          <Trash2 className="w-4 h-4 text-red-500" />
+                          <Trash2 className="w-3 h-3 md:w-4 md:h-4 text-red-500" />
                         </Button>
                       </div>
                     ))}
@@ -272,9 +327,9 @@ const Admin = () => {
                         copy[ci].rules.push("New rule");
                         setRulesStructured(copy);
                       }}
-                      className="text-foreground hover:text-primary hover:bg-primary/10"
+                      className="text-foreground hover:text-primary hover:bg-primary/10 text-xs md:text-sm"
                     >
-                      <Plus className="w-4 h-4 mr-1" />
+                      <Plus className="w-3 h-3 md:w-4 md:h-4 mr-1" />
                       Add Rule
                     </Button>
                   </CardContent>
@@ -287,7 +342,7 @@ const Admin = () => {
                   copy.push({ icon: "Shield", title: "New Category", rules: ["New rule"] });
                   setRulesStructured(copy);
                 }}
-                className="w-full bg-primary hover:bg-primary/90 text-white"
+                className="w-full bg-primary hover:bg-primary/90 text-white text-sm md:text-base"
               >
                 <Plus className="w-4 h-4 mr-2" />
                 Add New Category
@@ -296,12 +351,12 @@ const Admin = () => {
           )}
 
           {active === "events" && (
-            <div className="space-y-6">
+            <div className="space-y-4 md:space-y-6">
               {(eventsStructured || []).map((ev, ei) => (
                 <Card key={ev.id ?? ei} className="gaming-card">
-                  <CardHeader>
-                    <div className="flex items-center justify-between">
-                      <CardTitle className="text-xl text-foreground">Event #{ev.id}</CardTitle>
+                  <CardHeader className="p-4 md:p-6">
+                    <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+                      <CardTitle className="text-lg md:text-xl text-foreground">Event #{ev.id}</CardTitle>
                       <Button
                         variant="destructive"
                         size="sm"
@@ -310,21 +365,21 @@ const Admin = () => {
                           copy.splice(ei, 1);
                           setEventsStructured(copy);
                         }}
-                        className="bg-red-600 hover:bg-red-700 text-white"
+                        className="bg-red-600 hover:bg-red-700 text-white w-full sm:w-auto text-xs md:text-sm"
                       >
-                        <Trash2 className="w-4 h-4 mr-1" />
+                        <Trash2 className="w-3 h-3 md:w-4 md:h-4 mr-1" />
                         Remove
                       </Button>
                     </div>
                   </CardHeader>
-                  <CardContent className="space-y-4">
+                  <CardContent className="p-4 md:p-6 space-y-4">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <div>
-                        <label className="block text-sm font-medium text-muted-foreground mb-2">
+                        <label className="block text-xs md:text-sm font-medium text-muted-foreground mb-2">
                           Title
                         </label>
                         <input
-                          className="w-full p-2 border border-border rounded bg-background text-foreground"
+                          className="w-full p-2 border border-border rounded bg-background text-foreground text-sm md:text-base"
                           value={ev.title}
                           onChange={(e) => {
                             const copy = (eventsStructured || []).slice();
@@ -334,11 +389,11 @@ const Admin = () => {
                         />
                       </div>
                       <div>
-                        <label className="block text-sm font-medium text-muted-foreground mb-2">
-                          Date Range
+                        <label className="block text-xs md:text-sm font-medium text-muted-foreground mb-2">
+                          Date
                         </label>
                         <input
-                          className="w-full p-2 border border-border rounded bg-background text-foreground"
+                          className="w-full p-2 border border-border rounded bg-background text-foreground text-sm md:text-base"
                           value={ev.date}
                           onChange={(e) => {
                             const copy = (eventsStructured || []).slice();
@@ -348,11 +403,11 @@ const Admin = () => {
                         />
                       </div>
                       <div>
-                        <label className="block text-sm font-medium text-muted-foreground mb-2">
+                        <label className="block text-xs md:text-sm font-medium text-muted-foreground mb-2">
                           Status
                         </label>
                         <select
-                          className="w-full p-2 border border-border rounded bg-background text-foreground"
+                          className="w-full p-2 border border-border rounded bg-background text-foreground text-sm md:text-base"
                           value={ev.status}
                           onChange={(e) => {
                             const copy = (eventsStructured || []).slice();
@@ -366,56 +421,12 @@ const Admin = () => {
                         </select>
                       </div>
                       <div>
-                        <label className="block text-sm font-medium text-muted-foreground mb-2">
-                          Participants
-                        </label>
-                        <input
-                          className="w-full p-2 border border-border rounded bg-background text-foreground"
-                          value={ev.participants || ""}
-                          placeholder="e.g., 32"
-                          onChange={(e) => {
-                            const copy = (eventsStructured || []).slice();
-                            copy[ei] = { ...copy[ei], participants: e.target.value };
-                            setEventsStructured(copy);
-                          }}
-                        />
-                      </div>
-                      <div className="md:col-span-2">
-                        <label className="block text-sm font-medium text-muted-foreground mb-2">
-                          Description
-                        </label>
-                        <textarea
-                          className="w-full p-2 border border-border rounded bg-background text-foreground min-h-[60px]"
-                          value={ev.description || ""}
-                          onChange={(e) => {
-                            const copy = (eventsStructured || []).slice();
-                            copy[ei] = { ...copy[ei], description: e.target.value };
-                            setEventsStructured(copy);
-                          }}
-                        />
-                      </div>
-                      <div className="md:col-span-2">
-                        <label className="block text-sm font-medium text-muted-foreground mb-2">
-                          Long Description
-                        </label>
-                        <textarea
-                          className="w-full p-2 border border-border rounded bg-background text-foreground min-h-[100px]"
-                          value={ev.longDescription || ""}
-                          onChange={(e) => {
-                            const copy = (eventsStructured || []).slice();
-                            copy[ei] = { ...copy[ei], longDescription: e.target.value };
-                            setEventsStructured(copy);
-                          }}
-                        />
-                      </div>
-                      <div className="md:col-span-2">
-                        <label className="block text-sm font-medium text-muted-foreground mb-2">
+                        <label className="block text-xs md:text-sm font-medium text-muted-foreground mb-2">
                           Winners
                         </label>
                         <input
-                          className="w-full p-2 border border-border rounded bg-background text-foreground"
+                          className="w-full p-2 border border-border rounded bg-background text-foreground text-sm md:text-base"
                           value={ev.winners || ""}
-                          placeholder="Champion: Name | Runner-up: Name..."
                           onChange={(e) => {
                             const copy = (eventsStructured || []).slice();
                             copy[ei] = { ...copy[ei], winners: e.target.value };
@@ -424,13 +435,26 @@ const Admin = () => {
                         />
                       </div>
                       <div>
-                        <label className="block text-sm font-medium text-muted-foreground mb-2">
+                        <label className="block text-xs md:text-sm font-medium text-muted-foreground mb-2">
+                          Participants
+                        </label>
+                        <input
+                          className="w-full p-2 border border-border rounded bg-background text-foreground text-sm md:text-base"
+                          value={ev.participants || ""}
+                          onChange={(e) => {
+                            const copy = (eventsStructured || []).slice();
+                            copy[ei] = { ...copy[ei], participants: e.target.value };
+                            setEventsStructured(copy);
+                          }}
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-xs md:text-sm font-medium text-muted-foreground mb-2">
                           Prize
                         </label>
                         <input
-                          className="w-full p-2 border border-border rounded bg-background text-foreground"
+                          className="w-full p-2 border border-border rounded bg-background text-foreground text-sm md:text-base"
                           value={ev.prize || ""}
-                          placeholder="e.g., 5000 League Points"
                           onChange={(e) => {
                             const copy = (eventsStructured || []).slice();
                             copy[ei] = { ...copy[ei], prize: e.target.value };
@@ -438,14 +462,46 @@ const Admin = () => {
                           }}
                         />
                       </div>
+                    </div>
+
+                    <div>
+                      <label className="block text-xs md:text-sm font-medium text-muted-foreground mb-2">
+                        Description
+                      </label>
+                      <textarea
+                        className="w-full p-2 md:p-3 border border-border rounded bg-background text-foreground min-h-[80px] text-sm md:text-base"
+                        value={ev.description || ""}
+                        onChange={(e) => {
+                          const copy = (eventsStructured || []).slice();
+                          copy[ei] = { ...copy[ei], description: e.target.value };
+                          setEventsStructured(copy);
+                        }}
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-xs md:text-sm font-medium text-muted-foreground mb-2">
+                        Long Description
+                      </label>
+                      <textarea
+                        className="w-full p-2 md:p-3 border border-border rounded bg-background text-foreground min-h-[100px] text-sm md:text-base"
+                        value={ev.longDescription || ""}
+                        onChange={(e) => {
+                          const copy = (eventsStructured || []).slice();
+                          copy[ei] = { ...copy[ei], longDescription: e.target.value };
+                          setEventsStructured(copy);
+                        }}
+                      />
+                    </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                       <div>
-                        <label className="block text-sm font-medium text-muted-foreground mb-2">
+                        <label className="block text-xs md:text-sm font-medium text-muted-foreground mb-2">
                           YouTube Link
                         </label>
                         <input
-                          className="w-full p-2 border border-border rounded bg-background text-foreground"
+                          className="w-full p-2 border border-border rounded bg-background text-foreground text-sm md:text-base"
                           value={ev.youtubeLink || ""}
-                          placeholder="https://youtube.com/..."
                           onChange={(e) => {
                             const copy = (eventsStructured || []).slice();
                             copy[ei] = { ...copy[ei], youtubeLink: e.target.value };
@@ -453,14 +509,13 @@ const Admin = () => {
                           }}
                         />
                       </div>
-                      <div className="md:col-span-2">
-                        <label className="block text-sm font-medium text-muted-foreground mb-2">
+                      <div>
+                        <label className="block text-xs md:text-sm font-medium text-muted-foreground mb-2">
                           Twitch Link
                         </label>
                         <input
-                          className="w-full p-2 border border-border rounded bg-background text-foreground"
+                          className="w-full p-2 border border-border rounded bg-background text-foreground text-sm md:text-base"
                           value={ev.twitchLink || ""}
-                          placeholder="https://twitch.tv/..."
                           onChange={(e) => {
                             const copy = (eventsStructured || []).slice();
                             copy[ei] = { ...copy[ei], twitchLink: e.target.value };
@@ -468,262 +523,145 @@ const Admin = () => {
                           }}
                         />
                       </div>
+                    </div>
 
-                      {/* Bracket Section */}
-                      <div className="md:col-span-2 border-t border-border pt-6 mt-4">
-                        <div className="flex flex-col gap-3 mb-4">
-                          <div className="flex items-center justify-between">
-                            <label className="text-lg font-semibold text-foreground">Tournament Bracket</label>
-                            <div className="flex items-center gap-2">
+                    {/* Bracket Generator */}
+                    <div className="border-t border-border pt-4">
+                      <label className="block text-xs md:text-sm font-medium text-foreground mb-3">
+                        Tournament Bracket Generator
+                      </label>
+                      <div className="flex flex-col sm:flex-row gap-2">
+                        <input
+                          type="number"
+                          className="flex-1 p-2 border border-border rounded bg-background text-foreground text-sm md:text-base"
+                          placeholder="Number of players (2, 4, 8, 16, 32, 64)"
+                          value={bracketGenPlayers[ev.id] || ""}
+                          onChange={(e) => {
+                            setBracketGenPlayers({
+                              ...bracketGenPlayers,
+                              [ev.id]: parseInt(e.target.value) || 0,
+                            });
+                          }}
+                        />
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => generateBracket(ev.id)}
+                          className="text-foreground hover:text-primary hover:bg-primary/10 w-full sm:w-auto text-xs md:text-sm"
+                        >
+                          <Plus className="w-3 h-3 md:w-4 md:h-4 mr-1" />
+                          Generate Bracket
+                        </Button>
+                      </div>
+                      {ev.bracket && (
+                        <Badge variant="outline" className="mt-2 text-xs">
+                          {ev.bracket.rounds.length} rounds configured
+                        </Badge>
+                      )}
+                    </div>
+
+                    {/* Bracket Editor */}
+                    {ev.bracket?.rounds && (
+                      <div className="border-t border-border pt-4 space-y-3">
+                        <div className="flex items-center justify-between">
+                          <label className="text-xs md:text-sm font-medium text-foreground">
+                            Bracket Rounds
+                          </label>
+                          <Button
+                            variant="destructive"
+                            size="sm"
+                            onClick={() => {
+                              const copy = (eventsStructured || []).slice();
+                              delete copy[ei].bracket;
+                              setEventsStructured(copy);
+                            }}
+                            className="bg-red-600 hover:bg-red-700 text-white text-xs"
+                          >
+                            <Trash2 className="w-3 h-3 mr-1" />
+                            Remove Bracket
+                          </Button>
+                        </div>
+                        {ev.bracket.rounds.map((round, ri) => (
+                          <Card key={ri} className="bg-muted/20 border border-border">
+                            <CardHeader className="p-3 md:p-4">
                               <input
-                                type="number"
-                                min={2}
-                                step={1}
-                                placeholder="Players"
-                                className="w-28 p-2 border border-border rounded bg-background text-foreground"
-                                value={bracketGenPlayers[ev.id] ?? (parseInt(ev.participants || "", 10) || "")}
+                                className="w-full p-2 border border-border rounded bg-background text-foreground font-semibold text-sm md:text-base"
+                                value={round.name}
                                 onChange={(e) => {
-                                  const val = parseInt(e.target.value || "0", 10);
-                                  setBracketGenPlayers((prev) => ({ ...prev, [ev.id]: val }));
+                                  const copy = (eventsStructured || []).slice();
+                                  copy[ei].bracket!.rounds[ri].name = e.target.value;
+                                  setEventsStructured(copy);
                                 }}
                               />
-                              <Button
-                                variant="outline"
-                                size="sm"
-                                onClick={() => {
-                                  const copy = (eventsStructured || []).slice();
-                                  const desired = bracketGenPlayers[ev.id] ?? parseInt(copy[ei].participants || "0", 10);
-                                  const n = Math.max(2, desired | 0);
-                                  const nextPow2 = 1 << Math.ceil(Math.log2(n));
-                                  const initialMatches = nextPow2 / 2;
-                                  const rounds: NonNullable<EventItem["bracket"]>["rounds"] = [];
-                                  let matches = initialMatches;
-                                  let roundIndex = 0;
-                                  while (matches >= 1) {
-                                    rounds.push({
-                                      name: roundIndex === 0 ? `Round of ${nextPow2}` : matches === 1 ? "Final" : `Round ${roundIndex + 1}`,
-                                      matches: Array.from({ length: matches }, (_, mi) => ({
-                                        p1: `Player ${mi * 2 + 1}`,
-                                        p2: `Player ${mi * 2 + 2}`,
-                                      })),
-                                    });
-                                    matches = Math.floor(matches / 2);
-                                    roundIndex++;
-                                  }
-                                  copy[ei] = { ...copy[ei], bracket: { rounds } };
-                                  setEventsStructured(copy);
-                                  setStatus(`✓ Generated bracket for ${nextPow2} players`);
-                                }}
-                                className="text-foreground hover:text-primary hover:bg-primary/10"
-                              >
-                                Generate
-                              </Button>
-                              <Button
-                                variant="outline"
-                                size="sm"
-                                onClick={() => {
-                                  const copy = (eventsStructured || []).slice();
-                                  if (!copy[ei].bracket) {
-                                    copy[ei].bracket = { rounds: [] };
-                                  }
-                                  copy[ei].bracket!.rounds.push({
-                                    name: `Round ${(copy[ei].bracket?.rounds.length || 0) + 1}`,
-                                    matches: []
-                                  });
-                                  setEventsStructured(copy);
-                                }}
-                                className="text-foreground hover:text-primary hover:bg-primary/10"
-                              >
-                                <Plus className="w-4 h-4 mr-1" />
-                                Add Round
-                              </Button>
-                            </div>
-                          </div>
-                        </div>
-
-                        {ev.bracket?.rounds && ev.bracket.rounds.length > 0 ? (
-                          <div className="space-y-6">
-                            {ev.bracket.rounds.map((round, ri) => (
-                              <Card key={ri} className="bg-muted/20 border-border/50">
-                                <CardHeader className="pb-3">
-                                  <div className="flex items-center gap-3">
+                            </CardHeader>
+                            <CardContent className="p-3 md:p-4 space-y-2">
+                              {round.matches.map((match, mi) => (
+                                <div key={mi} className="bg-background/50 p-2 md:p-3 rounded border border-border/50 space-y-2">
+                                  <div className="flex items-center justify-between mb-2">
+                                    <Badge variant="outline" className="text-xs">Match {mi + 1}</Badge>
+                                    {match.score && (
+                                      <Badge className="bg-primary/20 text-primary text-xs">{match.score}</Badge>
+                                    )}
+                                  </div>
+                                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                                     <input
-                                      className="flex-1 p-2 border border-border rounded bg-background text-foreground font-semibold"
-                                      placeholder="Round Name (e.g., Quarter Finals)"
-                                      value={round.name}
+                                      className="p-2 border border-border rounded bg-background text-foreground text-sm"
+                                      placeholder="Player 1"
+                                      value={match.p1}
                                       onChange={(e) => {
                                         const copy = (eventsStructured || []).slice();
-                                        copy[ei].bracket!.rounds[ri].name = e.target.value;
+                                        copy[ei].bracket!.rounds[ri].matches[mi].p1 = e.target.value;
                                         setEventsStructured(copy);
                                       }}
                                     />
-                                    <Button
-                                      variant="outline"
-                                      size="sm"
-                                      onClick={() => {
+                                    <input
+                                      className="p-2 border border-border rounded bg-background text-foreground text-sm"
+                                      placeholder="Player 2"
+                                      value={match.p2}
+                                      onChange={(e) => {
                                         const copy = (eventsStructured || []).slice();
-                                        copy[ei].bracket!.rounds[ri].matches.push({
-                                          p1: "Player 1",
-                                          p2: "Player 2"
-                                        });
+                                        copy[ei].bracket!.rounds[ri].matches[mi].p2 = e.target.value;
                                         setEventsStructured(copy);
                                       }}
-                                      className="text-foreground hover:text-primary hover:bg-primary/10"
-                                    >
-                                      <Plus className="w-4 h-4 mr-1" />
-                                      Add Match
-                                    </Button>
-                                    <Button
-                                      variant="ghost"
-                                      size="sm"
-                                      onClick={() => {
-                                        const copy = (eventsStructured || []).slice();
-                                        copy[ei].bracket!.rounds.splice(ri, 1);
-                                        setEventsStructured(copy);
-                                      }}
-                                      className="hover:bg-red-500/10"
-                                    >
-                                      <Trash2 className="w-4 h-4 text-red-500" />
-                                    </Button>
+                                    />
                                   </div>
-                                </CardHeader>
-                                <CardContent className="space-y-3">
-                                  {round.matches && round.matches.length > 0 ? (
-                                    round.matches.map((match, mi) => (
-                                      <Card key={mi} className="bg-background border-border">
-                                        <CardContent className="p-4">
-                                          <div className="flex items-center gap-2 mb-3">
-                                            <Badge variant="outline" className="text-foreground">
-                                              Match {mi + 1}
-                                            </Badge>
-                                            <Button
-                                              variant="ghost"
-                                              size="sm"
-                                              onClick={() => {
-                                                const copy = (eventsStructured || []).slice();
-                                                copy[ei].bracket!.rounds[ri].matches.splice(mi, 1);
-                                                setEventsStructured(copy);
-                                              }}
-                                              className="ml-auto hover:bg-red-500/10"
-                                            >
-                                              <Trash2 className="w-4 h-4 text-red-500" />
-                                            </Button>
-                                          </div>
-                                          
-                                          <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-3">
-                                            <div>
-                                              <label className="block text-xs font-medium text-muted-foreground mb-1">
-                                                Player 1
-                                              </label>
-                                              <input
-                                                className="w-full p-2 border border-border rounded bg-background text-foreground"
-                                                placeholder="Player 1 name"
-                                                value={match.p1}
-                                                onChange={(e) => {
-                                                  const copy = (eventsStructured || []).slice();
-                                                  copy[ei].bracket!.rounds[ri].matches[mi].p1 = e.target.value;
-                                                  setEventsStructured(copy);
-                                                }}
-                                              />
-                                            </div>
-                                            <div>
-                                              <label className="block text-xs font-medium text-muted-foreground mb-1">
-                                                Player 2
-                                              </label>
-                                              <input
-                                                className="w-full p-2 border border-border rounded bg-background text-foreground"
-                                                placeholder="Player 2 name"
-                                                value={match.p2}
-                                                onChange={(e) => {
-                                                  const copy = (eventsStructured || []).slice();
-                                                  copy[ei].bracket!.rounds[ri].matches[mi].p2 = e.target.value;
-                                                  setEventsStructured(copy);
-                                                }}
-                                              />
-                                            </div>
-                                          </div>
-
-                                          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                                            <div>
-                                              <label className="block text-xs font-medium text-muted-foreground mb-1">
-                                                Winner
-                                              </label>
-                                              <select
-                                                className="w-full p-2 border border-border rounded bg-background text-foreground"
-                                                value={match.winner || ""}
-                                                onChange={(e) => {
-                                                  const copy = (eventsStructured || []).slice();
-                                                  const val = e.target.value as "p1" | "p2" | "";
-                                                  if (val === "") {
-                                                    delete copy[ei].bracket!.rounds[ri].matches[mi].winner;
-                                                  } else {
-                                                    copy[ei].bracket!.rounds[ri].matches[mi].winner = val;
-                                                  }
-                                                  setEventsStructured(copy);
-                                                }}
-                                              >
-                                                <option value="">No winner yet</option>
-                                                <option value="p1">Player 1</option>
-                                                <option value="p2">Player 2</option>
-                                              </select>
-                                            </div>
-                                            <div>
-                                              <label className="block text-xs font-medium text-muted-foreground mb-1">
-                                                Score (optional)
-                                              </label>
-                                              <input
-                                                className="w-full p-2 border border-border rounded bg-background text-foreground"
-                                                placeholder="e.g., 2-1"
-                                                value={match.score || ""}
-                                                onChange={(e) => {
-                                                  const copy = (eventsStructured || []).slice();
-                                                  copy[ei].bracket!.rounds[ri].matches[mi].score = e.target.value;
-                                                  setEventsStructured(copy);
-                                                }}
-                                              />
-                                            </div>
-                                          </div>
-                                        </CardContent>
-                                      </Card>
-                                    ))
-                                  ) : (
-                                    <p className="text-sm text-muted-foreground text-center py-4">
-                                      No matches yet. Click "Add Match" to create one.
-                                    </p>
-                                  )}
-                                </CardContent>
-                              </Card>
-                            ))}
-                          </div>
-                        ) : (
-                          <Card className="bg-muted/10 border-dashed border-border">
-                            <CardContent className="p-8 text-center">
-                              <AlertCircle className="w-12 h-12 text-muted-foreground mx-auto mb-3 opacity-50" />
-                              <p className="text-sm text-muted-foreground mb-4">
-                                No bracket configured for this event yet.
-                              </p>
-                              <Button
-                                variant="outline"
-                                onClick={() => {
-                                  const copy = (eventsStructured || []).slice();
-                                  copy[ei].bracket = {
-                                    rounds: [{
-                                      name: "Round 1",
-                                      matches: []
-                                    }]
-                                  };
-                                  setEventsStructured(copy);
-                                }}
-                                className="text-foreground hover:text-primary hover:bg-primary/10"
-                              >
-                                <Plus className="w-4 h-4 mr-2" />
-                                Create Bracket
-                              </Button>
+                                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                                    <select
+                                      className="p-2 border border-border rounded bg-background text-foreground text-sm"
+                                      value={match.winner || ""}
+                                      onChange={(e) => {
+                                        const copy = (eventsStructured || []).slice();
+                                        const val = e.target.value;
+                                        if (val === "") {
+                                          delete copy[ei].bracket!.rounds[ri].matches[mi].winner;
+                                        } else {
+                                          copy[ei].bracket!.rounds[ri].matches[mi].winner = val as "p1" | "p2";
+                                        }
+                                        setEventsStructured(copy);
+                                      }}
+                                    >
+                                      <option value="">No winner yet</option>
+                                      <option value="p1">Player 1 wins</option>
+                                      <option value="p2">Player 2 wins</option>
+                                    </select>
+                                    <input
+                                      className="p-2 border border-border rounded bg-background text-foreground text-sm"
+                                      placeholder="Score (e.g., 3-1)"
+                                      value={match.score || ""}
+                                      onChange={(e) => {
+                                        const copy = (eventsStructured || []).slice();
+                                        copy[ei].bracket!.rounds[ri].matches[mi].score = e.target.value;
+                                        setEventsStructured(copy);
+                                      }}
+                                    />
+                                  </div>
+                                </div>
+                              ))}
                             </CardContent>
                           </Card>
-                        )}
+                        ))}
                       </div>
-                    </div>
+                    )}
                   </CardContent>
                 </Card>
               ))}
@@ -731,20 +669,20 @@ const Admin = () => {
               <Button
                 onClick={() => {
                   const copy = (eventsStructured || []).slice();
-                  const newId = copy.length > 0 ? Math.max(...copy.map(e => e.id)) + 1 : 1;
+                  const maxId = copy.reduce((max, e) => Math.max(max, e.id), 0);
                   copy.push({
-                    id: newId,
+                    id: maxId + 1,
                     title: "New Event",
                     date: "TBD",
                     status: "upcoming",
                     description: "",
-                    winners: "TBD",
+                    winners: "",
                     participants: "",
-                    prize: ""
+                    prize: "",
                   });
                   setEventsStructured(copy);
                 }}
-                className="w-full bg-primary hover:bg-primary/90 text-white"
+                className="w-full bg-primary hover:bg-primary/90 text-white text-sm md:text-base"
               >
                 <Plus className="w-4 h-4 mr-2" />
                 Add New Event
@@ -753,473 +691,473 @@ const Admin = () => {
           )}
 
           {active === "guides" && (
-  <div className="space-y-6">
-    {(guidesStructured || []).map((guide, gi) => (
-      <Card key={guide.id} className="gaming-card">
-        <CardHeader>
-          <div className="flex items-center justify-between">
-            <div className="flex-1 flex items-center gap-3">
-              <input
-                className="w-32 p-2 border border-border rounded bg-background text-foreground font-mono text-sm"
-                placeholder="ID (e.g., qc)"
-                value={guide.id}
-                onChange={(e) => {
-                  const copy = (guidesStructured || []).slice();
-                  copy[gi] = { ...copy[gi], id: e.target.value };
-                  setGuidesStructured(copy);
-                }}
-              />
-              <input
-                className="flex-1 p-2 border border-border rounded bg-background text-foreground font-semibold"
-                placeholder="Title"
-                value={guide.title}
-                onChange={(e) => {
-                  const copy = (guidesStructured || []).slice();
-                  copy[gi] = { ...copy[gi], title: e.target.value };
-                  setGuidesStructured(copy);
-                }}
-              />
-            </div>
-            <Button
-              variant="destructive"
-              size="sm"
-              onClick={() => {
-                const copy = (guidesStructured || []).slice();
-                copy.splice(gi, 1);
-                setGuidesStructured(copy);
-              }}
-              className="bg-red-600 hover:bg-red-700 text-white"
-            >
-              <Trash2 className="w-4 h-4 mr-1" />
-              Remove Guide
-            </Button>
-          </div>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <div>
-            <label className="block text-sm font-medium text-muted-foreground mb-2">
-              Description
-            </label>
-            <textarea
-              className="w-full p-2 border border-border rounded bg-background text-foreground min-h-[60px]"
-              value={guide.description || ""}
-              onChange={(e) => {
-                const copy = (guidesStructured || []).slice();
-                copy[gi] = { ...copy[gi], description: e.target.value };
-                setGuidesStructured(copy);
-              }}
-            />
-          </div>
-
-          {/* Steam Guides */}
-          <div className="border-t border-border pt-4">
-            <div className="flex items-center justify-between mb-3">
-              <label className="text-sm font-medium text-foreground">Steam Guides</label>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => {
-                  const copy = (guidesStructured || []).slice();
-                  if (!copy[gi].steamGuides) copy[gi].steamGuides = [];
-                  copy[gi].steamGuides!.push({ url: "", label: "" });
-                  setGuidesStructured(copy);
-                }}
-                className="text-foreground hover:text-primary hover:bg-primary/10"
-              >
-                <Plus className="w-3 h-3 mr-1" />
-                Add Steam Guide
-              </Button>
-            </div>
-            {(guide.steamGuides || []).map((sg, sgi) => (
-              <div key={sgi} className="flex gap-2 mb-2">
-                <input
-                  className="flex-1 p-2 border border-border rounded bg-background text-foreground text-sm"
-                  placeholder="Label"
-                  value={sg.label || ""}
-                  onChange={(e) => {
-                    const copy = (guidesStructured || []).slice();
-                    copy[gi].steamGuides![sgi] = { ...sg, label: e.target.value };
-                    setGuidesStructured(copy);
-                  }}
-                />
-                <input
-                  className="flex-[2] p-2 border border-border rounded bg-background text-foreground text-sm"
-                  placeholder="URL"
-                  value={sg.url}
-                  onChange={(e) => {
-                    const copy = (guidesStructured || []).slice();
-                    copy[gi].steamGuides![sgi] = { ...sg, url: e.target.value };
-                    setGuidesStructured(copy);
-                  }}
-                />
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => {
-                    const copy = (guidesStructured || []).slice();
-                    copy[gi].steamGuides!.splice(sgi, 1);
-                    setGuidesStructured(copy);
-                  }}
-                  className="hover:bg-red-500/10"
-                >
-                  <Trash2 className="w-4 h-4 text-red-500" />
-                </Button>
-              </div>
-            ))}
-          </div>
-
-          {/* Videos */}
-          <div className="border-t border-border pt-4">
-            <div className="flex items-center justify-between mb-3">
-              <label className="text-sm font-medium text-foreground">YouTube Videos</label>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => {
-                  const copy = (guidesStructured || []).slice();
-                  if (!copy[gi].videos) copy[gi].videos = [];
-                  copy[gi].videos!.push({ id: "", label: "" });
-                  setGuidesStructured(copy);
-                }}
-                className="text-foreground hover:text-primary hover:bg-primary/10"
-              >
-                <Plus className="w-3 h-3 mr-1" />
-                Add Video
-              </Button>
-            </div>
-            {(guide.videos || []).map((vid, vi) => (
-              <div key={vi} className="flex gap-2 mb-2">
-                <input
-                  className="flex-1 p-2 border border-border rounded bg-background text-foreground text-sm"
-                  placeholder="Label"
-                  value={vid.label || ""}
-                  onChange={(e) => {
-                    const copy = (guidesStructured || []).slice();
-                    copy[gi].videos![vi] = { ...vid, label: e.target.value };
-                    setGuidesStructured(copy);
-                  }}
-                />
-                <input
-                  className="flex-1 p-2 border border-border rounded bg-background text-foreground text-sm font-mono"
-                  placeholder="Video ID (e.g., RUtZSSc3QnU)"
-                  value={vid.id}
-                  onChange={(e) => {
-                    const copy = (guidesStructured || []).slice();
-                    copy[gi].videos![vi] = { ...vid, id: e.target.value };
-                    setGuidesStructured(copy);
-                  }}
-                />
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => {
-                    const copy = (guidesStructured || []).slice();
-                    copy[gi].videos!.splice(vi, 1);
-                    setGuidesStructured(copy);
-                  }}
-                  className="hover:bg-red-500/10"
-                >
-                  <Trash2 className="w-4 h-4 text-red-500" />
-                </Button>
-              </div>
-            ))}
-          </div>
-
-          {/* Tools */}
-          <div className="border-t border-border pt-4">
-            <div className="flex items-center justify-between mb-3">
-              <label className="text-sm font-medium text-foreground">Tools</label>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => {
-                  const copy = (guidesStructured || []).slice();
-                  if (!copy[gi].tools) copy[gi].tools = [];
-                  copy[gi].tools!.push({ url: "", label: "" });
-                  setGuidesStructured(copy);
-                }}
-                className="text-foreground hover:text-primary hover:bg-primary/10"
-              >
-                <Plus className="w-3 h-3 mr-1" />
-                Add Tool
-              </Button>
-            </div>
-            {(guide.tools || []).map((tool, ti) => (
-              <div key={ti} className="flex gap-2 mb-2">
-                <input
-                  className="flex-1 p-2 border border-border rounded bg-background text-foreground text-sm"
-                  placeholder="Label"
-                  value={tool.label || ""}
-                  onChange={(e) => {
-                    const copy = (guidesStructured || []).slice();
-                    copy[gi].tools![ti] = { ...tool, label: e.target.value };
-                    setGuidesStructured(copy);
-                  }}
-                />
-                <input
-                  className="flex-[2] p-2 border border-border rounded bg-background text-foreground text-sm"
-                  placeholder="URL"
-                  value={tool.url}
-                  onChange={(e) => {
-                    const copy = (guidesStructured || []).slice();
-                    copy[gi].tools![ti] = { ...tool, url: e.target.value };
-                    setGuidesStructured(copy);
-                  }}
-                />
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => {
-                    const copy = (guidesStructured || []).slice();
-                    copy[gi].tools!.splice(ti, 1);
-                    setGuidesStructured(copy);
-                  }}
-                  className="hover:bg-red-500/10"
-                >
-                  <Trash2 className="w-4 h-4 text-red-500" />
-                </Button>
-              </div>
-            ))}
-          </div>
-
-          {/* Images */}
-          <div className="border-t border-border pt-4">
-            <div className="flex items-center justify-between mb-3">
-              <label className="text-sm font-medium text-foreground">Images</label>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => {
-                  const copy = (guidesStructured || []).slice();
-                  if (!copy[gi].images) copy[gi].images = [];
-                  copy[gi].images!.push({ src: "", alt: "" });
-                  setGuidesStructured(copy);
-                }}
-                className="text-foreground hover:text-primary hover:bg-primary/10"
-              >
-                <Plus className="w-3 h-3 mr-1" />
-                Add Image
-              </Button>
-            </div>
-            {(guide.images || []).map((img, ii) => (
-              <div key={ii} className="flex gap-2 mb-2">
-                <input
-                  className="flex-[2] p-2 border border-border rounded bg-background text-foreground text-sm"
-                  placeholder="Image Path or URL (e.g., /civ3-assets/Guides/image.webp or https://i.imgur.com/example.jpg)"
-                  value={img.src}
-                  onChange={(e) => {
-                    const copy = (guidesStructured || []).slice();
-                    copy[gi].images![ii] = { ...img, src: e.target.value };
-                    setGuidesStructured(copy);
-                  }}
-                />
-                <input
-                  className="flex-1 p-2 border border-border rounded bg-background text-foreground text-sm"
-                  placeholder="Alt text"
-                  value={img.alt || ""}
-                  onChange={(e) => {
-                    const copy = (guidesStructured || []).slice();
-                    copy[gi].images![ii] = { ...img, alt: e.target.value };
-                    setGuidesStructured(copy);
-                  }}
-                />
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => {
-                    const copy = (guidesStructured || []).slice();
-                    copy[gi].images!.splice(ii, 1);
-                    setGuidesStructured(copy);
-                  }}
-                  className="hover:bg-red-500/10"
-                >
-                  <Trash2 className="w-4 h-4 text-red-500" />
-                </Button>
-              </div>
-            ))}
-          </div>
-
-          {/* Note */}
-          <div className="border-t border-border pt-4">
-            <label className="block text-sm font-medium text-muted-foreground mb-2">
-              Note (optional)
-            </label>
-            <input
-              className="w-full p-2 border border-border rounded bg-background text-foreground text-sm"
-              placeholder="e.g., For a quick look, check the guides below!"
-              value={guide.note || ""}
-              onChange={(e) => {
-                const copy = (guidesStructured || []).slice();
-                copy[gi] = { ...copy[gi], note: e.target.value };
-                setGuidesStructured(copy);
-              }}
-            />
-          </div>
-        </CardContent>
-      </Card>
-    ))}
-
-        <Button
-          onClick={() => {
-            const copy = (guidesStructured || []).slice();
-            copy.push({
-              id: "new_guide",
-              title: "New Guide",
-              description: "",
-              steamGuides: [],
-              videos: [],
-              tools: [],
-              images: []
-            });
-            setGuidesStructured(copy);
-          }}
-          className="w-full bg-primary hover:bg-primary/90 text-white"
-        >
-          <Plus className="w-4 h-4 mr-2" />
-          Add New Guide
-        </Button>
-      </div>
-    )}
-
-          {active === "stream" && (
-            <div className="space-y-6">
-              {/* Twitch Streamers */}
-              <Card className="gaming-card">
-                <CardHeader>
-                  <CardTitle className="text-foreground">Twitch Streamers</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-3">
-                  {(streamStructured?.twitch || []).map((streamer, si) => (
-                    <div key={si} className="grid grid-cols-3 gap-2">
-                      <input
-                        className="p-2 border border-border rounded bg-background text-foreground"
-                        placeholder="Name"
-                        value={streamer.name}
-                        onChange={(e) => {
-                          const copy = { ...streamStructured, twitch: [...(streamStructured?.twitch || [])] };
-                          copy.twitch[si] = { ...copy.twitch[si], name: e.target.value };
-                          setStreamStructured(copy as StreamData);
-                        }}
-                      />
-                      <input
-                        className="p-2 border border-border rounded bg-background text-foreground"
-                        placeholder="Username"
-                        value={streamer.username}
-                        onChange={(e) => {
-                          const copy = { ...streamStructured, twitch: [...(streamStructured?.twitch || [])] };
-                          copy.twitch[si] = { ...copy.twitch[si], username: e.target.value };
-                          setStreamStructured(copy as StreamData);
-                        }}
-                      />
-                      <div className="flex gap-2">
+            <div className="space-y-4 md:space-y-6">
+              {(guidesStructured || []).map((guide, gi) => (
+                <Card key={guide.id} className="gaming-card">
+                  <CardHeader className="p-4 md:p-6">
+                    <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
+                      <div className="flex-1 flex flex-col sm:flex-row items-stretch sm:items-center gap-2 md:gap-3">
                         <input
-                          className="flex-1 p-2 border border-border rounded bg-background text-foreground"
-                          placeholder="URL"
-                          value={streamer.url}
+                          className="w-full sm:w-28 md:w-32 p-2 border border-border rounded bg-background text-foreground font-mono text-sm"
+                          placeholder="ID (e.g., qc)"
+                          value={guide.id}
                           onChange={(e) => {
-                            const copy = { ...streamStructured, twitch: [...(streamStructured?.twitch || [])] };
-                            copy.twitch[si] = { ...copy.twitch[si], url: e.target.value };
-                            setStreamStructured(copy as StreamData);
+                            const copy = (guidesStructured || []).slice();
+                            copy[gi] = { ...copy[gi], id: e.target.value };
+                            setGuidesStructured(copy);
                           }}
                         />
+                        <input
+                          className="flex-1 p-2 border border-border rounded bg-background text-foreground font-semibold text-sm md:text-base"
+                          placeholder="Title"
+                          value={guide.title}
+                          onChange={(e) => {
+                            const copy = (guidesStructured || []).slice();
+                            copy[gi] = { ...copy[gi], title: e.target.value };
+                            setGuidesStructured(copy);
+                          }}
+                        />
+                      </div>
+                      <Button
+                        variant="destructive"
+                        size="sm"
+                        onClick={() => {
+                          const copy = (guidesStructured || []).slice();
+                          copy.splice(gi, 1);
+                          setGuidesStructured(copy);
+                        }}
+                        className="bg-red-600 hover:bg-red-700 text-white w-full sm:w-auto text-xs md:text-sm"
+                      >
+                        <Trash2 className="w-3 h-3 md:w-4 md:h-4 mr-1" />
+                        Remove
+                      </Button>
+                    </div>
+                  </CardHeader>
+                  <CardContent className="p-4 md:p-6 space-y-4">
+                    <div>
+                      <label className="block text-xs md:text-sm font-medium text-muted-foreground mb-2">
+                        Description
+                      </label>
+                      <textarea
+                        className="w-full p-2 border border-border rounded bg-background text-foreground min-h-[60px] text-sm md:text-base"
+                        value={guide.description || ""}
+                        onChange={(e) => {
+                          const copy = (guidesStructured || []).slice();
+                          copy[gi] = { ...copy[gi], description: e.target.value };
+                          setGuidesStructured(copy);
+                        }}
+                      />
+                    </div>
+
+                    {/* Steam Guides */}
+                    <div className="border-t border-border pt-4">
+                      <div className="flex items-center justify-between mb-3">
+                        <label className="text-xs md:text-sm font-medium text-foreground">Steam Guides</label>
                         <Button
-                          variant="ghost"
+                          variant="outline"
                           size="sm"
                           onClick={() => {
-                            const copy = { ...streamStructured, twitch: [...(streamStructured?.twitch || [])] };
-                            copy.twitch.splice(si, 1);
-                            setStreamStructured(copy as StreamData);
+                            const copy = (guidesStructured || []).slice();
+                            if (!copy[gi].steamGuides) copy[gi].steamGuides = [];
+                            copy[gi].steamGuides!.push({ url: "", label: "" });
+                            setGuidesStructured(copy);
                           }}
-                          className="hover:bg-red-500/10"
+                          className="text-foreground hover:text-primary hover:bg-primary/10 text-xs"
                         >
-                          <Trash2 className="w-4 h-4 text-red-500" />
+                          <Plus className="w-3 h-3 mr-1" />
+                          Add
                         </Button>
                       </div>
+                      {(guide.steamGuides || []).map((sg, sgi) => (
+                        <div key={sgi} className="flex flex-col sm:flex-row gap-2 mb-2">
+                          <input
+                            className="flex-1 p-2 border border-border rounded bg-background text-foreground text-sm"
+                            placeholder="Label"
+                            value={sg.label || ""}
+                            onChange={(e) => {
+                              const copy = (guidesStructured || []).slice();
+                              copy[gi].steamGuides![sgi] = { ...sg, label: e.target.value };
+                              setGuidesStructured(copy);
+                            }}
+                          />
+                          <input
+                            className="flex-[2] p-2 border border-border rounded bg-background text-foreground text-sm"
+                            placeholder="URL"
+                            value={sg.url}
+                            onChange={(e) => {
+                              const copy = (guidesStructured || []).slice();
+                              copy[gi].steamGuides![sgi] = { ...sg, url: e.target.value };
+                              setGuidesStructured(copy);
+                            }}
+                          />
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => {
+                              const copy = (guidesStructured || []).slice();
+                              copy[gi].steamGuides!.splice(sgi, 1);
+                              setGuidesStructured(copy);
+                            }}
+                            className="hover:bg-red-500/10 w-full sm:w-auto"
+                          >
+                            <Trash2 className="w-3 h-3 md:w-4 md:h-4 text-red-500" />
+                          </Button>
+                        </div>
+                      ))}
+                    </div>
+
+                    {/* Videos */}
+                    <div className="border-t border-border pt-4">
+                      <div className="flex items-center justify-between mb-3">
+                        <label className="text-xs md:text-sm font-medium text-foreground">YouTube Videos</label>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => {
+                            const copy = (guidesStructured || []).slice();
+                            if (!copy[gi].videos) copy[gi].videos = [];
+                            copy[gi].videos!.push({ id: "", label: "" });
+                            setGuidesStructured(copy);
+                          }}
+                          className="text-foreground hover:text-primary hover:bg-primary/10 text-xs"
+                        >
+                          <Plus className="w-3 h-3 mr-1" />
+                          Add
+                        </Button>
+                      </div>
+                      {(guide.videos || []).map((vid, vi) => (
+                        <div key={vi} className="flex flex-col sm:flex-row gap-2 mb-2">
+                          <input
+                            className="flex-1 p-2 border border-border rounded bg-background text-foreground text-sm"
+                            placeholder="Label"
+                            value={vid.label || ""}
+                            onChange={(e) => {
+                              const copy = (guidesStructured || []).slice();
+                              copy[gi].videos![vi] = { ...vid, label: e.target.value };
+                              setGuidesStructured(copy);
+                            }}
+                          />
+                          <input
+                            className="flex-1 p-2 border border-border rounded bg-background text-foreground text-sm font-mono"
+                            placeholder="Video ID"
+                            value={vid.id}
+                            onChange={(e) => {
+                              const copy = (guidesStructured || []).slice();
+                              copy[gi].videos![vi] = { ...vid, id: e.target.value };
+                              setGuidesStructured(copy);
+                            }}
+                          />
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => {
+                              const copy = (guidesStructured || []).slice();
+                              copy[gi].videos!.splice(vi, 1);
+                              setGuidesStructured(copy);
+                            }}
+                            className="hover:bg-red-500/10 w-full sm:w-auto"
+                          >
+                            <Trash2 className="w-3 h-3 md:w-4 md:h-4 text-red-500" />
+                          </Button>
+                        </div>
+                      ))}
+                    </div>
+
+                    {/* Tools */}
+                    <div className="border-t border-border pt-4">
+                      <div className="flex items-center justify-between mb-3">
+                        <label className="text-xs md:text-sm font-medium text-foreground">Tools</label>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => {
+                            const copy = (guidesStructured || []).slice();
+                            if (!copy[gi].tools) copy[gi].tools = [];
+                            copy[gi].tools!.push({ url: "", label: "" });
+                            setGuidesStructured(copy);
+                          }}
+                          className="text-foreground hover:text-primary hover:bg-primary/10 text-xs"
+                        >
+                          <Plus className="w-3 h-3 mr-1" />
+                          Add
+                        </Button>
+                      </div>
+                      {(guide.tools || []).map((tool, ti) => (
+                        <div key={ti} className="flex flex-col sm:flex-row gap-2 mb-2">
+                          <input
+                            className="flex-1 p-2 border border-border rounded bg-background text-foreground text-sm"
+                            placeholder="Label"
+                            value={tool.label || ""}
+                            onChange={(e) => {
+                              const copy = (guidesStructured || []).slice();
+                              copy[gi].tools![ti] = { ...tool, label: e.target.value };
+                              setGuidesStructured(copy);
+                            }}
+                          />
+                          <input
+                            className="flex-[2] p-2 border border-border rounded bg-background text-foreground text-sm"
+                            placeholder="URL"
+                            value={tool.url}
+                            onChange={(e) => {
+                              const copy = (guidesStructured || []).slice();
+                              copy[gi].tools![ti] = { ...tool, url: e.target.value };
+                              setGuidesStructured(copy);
+                            }}
+                          />
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => {
+                              const copy = (guidesStructured || []).slice();
+                              copy[gi].tools!.splice(ti, 1);
+                              setGuidesStructured(copy);
+                            }}
+                            className="hover:bg-red-500/10 w-full sm:w-auto"
+                          >
+                            <Trash2 className="w-3 h-3 md:w-4 md:h-4 text-red-500" />
+                          </Button>
+                        </div>
+                      ))}
+                    </div>
+
+                    {/* Images */}
+                    <div className="border-t border-border pt-4">
+                      <div className="flex items-center justify-between mb-3">
+                        <label className="text-xs md:text-sm font-medium text-foreground">Images</label>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => {
+                            const copy = (guidesStructured || []).slice();
+                            if (!copy[gi].images) copy[gi].images = [];
+                            copy[gi].images!.push({ src: "", alt: "" });
+                            setGuidesStructured(copy);
+                          }}
+                          className="text-foreground hover:text-primary hover:bg-primary/10 text-xs"
+                        >
+                          <Plus className="w-3 h-3 mr-1" />
+                          Add
+                        </Button>
+                      </div>
+                      {(guide.images || []).map((img, ii) => (
+                        <div key={ii} className="flex flex-col sm:flex-row gap-2 mb-2">
+                          <input
+                            className="flex-[2] p-2 border border-border rounded bg-background text-foreground text-sm"
+                            placeholder="Image Path"
+                            value={img.src}
+                            onChange={(e) => {
+                              const copy = (guidesStructured || []).slice();
+                              copy[gi].images![ii] = { ...img, src: e.target.value };
+                              setGuidesStructured(copy);
+                            }}
+                          />
+                          <input
+                            className="flex-1 p-2 border border-border rounded bg-background text-foreground text-sm"
+                            placeholder="Alt text"
+                            value={img.alt || ""}
+                            onChange={(e) => {
+                              const copy = (guidesStructured || []).slice();
+                              copy[gi].images![ii] = { ...img, alt: e.target.value };
+                              setGuidesStructured(copy);
+                            }}
+                          />
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => {
+                              const copy = (guidesStructured || []).slice();
+                              copy[gi].images!.splice(ii, 1);
+                              setGuidesStructured(copy);
+                            }}
+                            className="hover:bg-red-500/10 w-full sm:w-auto"
+                          >
+                            <Trash2 className="w-3 h-3 md:w-4 md:h-4 text-red-500" />
+                          </Button>
+                        </div>
+                      ))}
+                    </div>
+
+                    {/* Note */}
+                    <div className="border-t border-border pt-4">
+                      <label className="block text-xs md:text-sm font-medium text-muted-foreground mb-2">
+                        Note (optional)
+                      </label>
+                      <input
+                        className="w-full p-2 border border-border rounded bg-background text-foreground text-sm"
+                        placeholder="e.g., For a quick look, check the guides below!"
+                        value={guide.note || ""}
+                        onChange={(e) => {
+                          const copy = (guidesStructured || []).slice();
+                          copy[gi] = { ...copy[gi], note: e.target.value };
+                          setGuidesStructured(copy);
+                        }}
+                      />
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+
+              <Button
+                onClick={() => {
+                  const copy = (guidesStructured || []).slice();
+                  copy.push({
+                    id: "new_guide",
+                    title: "New Guide",
+                    description: "",
+                    steamGuides: [],
+                    videos: [],
+                    tools: [],
+                    images: []
+                  });
+                  setGuidesStructured(copy);
+                }}
+                className="w-full bg-primary hover:bg-primary/90 text-white text-sm md:text-base"
+              >
+                <Plus className="w-4 h-4 mr-2" />
+                Add New Guide
+              </Button>
+            </div>
+          )}
+
+          {active === "stream" && streamStructured && (
+            <div className="space-y-4 md:space-y-6">
+              {/* Twitch */}
+              <Card className="gaming-card">
+                <CardHeader className="p-4 md:p-6">
+                  <div className="flex items-center justify-between">
+                    <CardTitle className="text-lg md:text-xl text-foreground">Twitch Streamers</CardTitle>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => {
+                        const copy = { ...streamStructured };
+                        copy.twitch.push({ name: "", username: "", url: "" });
+                        setStreamStructured(copy);
+                      }}
+                      className="text-foreground hover:text-primary hover:bg-primary/10 text-xs md:text-sm"
+                    >
+                      <Plus className="w-3 h-3 md:w-4 md:h-4 mr-1" />
+                      Add Streamer
+                    </Button>
+                  </div>
+                </CardHeader>
+                <CardContent className="p-4 md:p-6 space-y-3">
+                  {streamStructured.twitch.map((t, i) => (
+                    <div key={i} className="flex flex-col sm:flex-row gap-2">
+                      <input
+                        className="flex-1 p-2 border border-border rounded bg-background text-foreground text-sm md:text-base"
+                        placeholder="Name"
+                        value={t.name}
+                        onChange={(e) => {
+                          const copy = { ...streamStructured };
+                          copy.twitch[i].name = e.target.value;
+                          setStreamStructured(copy);
+                        }}
+                      />
+                      <input
+                        className="flex-1 p-2 border border-border rounded bg-background text-foreground text-sm md:text-base"
+                        placeholder="Username"
+                        value={t.username}
+                        onChange={(e) => {
+                          const copy = { ...streamStructured };
+                          copy.twitch[i].username = e.target.value;
+                          setStreamStructured(copy);
+                        }}
+                      />
+                      <input
+                        className="flex-1 p-2 border border-border rounded bg-background text-foreground text-sm md:text-base"
+                        placeholder="URL"
+                        value={t.url}
+                        onChange={(e) => {
+                          const copy = { ...streamStructured };
+                          copy.twitch[i].url = e.target.value;
+                          setStreamStructured(copy);
+                        }}
+                      />
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => {
+                          const copy = { ...streamStructured };
+                          copy.twitch.splice(i, 1);
+                          setStreamStructured(copy);
+                        }}
+                        className="hover:bg-red-500/10 w-full sm:w-auto"
+                      >
+                        <Trash2 className="w-3 h-3 md:w-4 md:h-4 text-red-500" />
+                      </Button>
                     </div>
                   ))}
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => {
-                      const copy = { ...streamStructured, twitch: [...(streamStructured?.twitch || [])] };
-                      copy.twitch.push({ name: "", username: "", url: "" });
-                      setStreamStructured(copy as StreamData);
-                    }}
-                    className="text-foreground hover:text-primary hover:bg-primary/10"
-                  >
-                    <Plus className="w-4 h-4 mr-1" />
-                    Add Twitch Streamer
-                  </Button>
                 </CardContent>
               </Card>
 
-              {/* YouTube Channels */}
+              {/* YouTube */}
               <Card className="gaming-card">
-                <CardHeader>
-                  <CardTitle className="text-foreground">YouTube Channels</CardTitle>
+                <CardHeader className="p-4 md:p-6">
+                  <div className="flex items-center justify-between">
+                    <CardTitle className="text-lg md:text-xl text-foreground">YouTube Channels</CardTitle>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => {
+                        const copy = { ...streamStructured };
+                        copy.youtube.push({ name: "", channelId: "", url: "" });
+                        setStreamStructured(copy);
+                      }}
+                      className="text-foreground hover:text-primary hover:bg-primary/10 text-xs md:text-sm"
+                    >
+                      <Plus className="w-3 h-3 md:w-4 md:h-4 mr-1" />
+                      Add Channel
+                    </Button>
+                  </div>
                 </CardHeader>
-                <CardContent className="space-y-3">
-                  {(streamStructured?.youtube || []).map((channel, yi) => (
-                    <div key={yi} className="grid grid-cols-3 gap-2">
+                <CardContent className="p-4 md:p-6 space-y-3">
+                  {streamStructured.youtube.map((y, i) => (
+                    <div key={i} className="flex flex-col sm:flex-row gap-2">
                       <input
-                        className="p-2 border border-border rounded bg-background text-foreground"
+                        className="flex-1 p-2 border border-border rounded bg-background text-foreground text-sm md:text-base"
                         placeholder="Name"
-                        value={channel.name}
+                        value={y.name}
                         onChange={(e) => {
-                          const copy = { ...streamStructured, youtube: [...(streamStructured?.youtube || [])] };
-                          copy.youtube[yi] = { ...copy.youtube[yi], name: e.target.value };
-                          setStreamStructured(copy as StreamData);
+                          const copy = { ...streamStructured };
+                          copy.youtube[i].name = e.target.value;
+                          setStreamStructured(copy);
                         }}
                       />
                       <input
-                        className="p-2 border border-border rounded bg-background text-foreground"
+                        className="flex-1 p-2 border border-border rounded bg-background text-foreground text-sm md:text-base"
                         placeholder="Channel ID"
-                        value={channel.channelId}
+                        value={y.channelId}
                         onChange={(e) => {
-                          const copy = { ...streamStructured, youtube: [...(streamStructured?.youtube || [])] };
-                          copy.youtube[yi] = { ...copy.youtube[yi], channelId: e.target.value };
-                          setStreamStructured(copy as StreamData);
+                          const copy = { ...streamStructured };
+                          copy.youtube[i].channelId = e.target.value;
+                          setStreamStructured(copy);
                         }}
                       />
-                      <div className="flex gap-2">
-                        <input
-                          className="flex-1 p-2 border border-border rounded bg-background text-foreground"
-                          placeholder="URL"
-                          value={channel.url}
-                          onChange={(e) => {
-                            const copy = { ...streamStructured, youtube: [...(streamStructured?.youtube || [])] };
-                            copy.youtube[yi] = { ...copy.youtube[yi], url: e.target.value };
-                            setStreamStructured(copy as StreamData);
-                          }}
-                        />
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          onClick={() => {
-                            const copy = { ...streamStructured, youtube: [...(streamStructured?.youtube || [])] };
-                            copy.youtube.splice(yi, 1);
-                            setStreamStructured(copy as StreamData);
-                          }}
-                          className="hover:bg-red-500/10"
-                        >
-                          <Trash2 className="w-4 h-4 text-red-500" />
-                        </Button>
-                      </div>
+                      <input
+                        className="flex-1 p-2 border border-border rounded bg-background text-foreground text-sm md:text-base"
+                        placeholder="URL"
+                        value={y.url}
+                        onChange={(e) => {
+                          const copy = { ...streamStructured };
+                          copy.youtube[i].url = e.target.value;
+                          setStreamStructured(copy);
+                        }}
+                      />
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => {
+                          const copy = { ...streamStructured };
+                          copy.youtube.splice(i, 1);
+                          setStreamStructured(copy);
+                        }}
+                        className="hover:bg-red-500/10 w-full sm:w-auto"
+                      >
+                        <Trash2 className="w-3 h-3 md:w-4 md:h-4 text-red-500" />
+                      </Button>
                     </div>
                   ))}
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => {
-                      const copy = { ...streamStructured, youtube: [...(streamStructured?.youtube || [])] };
-                      copy.youtube.push({ name: "", channelId: "", url: "" });
-                      setStreamStructured(copy as StreamData);
-                    }}
-                    className="text-foreground hover:text-primary hover:bg-primary/10"
-                  >
-                    <Plus className="w-4 h-4 mr-1" />
-                    Add YouTube Channel
-                  </Button>
                 </CardContent>
               </Card>
             </div>

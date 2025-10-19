@@ -22,15 +22,15 @@ const Header = () => {
   const isActive = (href: string) => location.pathname === href;
 
   return (
-  <header className="bg-card border-b border-[var(--civ3-border)] sticky top-0 z-50" style={{ fontFamily: 'var(--civ3-font)' }}>
+  <header className="bg-card border-b border-[var(--civ3-border)] sticky top-0 z-50">
   <div className="container mx-auto px-4">
   <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-2 hover:opacity-80 transition-opacity">
             <Trophy className="h-8 w-8" style={{ color: 'var(--civ3-gold)' }} />
             <div>
-              <h1 className="text-xl font-bold" style={{ color: 'var(--civ3-gold)', letterSpacing: '0.04em', textShadow: '2px 2px 4px #000c' }}>CivPlayers</h1>
-              <p className="text-xs" style={{ color: 'var(--civ3-gold)', opacity: 0.7 }}>Civ3 League</p>
+              <h1 className="text-xl font-bold" style={{ color: 'var(--civ3-gold)', fontFamily: 'Cormorant Garamond, serif' }}>CivPlayers</h1>
+              <p className="text-xs" style={{ color: 'var(--civ3-gold)', opacity: 0.7, fontFamily: 'Cormorant Garamond, serif' }}>Civ3 League</p>
             </div>
           </Link>
 
@@ -41,6 +41,7 @@ const Header = () => {
                 key={item.name}
                 to={item.href}
                 className={`nav-link whitespace-nowrap px-2 ${isActive(item.href) ? "text-primary" : ""}`}
+                style={{ fontFamily: 'Adelle Sans, adelle-sans, sans-serif', color: '#fff' }}
               >
                 {item.name === "Hall of Fame" ? (
                   <>

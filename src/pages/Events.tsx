@@ -68,7 +68,7 @@ const Events = () => {
               Tournament Events
             </h1>
           </div>
-          <p className="text-xl text-muted-foreground/90 leading-relaxed tracking-wide max-w-3xl mx-auto">
+          <p className="text-xl text-white leading-relaxed tracking-wide max-w-3xl mx-auto">
             Explore past and upcoming competitions in the CivPlayers Civ3 League
           </p>
         </div>
@@ -78,17 +78,17 @@ const Events = () => {
           {events.map((event) => (
             <Card key={event.id} className="gaming-card">
               <CardHeader>
-                <div className="flex flex-col sm:flex-row justify-between items-start gap-4">
+                <div className="flex flex-wrap justify-between items-start gap-4 min-w-0">
                   <div className="flex-1">
                     <div className="flex items-center gap-3 mb-2">
                       <CardTitle className="text-2xl text-primary">{event.title}</CardTitle>
                       {getStatusBadge(event.status)}
                     </div>
-                    <div className="flex items-center gap-2 text-sm text-muted-foreground mb-3">
+                    <div className="flex items-center gap-2 text-sm text-white mb-3">
                       <Calendar className="w-4 h-4" />
                       <span>{event.date}</span>
                     </div>
-                    <p className="text-muted-foreground leading-relaxed">{event.description}</p>
+                    <p className="text-white leading-relaxed">{event.description}</p>
                   </div>
                 </div>
               </CardHeader>
@@ -97,9 +97,9 @@ const Events = () => {
                   <div className="bg-muted/30 p-4 rounded-lg border border-border/50">
                     <div className="flex items-center gap-2 mb-2">
                       <Trophy className="w-5 h-5 text-primary" />
-                      <h3 className="font-semibold text-foreground">Winners</h3>
+                      <h3 className="font-semibold text-white">Winners</h3>
                     </div>
-                    <p className="text-sm text-muted-foreground leading-relaxed">{event.winners}</p>
+                    <p className="text-sm text-white leading-relaxed">{event.winners}</p>
                   </div>
                   
                   <div className="bg-muted/30 p-4 rounded-lg border border-border/50">
@@ -107,7 +107,7 @@ const Events = () => {
                       <Users className="w-5 h-5 text-primary" />
                       <h3 className="font-semibold text-foreground">Participants</h3>
                     </div>
-                    <p className="text-sm text-muted-foreground">{event.participants} Players</p>
+                    <p className="text-sm text-white">{event.participants} Players</p>
                   </div>
                   
                   {event.prize && (
@@ -116,7 +116,7 @@ const Events = () => {
                         <Trophy className="w-5 h-5 text-primary" />
                         <h3 className="font-semibold text-foreground">Prize</h3>
                       </div>
-                      <p className="text-sm text-muted-foreground">{event.prize}</p>
+                      <p className="text-sm text-white">{event.prize}</p>
                     </div>
                   )}
                 </div>

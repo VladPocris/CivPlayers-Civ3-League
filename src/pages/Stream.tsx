@@ -76,7 +76,7 @@ const Stream = () => {
 
         {/* Twitch Streamers */}
         <div className="mb-12">
-          <div className="flex items-center gap-3 mb-6">
+          <div className="flex flex-wrap items-center gap-3 mb-6 min-w-0">
             <Twitch className="w-8 h-8 text-[#6441a5]" />
             <h2 className="text-3xl font-bold text-primary">Community Streams</h2>
           </div>

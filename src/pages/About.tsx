@@ -40,30 +40,9 @@ const About = () => {
             About the League
           </h1>
           <div className="max-w-4xl mx-auto mb-12">
-            <p className="text-xl text-muted-foreground/90 leading-relaxed mb-8 tracking-wide">
+            <p className="text-xl leading-relaxed mb-8 tracking-wide" style={{ color: '#fff' }}>
               Welcome to the revived Civ 3 League - where strategy and community meet.
             </p>
-          </div>
-          <div className="flex flex-col md:flex-row justify-center items-stretch gap-8 mb-12 max-w-7xl mx-auto">
-            <div className="flex-1 flex">
-              <Card className="gaming-card flex-1 flex flex-col">
-                <CardContent className="p-8 text-center flex-1 flex flex-col justify-center">
-                  <p className="text-lg text-muted-foreground leading-relaxed">
-                    After 6 years of being out of service, we are proud to announce the return of the Civ 3 ladder! Despite some bumps along the road, the Civ 3 community has remained passionate and tightly knit, and there has been a recent wave of new players picking the game up on steam and learning to play multiplayer. With this influx of newer players, we’ve been able to have multiple games running and more consistent activity every day. We hope to continue to expand and keep this amazing game alive.
-                  </p>
-                </CardContent>
-              </Card>
-            </div>
-
-            <div className="flex-1 flex">
-              <Card className="gaming-card flex-1 flex flex-col">
-                <CardContent className="p-8 text-center flex-1 flex flex-col justify-center">
-                  <p className="text-lg text-muted-foreground leading-relaxed">
-                    The community has a rich history of tactics, stories, and creative mods. Vanilla Civ 3 doesn’t make for a great multiplayer experience, due to game length, imbalances, and inconclusive endings. As a result, league games are played with mods that make for a fair, conclusive match, that can be finished in under 3 hours.
-                  </p>
-                </CardContent>
-              </Card>
-            </div>
           </div>
         </div>
 
@@ -71,7 +50,7 @@ const About = () => {
         <Card className="gaming-card mb-12">
           <CardContent className="p-8 text-center">
             <Heart className="w-12 h-12 text-primary mx-auto mb-4" />
-            <h2 className="text-3xl font-bold text-foreground mb-6 tracking-tight">Our Mission</h2>
+            <h2 className="text-3xl font-bold text-primary mb-6 tracking-tight">Our Mission</h2>
             <p className="text-base md:text-lg text-foreground/90 leading-relaxed max-w-4xl mx-auto tracking-normal">
               CivPlayers Civ3 League exists to foster a competitive, fair, and welcoming environment 
               where players of all skill levels can enjoy the timeless strategy of Civilization III. 
@@ -80,6 +59,28 @@ const About = () => {
             </p>
           </CardContent>
         </Card>
+
+        <div className="flex flex-col md:flex-row justify-center items-stretch gap-8 mb-12 max-w-7xl mx-auto">
+            <div className="flex-1 flex">
+              <Card className="gaming-card flex-1 flex flex-col">
+                <CardContent className="p-8 text-center flex-1 flex flex-col justify-center">
+                  <p className="text-lg leading-relaxed" style={{ color: '#fff' }}>
+                    After 6 years of being out of service, we are proud to announce the return of the Civ 3 ladder! Despite some bumps along the road, the Civ 3 community has remained passionate and tightly knit, and there has been a recent wave of new players picking the game up on steam and learning to play multiplayer. With this influx of newer players, we've been able to have multiple games running and more consistent activity every day. We hope to continue to expand and keep this amazing game alive.
+                  </p>
+                </CardContent>
+              </Card>
+            </div>
+
+            <div className="flex-1 flex">
+              <Card className="gaming-card flex-1 flex flex-col">
+                <CardContent className="p-8 text-center flex-1 flex flex-col justify-center">
+                  <p className="text-lg leading-relaxed" style={{ color: '#fff' }}>
+                    The community has a rich history of tactics, stories, and creative mods. Vanilla Civ 3 doesn't make for a great multiplayer experience, due to game length, imbalances, and inconclusive endings. As a result, league games are played with mods that make for a fair, conclusive match, that can be finished in under 3 hours.
+                  </p>
+                </CardContent>
+              </Card>
+            </div>
+          </div>
 
         {/* What We Do */}
         <div className="mb-12">
@@ -93,7 +94,7 @@ const About = () => {
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-muted-foreground leading-relaxed">
+                <p className="text-muted-foreground leading-relaxed" style={{ color: '#fff' }}>
                   We organize regular tournaments ranging from quick blitz events to extended 
                   championship series. Our signature events like the Hunger Games have become 
                   legendary in the Civ3 community, featuring innovative formats and exciting prizes.
@@ -109,7 +110,7 @@ const About = () => {
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-muted-foreground leading-relaxed">
+                <p className="text-muted-foreground leading-relaxed" style={{ color: '#fff' }}>
                   Beyond competition, we're a thriving community where players share strategies, 
                   discuss game mechanics, and form lasting friendships. Our Discord server is 
                   active 24/7 with discussions, tips, and casual games.
@@ -125,7 +126,7 @@ const About = () => {
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-muted-foreground leading-relaxed">
+                <p className="text-muted-foreground leading-relaxed" style={{ color: '#fff' }}>
                   We provide resources, guides, and mentorship opportunities for players looking 
                   to improve their game. From basic tutorials to advanced strategy discussions, 
                   we support growth at every level.
@@ -141,7 +142,7 @@ const About = () => {
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-muted-foreground leading-relaxed">
+                <p className="text-muted-foreground leading-relaxed" style={{ color: '#fff' }}>
                   With members from every continent, we celebrate the international nature of 
                   our community. We accommodate different time zones and cultural backgrounds, 
                   making everyone feel welcome regardless of where they're from.
@@ -158,11 +159,13 @@ const About = () => {
             {values.map((value, index) => {
               const IconComponent = value.icon;
               return (
-                <Card key={index} className="gaming-card text-center">
-                  <CardContent className="p-6">
-                    <IconComponent className="w-12 h-12 text-primary mx-auto mb-4" />
-                    <h3 className="text-lg font-semibold text-foreground mb-3">{value.title}</h3>
-                    <p className="text-sm text-muted-foreground leading-relaxed">{value.description}</p>
+                <Card key={index} className="gaming-card">
+                  <CardContent className="p-6 flex flex-col items-center text-center">
+                    <IconComponent className="w-12 h-12 text-primary mb-4 flex-shrink-0" />
+                    <div className="w-full">
+                      <h3 className="text-lg font-semibold text-primary mb-3">{value.title}</h3>
+                      <p className="text-base leading-relaxed" style={{ color: '#fff' }}>{value.description}</p>
+                    </div>
                   </CardContent>
                 </Card>
               );

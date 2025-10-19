@@ -45,7 +45,7 @@ const SeasonOverview = () => {
           <h2 className="text-3xl md:text-4xl font-bold text-gradient mb-4">
             2024 Season Overview
           </h2>
-          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+          <p className="text-xl text-white max-w-2xl mx-auto">
             Celebrating our top competitors and their achievements throughout the season
           </p>
         </div>
@@ -113,10 +113,10 @@ const SeasonOverview = () => {
         {/* Season Summary */}
         <Card className="gaming-card">
           <CardContent className="p-8 text-center">
-            <h3 className="text-2xl font-bold text-foreground mb-4">
+            <h3 className="text-2xl font-bold text-primary mb-4">
               2024 Season Highlights
             </h3>
-            <p className="text-muted-foreground leading-relaxed max-w-3xl mx-auto">
+            <p className="text-white leading-relaxed max-w-3xl mx-auto">
               The 2024 season showcased incredible competition with over 50 active players participating 
               in hundreds of matches. Suede claimed the top spot with an impressive 2246 rating, 
               while Halu demonstrated remarkable dedication with 492 games played and 229 victories. 

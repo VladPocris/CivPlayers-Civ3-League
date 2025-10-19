@@ -68,13 +68,13 @@ const Guides = () => {
               Strategy Guides
             </h1>
           </div>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+          <p className="text-lg max-w-2xl mx-auto" style={{ color: '#fff' }}>
             Master Civ3 multiplayer with comprehensive guides, tutorials, and resources
           </p>
         </div>
 
         {/* Navigation Tabs */}
-        <div className="flex flex-wrap justify-center gap-3 mb-8">
+  <div className="flex flex-wrap justify-center gap-3 mb-8 min-w-0">
           {guides.map((guide) => (
             <Button
               key={guide.id}

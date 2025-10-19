@@ -66,7 +66,7 @@ const Footer = () => {
             </p>
             <Link 
               to="/admin"
-              className="inline-flex items-center gap-2 mt-3 text-xs text-muted-foreground hover:text-primary transition-colors"
+              className="inline-flex items-center gap-2 mt-3 text-xs transition-colors opacity-0 hover:opacity-100 hover:text-primary"
             >
               <Settings className="w-3 h-3" />
               <span>Admin Panel</span>

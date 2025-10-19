@@ -104,7 +104,7 @@ const Modes = () => {
           <h1 className="text-4xl md:text-6xl font-extrabold text-gradient mb-6 tracking-tight">
             Our Game Modes
           </h1>
-          <p className="text-lg md:text-xl text-muted-foreground/90 max-w-3xl mx-auto leading-8">
+          <p className="text-lg md:text-xl max-w-3xl mx-auto leading-8" style={{ color: '#fff' }}>
             The CivPlayers Civ3 League offers a variety of multiplayer modes — from
             ancient-era skirmishes to futuristic total wars. Each mode provides a
             unique strategic experience suited for different playstyles and time
@@ -129,10 +129,10 @@ const Modes = () => {
                     </CardTitle>
                   </CardHeader>
                   <CardContent className="flex flex-col gap-5">
-                    <p className="text-muted-foreground/90 leading-7 text-[1.05rem]">
+                    <p className="leading-7 text-[1.05rem]" style={{ color: '#fff' }}>
                       {mode.description}
                     </p>
-                    <ul className="list-disc list-inside text-muted-foreground/90 space-y-2">
+                    <ul className="list-disc list-inside space-y-2" style={{ color: '#fff' }}>
                       {mode.details.map((d, i) => (
                         <li key={i} className="leading-7">{d}</li>
                       ))}
@@ -163,10 +163,10 @@ const Modes = () => {
                     </CardTitle>
                   </CardHeader>
                   <CardContent className="flex flex-col gap-5">
-                    <p className="text-muted-foreground/90 leading-7 text-[1.05rem]">
+                    <p className="leading-7 text-[1.05rem]" style={{ color: '#fff' }}>
                       {mode.description}
                     </p>
-                    <ul className="list-disc list-inside text-muted-foreground/90 space-y-2">
+                    <ul className="list-disc list-inside space-y-2" style={{ color: '#fff' }}>
                       {mode.details.map((d, i) => (
                         <li key={i} className="leading-7">{d}</li>
                       ))}
@@ -185,7 +185,7 @@ const Modes = () => {
             <h3 className="text-2xl md:text-3xl font-bold mb-3 text-foreground tracking-tight">
               Mod Files & Resources
             </h3>
-            <p className="text-muted-foreground/90 mb-4 text-lg leading-7">
+            <p className="mb-4 text-lg leading-7" style={{ color: '#fff' }}>
               The Google Drive for all official mods, BIQs, and map grids can be found here:
             </p>
             <a
