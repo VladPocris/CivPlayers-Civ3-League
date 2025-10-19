@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "title": "CIV3 Hunger Games",
+    "date": "Nov 14, 2021 – Feb 20, 2022",
+    "status": "completed",
+    "description": "2v2 MPT-style cash tournament, run by Hardrada_1066.",
+    "winners": "Champion: Suede | 2nd Place: cheeze | 3rd Place: rabdag",
+    "youtubeLink": "https://youtube.com/playlist?list=PLexample-hunger-games",
+    "twitchLink": "N/A",
+    "participants": "32",
+    "prize": "League Championship Title"
+  },
+  {
+    "id": 2,
+    "title": "Spring Championship 2024",
+    "date": "March 1, 2024 – March 31, 2024",
+    "status": "completed",
+    "description": "The premier spring tournament showcasing tactical excellence and strategic mastery.",
+    "winners": "Champion: rabdag | 2nd Place: Halu | 3rd Place: Silent Knight",
+    "youtubeLink": "https://youtube.com/playlist?list=PLexample-spring-2024",
+    "twitchLink": "N/A",
+    "participants": "64",
+    "prize": "5000 League Points"
+  }
+]

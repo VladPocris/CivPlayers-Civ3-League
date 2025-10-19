@@ -4,34 +4,36 @@ import Footer from "@/components/layout/Footer";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Twitch, Youtube, ExternalLink, Radio } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const Stream = () => {
   useDocumentTitle("Civ 3 League - Stream");
   const [activeStream, setActiveStream] = useState<string | null>(null);
 
-  const twitchStreamers = [
-    { name: "Hardrada", username: "hardrada_1066", url: "https://www.twitch.tv/hardrada_1066" },
-    { name: "Rabdag", username: "rabdag", url: "https://www.twitch.tv/rabdag" },
-  ];
+  type TwitchStreamer = { name: string; username: string; url: string };
+  type YoutubeChannel = { name: string; channelId: string; url: string };
 
-  const youtubeChannels = [
-    { 
-      name: "Hardrada", 
-      channelId: "UC2AuVRKXclTOjg6s3VMJgqg",
-      url: "https://www.youtube.com/channel/UC2AuVRKXclTOjg6s3VMJgqg" 
-    },
-    { 
-      name: "Suede", 
-      channelId: "UCvJNJ8HF5BWrErL-RpvqbYQ",
-      url: "https://www.youtube.com/channel/UCvJNJ8HF5BWrErL-RpvqbYQ" 
-    },
-    { 
-      name: "Towel", 
-      channelId: "UCgTbrlr15U1Q-uWpgg8pE6A",
-      url: "https://www.youtube.com/channel/UCgTbrlr15U1Q-uWpgg8pE6A" 
-    },
-  ];
+  const [twitchStreamers, setTwitchStreamers] = useState<TwitchStreamer[]>([]);
+  const [youtubeChannels, setYoutubeChannels] = useState<YoutubeChannel[]>([]);
+
+  useEffect(() => {
+    let cancelled = false;
+    const load = async () => {
+      try {
+        const res = await fetch(`${import.meta.env.BASE_URL}data/stream.json`);
+        if (!res.ok) throw new Error('Failed to fetch stream data');
+        const json = await res.json();
+        if (!cancelled) {
+          setTwitchStreamers(json.twitch || []);
+          setYoutubeChannels(json.youtube || []);
+        }
+      } catch (err) {
+        console.error('Error loading stream.json', err);
+      }
+    };
+    load();
+    return () => { cancelled = true; };
+  }, []);
 
   return (
     <div className="min-h-screen bg-background">

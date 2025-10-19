@@ -5,84 +5,48 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { BookOpen, Youtube, FileText, ExternalLink, Image as ImageIcon, Play } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const Guides = () => {
   useDocumentTitle("Civ 3 League - Guides");
-  const [activeTab, setActiveTab] = useState("qc");
+  type Video = { id: string; label: string };
+  type SteamGuide = { url: string; label: string };
+  type Tool = { url: string; label: string };
+  type Image = { src: string; alt: string };
+  type Guide = {
+    id: string;
+    title: string;
+    description?: string;
+    steamGuides?: SteamGuide[];
+    videos?: Video[];
+    tools?: Tool[];
+    images?: Image[];
+    note?: string;
+  };
 
-  const guides = [
-    {
-      id: "qc",
-      title: "QC (Quick Combat)",
-      description: "Master the fast-paced Quick Combat mode with these essential guides and video tutorials.",
-      steamGuides: [
-        { url: "https://steamcommunity.com/sharedfiles/filedetails/?id=793439351", label: "QC Guide - Part 1" },
-        { url: "https://steamcommunity.com/sharedfiles/filedetails/?id=688606769&insideModal=0", label: "QC Guide - Part 2" },
-        { url: "https://steamcommunity.com/sharedfiles/filedetails/?id=762488798", label: "QC Strategy Guide" },
-      ],
-      videos: [
-        { id: "RUtZSSc3QnU", label: "QC Tutorial Video 1" },
-        { id: "Mz4wPiuKqbQ", label: "QC Tutorial Video 2" },
-        { id: "F0nL3tZ5t94", label: "QC Advanced Tactics" },
-        { id: "b1nY4Xlnmh0", label: "QC Gameplay Example 1" },
-        { id: "jcFHSl4wqdE", label: "QC Gameplay Example 2" },
-      ]
-    },
-    {
-      id: "mpt",
-      title: "MPT (Multiplayer Tournament)",
-      description: "Learn competitive strategies and mechanics for MPT-style tournaments.",
-      steamGuides: [
-        { url: "https://steamcommunity.com/sharedfiles/filedetails/?id=1669107567", label: "MPT Complete Guide" },
-      ],
-      videos: [
-        { id: "tGKTrdDYtd0", label: "MPT Tutorial Video" },
-      ]
-    },
-    {
-      id: "future",
-      title: "FUTURE",
-      description: "Explore futuristic gameplay mechanics and strategies for the FUTURE mod.",
-      steamGuides: [
-        { url: "https://steamcommunity.com/sharedfiles/filedetails/?id=773801119", label: "FUTURE Guide - Part 1" },
-        { url: "https://steamcommunity.com/sharedfiles/filedetails/?id=772527038", label: "FUTURE Guide - Part 2" },
-      ],
-      videos: [
-        { id: "Y2zeHi9NEYE", label: "FUTURE Tutorial Video 1" },
-        { id: "GF9Kw-qg7kQ", label: "FUTURE Tutorial Video 2" },
-      ]
-    },
-    {
-      id: "modern",
-      title: "Modern",
-      description: "Modern era strategies, tech trees, and resource management guides.",
-      steamGuides: [
-        { url: "https://steamcommunity.com/sharedfiles/filedetails/?id=2094304665", label: "Modern Strategy Guide" },
-      ],
-      tools: [
-        { url: "https://civplayersciv3league.github.io/", label: "Resource Builder Tool" },
-      ],
-      images: [
-        { src: "public/civ3-assets/Guides/Modern_Tech_Tree.webp", alt: "Modern Tech Tree" }
-      ]
-    },
-    {
-      id: "mdj",
-      title: "MDJ",
-      description: "Master the MDJ mod with civilization guides, unique units, and strategic insights.",
-      steamGuides: [
-        { url: "https://steamcommunity.com/sharedfiles/filedetails/?id=2830860167", label: "MDJ Complete Guide" },
-      ],
-      note: "For a quick look, check the Civ and Unit guides below!",
-      images: [
-        { src: "public/civ3-assets/Guides/mdj_civs_uus.webp", alt: "MDJ Civilizations & Unique Units" },
-        { src: "public/civ3-assets/Guides/mdj_units.webp", alt: "MDJ Units Guide" }
-      ]
-    }
-  ];
+  const [activeTab, setActiveTab] = useState<string | null>(null);
+  const [guides, setGuides] = useState<Guide[]>([]);
 
-  const activeGuide = guides.find(g => g.id === activeTab) || guides[0];
+  useEffect(() => {
+    let cancelled = false;
+    const load = async () => {
+      try {
+        const res = await fetch(`${import.meta.env.BASE_URL}data/guides.json`);
+        if (!res.ok) throw new Error('Failed to fetch guides');
+        const json = await res.json();
+        if (!cancelled) {
+          setGuides(json);
+          setActiveTab(json[0]?.id || null);
+        }
+      } catch (err) {
+        console.error('Error loading guides.json', err);
+      }
+    };
+    load();
+    return () => { cancelled = true; };
+  }, []);
+
+  const activeGuide = (guides.find(g => g.id === activeTab) || guides[0] || {}) as Guide;
 
   const getYouTubeEmbedUrl = (videoId: string) => {
     return `https://www.youtube.com/embed/${videoId}`;

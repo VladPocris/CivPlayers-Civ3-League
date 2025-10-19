@@ -1,0 +1,24 @@
+[
+  {
+    "id": "qc",
+    "title": "QC (Quick Combat)",
+    "description": "Master the fast-paced Quick Combat mode with these essential guides and video tutorials.",
+    "steamGuides": [
+      { "url": "https://steamcommunity.com/sharedfiles/filedetails/?id=793439351", "label": "QC Guide - Part 1" }
+    ],
+    "videos": [
+      { "id": "RUtZSSc3QnU", "label": "QC Tutorial Video 1" }
+    ]
+  },
+  {
+    "id": "mpt",
+    "title": "MPT (Multiplayer Tournament)",
+    "description": "Learn competitive strategies and mechanics for MPT-style tournaments.",
+    "steamGuides": [
+      { "url": "https://steamcommunity.com/sharedfiles/filedetails/?id=1669107567", "label": "MPT Complete Guide" }
+    ],
+    "videos": [
+      { "id": "tGKTrdDYtd0", "label": "MPT Tutorial Video" }
+    ]
+  }
+]

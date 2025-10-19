@@ -13,6 +13,7 @@ import Modes from "./pages/Modes";
 import HallOfFame from "./pages/HallOfFame";
 import Guides from "./pages/Guides";
 import Stream from "./pages/Stream";
+import Admin from "./pages/Admin";
 import OldLeaderboards from "./pages/OldLeaderboards";
 
 const queryClient = new QueryClient();
@@ -32,6 +33,7 @@ const App = () => (
           <Route path="/hall-of-fame" element={<HallOfFame />} />
           <Route path="/guides" element={<Guides />} />
           <Route path="/stream" element={<Stream />} />
+          <Route path="/admin" element={<Admin />} />
           <Route path="/old-leaderboards" element={<OldLeaderboards />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />

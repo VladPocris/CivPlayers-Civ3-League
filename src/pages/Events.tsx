@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Calendar, Trophy, ExternalLink, PlayCircle, Youtube, Twitch, Users } from "lucide-react";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
+import { useEffect, useState } from "react";
 
 interface EventItem {
   id: number;
@@ -22,68 +23,23 @@ interface EventItem {
 const Events = () => {
   useDocumentTitle("Civ 3 League - Events");
 
-  const events: EventItem[] = [
-    {
-      id: 1,
-      title: "CIV3 Hunger Games",
-      date: "Nov 14, 2021 – Feb 20, 2022",
-      status: "completed",
-      description: "2v2 MPT-style cash tournament, run by Hardrada_1066.",
-      winners: "Champion: Suede | 2nd Place: cheeze | 3rd Place: rabdag",
-      youtubeLink: "https://youtube.com/playlist?list=PLexample-hunger-games",
-      twitchLink: "N/A",
-      participants: "32",
-      prize: "League Championship Title"
-    },
-    {
-      id: 2,
-      title: "Spring Championship 2024",
-      date: "March 1, 2024 – March 31, 2024",
-      status: "completed",
-      description: "The premier spring tournament showcasing tactical excellence and strategic mastery.",
-      winners: "Champion: rabdag | 2nd Place: Halu | 3rd Place: Silent Knight",
-      youtubeLink: "https://youtube.com/playlist?list=PLexample-spring-2024",
-      twitchLink: "N/A",
-      participants: "64",
-      prize: "5000 League Points"
-    },
-    {
-      id: 3,
-      title: "Summer Blitz Series",
-      date: "July 1, 2024 – July 31, 2024",
-      status: "completed",
-      description: "Fast-paced matches with shorter time controls, testing quick decision-making and adaptability.",
-      winners: "Champion: Suede | 2nd Place: Zardoz | 3rd Place: Carlot",
-      youtubeLink: "https://youtube.com/playlist?list=PLexample-summer-blitz",
-      twitchLink: "N/A",
-      participants: "48",
-      prize: "3000 League Points"
-    },
-    {
-      id: 4,
-      title: "Winter Classic 2024",
-      date: "Dec 1, 2024 – Dec 31, 2024",
-      status: "upcoming",
-      description: "Year-end championship tournament featuring the season's top players.",
-      winners: "TBD",
-      youtubeLink: "N/A",
-      twitchLink: "N/A",
-      participants: "80",
-      prize: "10000 League Points + Trophy"
-    },
-    {
-      id: 5,
-      title: "New Year Open 2025",
-      date: "Jan 1, 2025 – Jan 31, 2025",
-      status: "ongoing",
-      description: "Open to all skill levels with multiple divisions and brackets.",
-      winners: "TBD",
-      youtubeLink: "N/A",
-      twitchLink: "https://twitch.tv/example",
-      participants: "100",
-      prize: "Multiple Division Prizes"
-    }
-  ];
+  const [events, setEvents] = useState<EventItem[]>([]);
+
+  useEffect(() => {
+    let cancelled = false;
+    const load = async () => {
+      try {
+        const res = await fetch(`${import.meta.env.BASE_URL}data/events.json`);
+        if (!res.ok) throw new Error('Failed to fetch events');
+        const json = await res.json();
+        if (!cancelled) setEvents(json);
+      } catch (err) {
+        console.error('Error loading events.json', err);
+      }
+    };
+    load();
+    return () => { cancelled = true; };
+  }, []);
 
   const getStatusBadge = (status: string) => {
     switch (status) {
