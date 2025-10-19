@@ -7,9 +7,164 @@
     "description": "2v2 MPT-style cash tournament, run by Hardrada_1066.",
     "winners": "Champion: Suede | 2nd Place: cheeze | 3rd Place: rabdag",
     "youtubeLink": "https://youtube.com/playlist?list=PLexample-hunger-games",
-    "twitchLink": "N/A",
+    "twitchLink": "test",
     "participants": "32",
-    "prize": "League Championship Title"
+    "prize": "League Championship Title",
+    "bracket": {
+      "rounds": [
+        {
+          "name": "Round of 32",
+          "matches": [
+            {
+              "p1": "Player 1",
+              "p2": "Player 2"
+            },
+            {
+              "p1": "Player 3",
+              "p2": "Player 4"
+            },
+            {
+              "p1": "Player 5",
+              "p2": "Player 6"
+            },
+            {
+              "p1": "Player 7",
+              "p2": "Player 8"
+            },
+            {
+              "p1": "Player 9",
+              "p2": "Player 10"
+            },
+            {
+              "p1": "Player 11",
+              "p2": "Player 12"
+            },
+            {
+              "p1": "Player 13",
+              "p2": "Player 14"
+            },
+            {
+              "p1": "Player 15",
+              "p2": "Player 16"
+            },
+            {
+              "p1": "Player 17",
+              "p2": "Player 18"
+            },
+            {
+              "p1": "Player 19",
+              "p2": "Player 20"
+            },
+            {
+              "p1": "Player 21",
+              "p2": "Player 22"
+            },
+            {
+              "p1": "Player 23",
+              "p2": "Player 24"
+            },
+            {
+              "p1": "Player 25",
+              "p2": "Player 26"
+            },
+            {
+              "p1": "Player 27",
+              "p2": "Player 28"
+            },
+            {
+              "p1": "Player 29",
+              "p2": "Player 30"
+            },
+            {
+              "p1": "Player 31",
+              "p2": "Player 32",
+              "winner": "p1"
+            }
+          ]
+        },
+        {
+          "name": "Round 2",
+          "matches": [
+            {
+              "p1": "Player 1",
+              "p2": "Player 2"
+            },
+            {
+              "p1": "Player 3",
+              "p2": "Player 4"
+            },
+            {
+              "p1": "Player 5",
+              "p2": "Player 6"
+            },
+            {
+              "p1": "Player 7",
+              "p2": "Player 8"
+            },
+            {
+              "p1": "Player 9",
+              "p2": "Player 10"
+            },
+            {
+              "p1": "Player 11",
+              "p2": "Player 12"
+            },
+            {
+              "p1": "Player 13",
+              "p2": "Player 14"
+            },
+            {
+              "p1": "Player 15",
+              "p2": "Player 16"
+            }
+          ]
+        },
+        {
+          "name": "Round 3",
+          "matches": [
+            {
+              "p1": "Player 1",
+              "p2": "Player 2"
+            },
+            {
+              "p1": "Player 3",
+              "p2": "Player 4"
+            },
+            {
+              "p1": "Player 5",
+              "p2": "Player 6"
+            },
+            {
+              "p1": "Player 7",
+              "p2": "Player 8"
+            }
+          ]
+        },
+        {
+          "name": "Round 4",
+          "matches": [
+            {
+              "p1": "Player 1",
+              "p2": "Player 2"
+            },
+            {
+              "p1": "Player 3",
+              "p2": "Player 4"
+            }
+          ]
+        },
+        {
+          "name": "Final",
+          "matches": [
+            {
+              "p1": "Player 1",
+              "p2": "Player 2",
+              "winner": "p1"
+            }
+          ]
+        }
+      ]
+    }
   },
   {
     "id": 2,

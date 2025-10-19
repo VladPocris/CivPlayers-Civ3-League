@@ -17,6 +17,17 @@
   <meta name="twitter:site" content="@civplayers" />
   <meta name="twitter:image" content="/civ3-assets/civ3-favicon.png" />
     
+    <!-- Start: Force trailing slash for Vite base URL -->
+    <script type="text/javascript">
+      (function() {
+        var base = '/CivPlayers-Civ3-League/';
+        var l = window.location;
+        if (l.pathname === base.slice(0, -1)) {
+          window.location.replace(base + l.search + l.hash);
+        }
+      })();
+    </script>
+    <!-- End: Force trailing slash for Vite base URL -->
     <!-- Start Single Page Apps for GitHub Pages -->
     <script type="text/javascript">
       // Single Page Apps for GitHub Pages

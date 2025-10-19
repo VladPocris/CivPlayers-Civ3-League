@@ -3,6 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Calendar, Trophy, ExternalLink, PlayCircle, Youtube, Twitch, Users } from "lucide-react";
+import { Link } from "react-router-dom";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import { useEffect, useState } from "react";
@@ -148,10 +149,10 @@ const Events = () => {
                   )}
                   
                   <Button variant="outline" asChild>
-                    <a href="#" onClick={(e) => e.preventDefault()}>
+                    <Link to={`/events/${event.id}`}>
                       Event Details
                       <ExternalLink className="w-4 h-4 ml-2" />
-                    </a>
+                    </Link>
                   </Button>
                 </div>
               </CardContent>

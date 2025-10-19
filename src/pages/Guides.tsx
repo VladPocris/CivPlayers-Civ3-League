@@ -215,12 +215,15 @@ const Guides = () => {
                   <h3 className="text-xl font-semibold text-foreground">Visual Guides</h3>
                 </div>
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                  {activeGuide.images.map((image, idx) => (
+                  {activeGuide.images.map((image, idx) => {
+                    // Support both local paths and full URLs
+                    const imgSrc = image.src.startsWith('http') ? image.src : `${import.meta.env.BASE_URL}${image.src.startsWith('/') ? image.src.slice(1) : image.src}`;
+                    return (
                     <Dialog key={idx}>
                       <DialogTrigger asChild>
                         <div className="border border-border/50 rounded-lg overflow-hidden bg-muted/20 hover:bg-muted/30 transition-all cursor-pointer hover:scale-105">
                           <img 
-                            src={image.src} 
+                            src={imgSrc} 
                             alt={image.alt}
                             className="w-full h-auto hover:opacity-90 transition-opacity"
                           />
@@ -235,14 +238,15 @@ const Guides = () => {
                         </DialogHeader>
                         <div className="w-full">
                           <img 
-                            src={image.src} 
+                            src={imgSrc} 
                             alt={image.alt}
                             className="w-full h-auto rounded-lg"
                           />
                         </div>
                       </DialogContent>
                     </Dialog>
-                  ))}
+                    );
+                  })}
                 </div>
               </div>
             )}

@@ -34,36 +34,48 @@ const Header = () => {
             </div>
           </Link>
 
-          {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center space-x-6">
+          {/* Desktop Navigation - horizontally scrollable on overflow */}
+          <nav className="hidden md:flex flex-wrap items-center gap-x-2 gap-y-1">
             {navigation.map((item) => (
               <Link
                 key={item.name}
                 to={item.href}
-                className={`nav-link ${isActive(item.href) ? "text-primary" : ""}`}
+                className={`nav-link whitespace-nowrap px-2 ${isActive(item.href) ? "text-primary" : ""}`}
               >
-                {item.name}
+                {item.name === "Hall of Fame" ? (
+                  <>
+                    <span className="lg:inline">Hall of Fame</span>
+                  </>
+                ) : (
+                  <>
+                    <span className="hidden sm:inline">{item.name}</span>
+                    <span className="inline sm:hidden text-xs">{item.name[0]}</span>
+                  </>
+                )}
               </Link>
             ))}
           </nav>
 
-          {/* CTA Buttons */}
-          <div className="hidden md:flex items-center space-x-3">
+          {/* CTA Buttons - responsive, collapse text on small screens */}
+          <div className="hidden md:flex items-center space-x-2 min-w-0">
             <Button 
               variant="outline" 
               size="sm" 
               asChild
-              className="border-primary/30 hover:bg-primary/10"
+              className="border-primary/30 hover:bg-primary/10 min-w-0 px-2 md:px-3"
+              aria-label="Join Steam Group"
             >
-              <a href="https://steamcommunity.com/groups/CivPlayersCiv3" target="_blank" rel="noopener noreferrer">
-                <Users className="w-4 h-4 mr-2" />
-                Join Steam
+              <a href="https://steamcommunity.com/groups/CivPlayersCiv3" target="_blank" rel="noopener noreferrer" className="flex items-center min-w-0">
+                <Users className="w-4 h-4 mr-1" />
+                <span className="hidden lg:inline">Join Steam</span>
+                <span className="inline lg:hidden">Steam</span>
                 <ExternalLink className="w-3 h-3 ml-1" />
               </a>
             </Button>
-            <Button size="sm" className="btn-hero">
-              <a href="https://discord.gg/teVt5pt" target="_blank" rel="noopener noreferrer" className="flex items-center">
-                Discord
+            <Button size="sm" className="btn-hero min-w-0 px-2 md:px-3" aria-label="Join Discord Server">
+              <a href="https://discord.gg/teVt5pt" target="_blank" rel="noopener noreferrer" className="flex items-center min-w-0">
+                <span className="hidden lg:inline">Discord</span>
+                <span className="inline lg:hidden">Discord</span>
                 <ExternalLink className="w-3 h-3 ml-1" />
               </a>
             </Button>

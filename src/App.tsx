@@ -9,6 +9,7 @@ import NotFound from "./pages/NotFound";
 import About from "./pages/About";
 import Rules from "./pages/Rules";
 import Events from "./pages/Events";
+import EventDetails from "./pages/EventDetails";
 import Modes from "./pages/Modes";
 import HallOfFame from "./pages/HallOfFame";
 import Guides from "./pages/Guides";
@@ -29,6 +30,7 @@ const App = () => (
           <Route path="/about" element={<About />} />
           <Route path="/rules" element={<Rules />} />
           <Route path="/events" element={<Events />} />
+          <Route path="/events/:id" element={<EventDetails />} />
           <Route path="/modes" element={<Modes />} />
           <Route path="/hall-of-fame" element={<HallOfFame />} />
           <Route path="/guides" element={<Guides />} />
@@ -36,7 +38,7 @@ const App = () => (
           <Route path="/admin" element={<Admin />} />
           <Route path="/old-leaderboards" element={<OldLeaderboards />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-          <Route path="*" element={<NotFound />} />
+          <Route path="*" element={<Index />} />
         </Routes>
       </BrowserRouter>
     </TooltipProvider>
