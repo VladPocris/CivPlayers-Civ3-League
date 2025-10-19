@@ -1,4 +1,5 @@
-import { Mail, Youtube, Users, ExternalLink } from "lucide-react";
+import { Mail, Youtube, Users, ExternalLink, Settings } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const Footer = () => {
   return (
@@ -61,8 +62,15 @@ const Footer = () => {
               Bringing together players from around the world for competitive gameplay since 2020.
             </p>
             <p className="text-xs text-muted-foreground mt-4">
-              Built with modern web technologies
+              Developed by <a href="https://vladpocris.github.io/InteractiveCV/" target="_blank" rel="noopener noreferrer" className="text-primary font-semibold hover:underline">Vlad Pocris</a>
             </p>
+            <Link 
+              to="/admin"
+              className="inline-flex items-center gap-2 mt-3 text-xs text-muted-foreground hover:text-primary transition-colors"
+            >
+              <Settings className="w-3 h-3" />
+              <span>Admin Panel</span>
+            </Link>
           </div>
         </div>
 
