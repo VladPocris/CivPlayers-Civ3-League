@@ -21,13 +21,20 @@ const HeroSection = () => {
         <div className="text-center space-y-8">
           {/* Main Hero Content */}
           <div className="space-y-4">
+            {/* Mobile logo (above title) */}
+            <img
+              src={import.meta.env.BASE_URL + "civ3-assets/Logo/logo.png"}
+              alt="CivPlayers Logo"
+              className="mx-auto mb-4 w-16 h-16 object-contain md:hidden"
+            />
+
             <div className="relative inline-block">
               <h1 className="text-5xl md:text-7xl font-bold text-gradient tracking-tight">
                 CivPlayers
               </h1>
               {/* Logo - positioned absolutely next to title */}
               <img 
-                src="public/civ3-assets/Logo/logo.png" 
+                src={import.meta.env.BASE_URL + "civ3-assets/Logo/logo.png"} 
                 alt="CivPlayers Logo" 
                 className="absolute right-full top-1/2 -translate-y-1/2 mr-4 md:mr-6 w-16 h-16 md:w-20 md:h-20 lg:w-24 lg:h-24 object-contain hidden md:block"
               />
