@@ -40,7 +40,7 @@ const About = () => {
             About the League
           </h1>
           <div className="max-w-4xl mx-auto mb-12">
-            <p className="text-xl leading-relaxed mb-8 tracking-wide" style={{ color: '#fff' }}>
+            <p className="text-center text-xl leading-relaxed mb-8 tracking-wide" style={{ color: '#fff' }}>
               Welcome to the revived Civ 3 League - where strategy and community meet.
             </p>
           </div>
@@ -51,7 +51,7 @@ const About = () => {
           <CardContent className="p-8 text-center">
             <Heart className="w-12 h-12 text-primary mx-auto mb-4" />
             <h2 className="text-3xl font-bold text-primary mb-6 tracking-tight">Our Mission</h2>
-            <p className="text-base md:text-lg text-foreground/90 leading-relaxed max-w-4xl mx-auto tracking-normal">
+            <p className="text-left text-base md:text-lg text-foreground/90 leading-relaxed max-w-4xl mx-auto tracking-normal">
               CivPlayers Civ3 League exists to foster a competitive, fair, and welcoming environment 
               where players of all skill levels can enjoy the timeless strategy of Civilization III. 
               We believe in the power of strategic thinking, community building, and the endless 
@@ -64,7 +64,7 @@ const About = () => {
             <div className="flex-1 flex">
               <Card className="gaming-card flex-1 flex flex-col">
                 <CardContent className="p-8 text-center flex-1 flex flex-col justify-center">
-                  <p className="text-lg leading-relaxed" style={{ color: '#fff' }}>
+                  <p className="text-left text-lg leading-relaxed" style={{ color: '#fff' }}>
                     After 6 years of being out of service, we are proud to announce the return of the Civ 3 ladder! Despite some bumps along the road, the Civ 3 community has remained passionate and tightly knit, and there has been a recent wave of new players picking the game up on steam and learning to play multiplayer. With this influx of newer players, we've been able to have multiple games running and more consistent activity every day. We hope to continue to expand and keep this amazing game alive.
                   </p>
                 </CardContent>
@@ -74,7 +74,7 @@ const About = () => {
             <div className="flex-1 flex">
               <Card className="gaming-card flex-1 flex flex-col">
                 <CardContent className="p-8 text-center flex-1 flex flex-col justify-center">
-                  <p className="text-lg leading-relaxed" style={{ color: '#fff' }}>
+                  <p className="text-left text-lg leading-relaxed" style={{ color: '#fff' }}>
                     The community has a rich history of tactics, stories, and creative mods. Vanilla Civ 3 doesn't make for a great multiplayer experience, due to game length, imbalances, and inconclusive endings. As a result, league games are played with mods that make for a fair, conclusive match, that can be finished in under 3 hours.
                   </p>
                 </CardContent>
@@ -164,7 +164,7 @@ const About = () => {
                     <IconComponent className="w-12 h-12 text-primary mb-4 flex-shrink-0" />
                     <div className="w-full">
                       <h3 className="text-lg font-semibold text-primary mb-3">{value.title}</h3>
-                      <p className="text-base leading-relaxed" style={{ color: '#fff' }}>{value.description}</p>
+                      <p className="text-left text-base leading-relaxed" style={{ color: '#fff' }}>{value.description}</p>
                     </div>
                   </CardContent>
                 </Card>
@@ -178,7 +178,7 @@ const About = () => {
           <CardContent className="p-8 text-center">
             <Trophy className="w-16 h-16 text-primary mx-auto mb-6" />
             <h2 className="text-3xl font-bold text-foreground mb-4">Join Our Community</h2>
-            <p className="text-lg text-muted-foreground mb-6 max-w-2xl mx-auto leading-relaxed">
+            <p className="text-center text-lg text-muted-foreground mb-6 max-w-2xl mx-auto leading-relaxed">
               Whether you're a seasoned veteran or new to Civilization III, there's a place for you 
               in our community. Join us for competitive matches, casual games, strategy discussions, 
               and lasting friendships.
