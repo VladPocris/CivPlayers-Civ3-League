@@ -61,7 +61,7 @@ const HeroSection = () => {
             <Card className="gaming-card">
               <CardContent className="p-6 text-center">
                 <Users className="w-8 h-8 text-primary mx-auto mb-2" />
-                <div className="text-2xl font-bold text-foreground">500+</div>
+                <div className="text-2xl font-bold text-foreground">50+</div>
                 <div className="text-sm text-muted-foreground">Active Players</div>
               </CardContent>
             </Card>
@@ -69,15 +69,15 @@ const HeroSection = () => {
             <Card className="gaming-card">
               <CardContent className="p-6 text-center">
                 <Trophy className="w-8 h-8 text-primary mx-auto mb-2" />
-                <div className="text-2xl font-bold text-foreground">50+</div>
-                <div className="text-sm text-muted-foreground">Tournaments</div>
+                <div className="text-2xl font-bold text-foreground">10+</div>
+                <div className="text-sm text-muted-foreground">Events</div>
               </CardContent>
             </Card>
             
             <Card className="gaming-card">
               <CardContent className="p-6 text-center">
                 <Calendar className="w-8 h-8 text-primary mx-auto mb-2" />
-                <div className="text-2xl font-bold text-foreground">4</div>
+                <div className="text-2xl font-bold text-foreground">5</div>
                 <div className="text-sm text-muted-foreground">Years Running</div>
               </CardContent>
             </Card>
@@ -85,7 +85,7 @@ const HeroSection = () => {
             <Card className="gaming-card">
               <CardContent className="p-6 text-center">
                 <Target className="w-8 h-8 text-primary mx-auto mb-2" />
-                <div className="text-2xl font-bold text-foreground">1000+</div>
+                <div className="text-2xl font-bold text-foreground">10000+</div>
                 <div className="text-sm text-muted-foreground">Games Played</div>
               </CardContent>
             </Card>

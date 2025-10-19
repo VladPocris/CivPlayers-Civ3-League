@@ -10,8 +10,8 @@ const Footer = () => {
             <h3 className="text-lg font-semibold text-primary mb-4">Contact</h3>
             <div className="flex items-center space-x-2 text-muted-foreground hover:text-foreground transition-colors">
               <Mail className="w-4 h-4" />
-              <a href="mailto:admin@civplayers.com" className="hover:underline">
-                admin@civplayers.com
+              <a href="mailto:suedeciviii@gmail.com" className="hover:underline">
+                suedeciviii@gmail.com
               </a>
             </div>
           </div>
@@ -21,7 +21,7 @@ const Footer = () => {
             <h3 className="text-lg font-semibold text-primary mb-4">Community</h3>
             <div className="space-y-3">
               <a 
-                href="https://steamcommunity.com/groups/civplayers" 
+                href="https://steamcommunity.com/groups/CivPlayersCiv3" 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="flex items-center space-x-2 text-muted-foreground hover:text-foreground transition-colors"
@@ -31,7 +31,7 @@ const Footer = () => {
                 <ExternalLink className="w-3 h-3" />
               </a>
               <a 
-                href="https://discord.gg/civplayers" 
+                href="https://discord.gg/teVt5pt" 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="flex items-center space-x-2 text-muted-foreground hover:text-foreground transition-colors"
@@ -41,7 +41,7 @@ const Footer = () => {
                 <ExternalLink className="w-3 h-3" />
               </a>
               <a 
-                href="https://youtube.com/@civplayers" 
+                href="https://www.youtube.com/channel/UCvJNJ8HF5BWrErL-RpvqbYQ/featured" 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="flex items-center space-x-2 text-muted-foreground hover:text-foreground transition-colors"

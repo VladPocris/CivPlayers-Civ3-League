@@ -55,14 +55,14 @@ const Header = () => {
               asChild
               className="border-primary/30 hover:bg-primary/10"
             >
-              <a href="https://steamcommunity.com/groups/civplayers" target="_blank" rel="noopener noreferrer">
+              <a href="https://steamcommunity.com/groups/CivPlayersCiv3" target="_blank" rel="noopener noreferrer">
                 <Users className="w-4 h-4 mr-2" />
                 Join Steam
                 <ExternalLink className="w-3 h-3 ml-1" />
               </a>
             </Button>
             <Button size="sm" className="btn-hero">
-              <a href="https://discord.gg/civplayers" target="_blank" rel="noopener noreferrer" className="flex items-center">
+              <a href="https://discord.gg/teVt5pt" target="_blank" rel="noopener noreferrer" className="flex items-center">
                 Discord
                 <ExternalLink className="w-3 h-3 ml-1" />
               </a>

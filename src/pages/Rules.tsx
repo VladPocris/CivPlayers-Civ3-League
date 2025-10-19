@@ -1,127 +1,133 @@
 import { useDocumentTitle } from "@/lib/useDocumentTitle";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import { Shield, Clock, Users, AlertTriangle, Trophy, BookOpen } from "lucide-react";
+import { Shield, Users, AlertTriangle, Clock, Swords, FileWarning, BookOpen, MessageSquare } from "lucide-react";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 
 const Rules = () => {
-  useDocumentTitle("Civ 3 League - Rules");
+  useDocumentTitle("Civ 3 League - Ladder Rules");
+
   const ruleCategories = [
     {
       icon: Shield,
-      title: "General Conduct",
+      title: "Host & Game Setup",
       rules: [
-        "Respect all players regardless of skill level, background, or nationality",
-        "No harassment, hate speech, or discriminatory language",
-        "Keep discussions civil and constructive",
-        "Report any violations to administrators immediately",
-        "Follow the spirit of fair play at all times"
+        "Hosts decide before the game starts if the game is a ladder game.",
+        "A game with non-banned players who all (or all except one) have at least one game recorded on the ladder website's leaderboards or Steam chat reports channel is assumed to be a ladder game unless otherwise specified.",
+        "Ladder games follow standard rules. Hosts may amend these rules if they inform players before the game begins.",
+        "As a player, if you check in to the multiplayer setup screen, you agree to standard ladder rules plus any amendments made by the host."
       ]
     },
     {
       icon: Clock,
-      title: "Game Management",
+      title: "Disputes & Moderation",
       rules: [
-        "Games must be scheduled with at least 24 hours notice",
-        "Players have 15 minutes grace period for late arrivals",
-        "Pauses are allowed for technical issues or emergencies",
-        "Maximum game session is 8 hours with mandatory breaks",
-        "Save files must be uploaded within 1 hour of game completion"
+        "In the case of small disputes and judgments, the host should decide the outcome. For example, whether to allow a particular player to play, or whether to reload in the case of a bug.",
+        "If you disagree with the host’s decision, you may appeal to a moderator after the game.",
+        "In the event of a dispute regarding the rules, the decision will be settled by moderators. Moderators can decide the outcome of the match (one team wins, or a scrap).",
+        "Moderators may also ban players who have broken the rules."
       ]
     },
     {
       icon: Users,
-      title: "Tournament Play",
+      title: "Game Types & End Conditions",
       rules: [
-        "Registration closes 48 hours before tournament start",
-        "Players must be available for their entire bracket",
-        "Substitutions allowed only in group stage",
-        "Brackets are seeded based on current league rating",
-        "Winners must report results within 2 hours"
+        "Games may be played as free-for-alls or in teams. Teams must have an even number of players.",
+        "2v3 or 3v4 matches cannot be reported to the ladder, nor can games with more than 2 teams.",
+        "Team games end when one team is eliminated, when the turn counter expires, when one team agrees to concede, or if players agree to a scrap.",
+        "In a free-for-all, the game ends when only one player remains, when players agree to a scrap, when the turn timer expires, or if all living players unanimously agree to 'call the game'.",
+        "Calling the game means ending it and assigning placement values for living players based on mutual agreement. The placement of dead players cannot be changed."
       ]
     },
     {
       icon: AlertTriangle,
-      title: "Violations & Penalties",
+      title: "Quitting & Substitutions",
       rules: [
-        "First offense: Warning and game review",
-        "Second offense: Tournament suspension (1 event)",
-        "Third offense: League suspension (1 month)",
-        "Severe violations may result in permanent ban",
-        "Appeals process available through admin contact"
+        "Quits will be logged. In the case of a quit, players must either agree to a scrap/concession, play on, or find a substitute (of equal or lower ELO) for the player who quits. The game must still be reported.",
+        "The second quit in 4 months results in an automatic 36-hour ban. The third quit is a 72-hour ban. Any additional quits result in a 5-day ban.",
+        "These bans are effective as soon as they are announced by a moderator in the mod rulings Steam channel. Games played with a banned player during their ban are non-ladder.",
+        "Moderators may also issue quits or bans for other bad behaviour such as teamkilling or excessive flaming."
+      ]
+    },
+    {
+      icon: Swords,
+      title: "Concessions & Scraps",
+      rules: [
+        "Teams with 4 players may agree to concede as long as 3 players agree.",
+        "Teams with 3 remaining players may concede if 2 players agree.",
+        "Concessions when only 2 players remain must be unanimous.",
+        "Games with 5 or more players may be scrapped if all but one player agree or are indifferent (not one player per team).",
+        "Scrap votes with 4 or fewer players must be unanimous."
+      ]
+    },
+    {
+      icon: FileWarning,
+      title: "Scoring & Turn Counter Rules",
+      rules: [
+        "If the turn counter expires in a team game, the winner is determined by the sum of all living players’ scores on each team plus the decayed scores of dead players via the histogram.",
+        "In modern mode, if a player dies, that player’s score (or decayed score) is cut in half.",
+        "If a player loses their capital, they have 5 turns to retake or replant it. If not done by the end of the 5th turn, their score (or decayed score) is cut in half.",
+        "Scoring rules for a free-for-all game must be agreed upon before the game begins."
+      ]
+    },
+    {
+      icon: Clock,
+      title: "Lag, Drops & Reloads",
+      rules: [
+        "Players who lag or drop excessively may be forced to be substituted. Hosts, teams, and moderators should work together to make that decision.",
+        "During a reload, both teams have 15 minutes to gather their team.",
+        "A substitute of no higher than 150 ELO above the original player may be used.",
+        "If a player subs, the game is still reported. If the subber’s team wins, the game is reported with the subber. If the subber’s team loses, it is reported with the original player.",
+        "When reloading, players are strongly encouraged to repeat the same moves as before the reload. If a unit died before the reload but did not after, it must be disbanded."
+      ]
+    },
+    {
+      icon: AlertTriangle,
+      title: "Prohibited Actions",
+      rules: [
+        "Cheats, trainers, and banned bugs are prohibited.",
+        "A list of banned tactics is available externally. Notably, this includes the prohibition of end-of-turn stack attacks against cities and the abuse of the empty city bug."
+      ]
+    },
+    {
+      icon: MessageSquare,
+      title: "Conduct & Behaviour",
+      rules: [
+        "Harassment (repeated insults or flaming that the recipient does not want) in public chat groups is forbidden.",
+        "Flaming or insults toward teammates in ladder games are taken especially seriously, since it interferes with competitive teamplay.",
+        "If this happens, screenshot it and send it to a moderator."
+      ]
+    },
+    {
+      icon: BookOpen,
+      title: "Spawning, Coaching & Other Guidelines",
+      rules: [
+        "MPTs or QCs where one player spawns alone on an island, or two or more players of the same team spawn on the same island, should be automatically scrapped and are invalid reports.",
+        "If two players of opposite teams spawn alone on the same island, that game is valid and should continue normally.",
+        "Coaching is encouraged but must not interfere with fair competition.",
+        "In ladder games, if you will be receiving multiple pieces of advice from a non-teammate who has an ELO of more than 200 above yours, this must be disclosed before teams are made.",
+        "This rule set is not meant to be inclusive of all bad behavior. Players who behave poorly in ways not explicitly prohibited may be refused by other players or hosts."
       ]
     }
-  ];
-
-  const gameSettings = [
-    { setting: "Difficulty", value: "Monarch", required: true },
-    { setting: "Map Size", value: "Standard or Large", required: true },
-    { setting: "Barbarians", value: "Roaming", required: true },
-    { setting: "Victory Conditions", value: "All except Space Race", required: true },
-    { setting: "Starting Units", value: "2 Settlers, 2 Workers", required: false },
-    { setting: "Tech Trading", value: "Allowed", required: false },
-    { setting: "Cultural Linking", value: "On", required: true },
-    { setting: "Optimal Number of Cities", value: "Off", required: true }
-  ];
-
-  const prohibitedActions = [
-    "Exploiting game bugs or glitches",
-    "Sharing information between eliminated and active players",
-    "Using external tools or modifications during gameplay",
-    "Deliberately causing game desyncs or crashes",
-    "Pre-game diplomatic agreements (except team games)",
-    "Real money trading for in-game advantages",
-    "Account sharing or playing on behalf of others"
   ];
 
   return (
     <div className="min-h-screen bg-background">
       <Header />
-      
+
       <main className="container mx-auto px-4 py-8">
-        {/* Page Header */}
         <div className="text-center mb-12">
           <h1 className="text-4xl md:text-5xl font-bold text-gradient mb-4">
-            League Rules & Guidelines
+            Ladder Rules & Guidelines
           </h1>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-            Fair play and sportsmanship are the foundation of our competitive community. 
-            Please read and understand all rules before participating.
+            These are the official rules for all ladder games. Please read them carefully before playing.
+            Hosts and players are expected to know and follow these rules at all times.
           </p>
         </div>
 
-        {/* Quick Reference */}
-        <Card className="gaming-card mb-12 border-primary/30">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <BookOpen className="w-6 h-6 text-primary" />
-              Quick Reference
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="grid md:grid-cols-3 gap-6 text-center">
-              <div>
-                <h3 className="font-semibold text-foreground mb-2">Registration Deadline</h3>
-                <p className="text-2xl font-bold text-primary">48 Hours</p>
-                <p className="text-sm text-muted-foreground">Before tournament start</p>
-              </div>
-              <div>
-                <h3 className="font-semibold text-foreground mb-2">Late Arrival Grace</h3>
-                <p className="text-2xl font-bold text-primary">15 Minutes</p>
-                <p className="text-sm text-muted-foreground">Maximum wait time</p>
-              </div>
-              <div>
-                <h3 className="font-semibold text-foreground mb-2">Result Reporting</h3>
-                <p className="text-2xl font-bold text-primary">2 Hours</p>
-                <p className="text-sm text-muted-foreground">After game completion</p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Rule Categories */}
+        {/* Rules Sections */}
         <div className="space-y-8 mb-12">
           {ruleCategories.map((category, index) => {
             const IconComponent = category.icon;
@@ -148,121 +154,24 @@ const Rules = () => {
           })}
         </div>
 
-        {/* Game Settings */}
-        <div className="grid lg:grid-cols-2 gap-8 mb-12">
-          <Card className="gaming-card">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Trophy className="w-6 h-6 text-primary" />
-                Standard Game Settings
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                {gameSettings.map((setting, index) => (
-                  <div key={index} className="flex justify-between items-center py-2">
-                    <div className="flex items-center gap-2">
-                      <span className="text-foreground font-medium">{setting.setting}</span>
-                      {setting.required && (
-                        <Badge variant="destructive" className="text-xs">Required</Badge>
-                      )}
-                    </div>
-                    <span className="text-muted-foreground font-mono text-sm">{setting.value}</span>
-                  </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card className="gaming-card">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <AlertTriangle className="w-6 h-6 text-destructive" />
-                Prohibited Actions
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <ul className="space-y-3">
-                {prohibitedActions.map((action, index) => (
-                  <li key={index} className="flex items-start gap-3">
-                    <div className="w-2 h-2 bg-destructive rounded-full mt-2 flex-shrink-0"></div>
-                    <span className="text-muted-foreground leading-relaxed">{action}</span>
-                  </li>
-                ))}
-              </ul>
-            </CardContent>
-          </Card>
-        </div>
-
-        {/* Rating System */}
-        <Card className="gaming-card mb-12">
-          <CardHeader>
-            <CardTitle>Rating System</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="grid md:grid-cols-2 gap-8">
-              <div>
-                <h3 className="text-lg font-semibold text-primary mb-4">How Ratings Work</h3>
-                <div className="space-y-3 text-muted-foreground">
-                  <p>• All players start with a base rating of 1200 points</p>
-                  <p>• Ratings are calculated using a modified Elo system</p>
-                  <p>• Points gained/lost depend on opponent strength and game outcome</p>
-                  <p>• Tournament games have higher rating impact than casual matches</p>
-                  <p>• Ratings reset annually with each new season</p>
-                </div>
-              </div>
-              <div>
-                <h3 className="text-lg font-semibold text-primary mb-4">Rating Tiers</h3>
-                <div className="space-y-2">
-                  <div className="flex justify-between items-center p-2 rounded bg-muted/50">
-                    <span className="font-medium">Grandmaster</span>
-                    <span className="text-yellow-500 font-mono">2200+</span>
-                  </div>
-                  <div className="flex justify-between items-center p-2 rounded bg-muted/50">
-                    <span className="font-medium">Master</span>
-                    <span className="text-purple-500 font-mono">2000-2199</span>
-                  </div>
-                  <div className="flex justify-between items-center p-2 rounded bg-muted/50">
-                    <span className="font-medium">Expert</span>
-                    <span className="text-blue-500 font-mono">1800-1999</span>
-                  </div>
-                  <div className="flex justify-between items-center p-2 rounded bg-muted/50">
-                    <span className="font-medium">Advanced</span>
-                    <span className="text-green-500 font-mono">1600-1799</span>
-                  </div>
-                  <div className="flex justify-between items-center p-2 rounded bg-muted/50">
-                    <span className="font-medium">Intermediate</span>
-                    <span className="text-yellow-600 font-mono">1400-1599</span>
-                  </div>
-                  <div className="flex justify-between items-center p-2 rounded bg-muted/50">
-                    <span className="font-medium">Novice</span>
-                    <span className="text-gray-500 font-mono">1200-1399</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Contact for Questions */}
+        {/* Contact Section */}
         <Card className="gaming-card">
           <CardContent className="p-8 text-center">
             <h2 className="text-2xl font-bold text-foreground mb-4">Questions About Rules?</h2>
             <p className="text-muted-foreground mb-6 max-w-2xl mx-auto">
-              If you have any questions about our rules or need clarification on any policies, 
-              don't hesitate to reach out to our admin team. We're here to help ensure 
-              fair and enjoyable competition for everyone.
+              If you have any questions or need clarification on these rules, contact a moderator or admin.
+              The goal is to ensure fair and enjoyable competitive play for everyone.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <a 
-                href="mailto:admin@civplayers.com"
+              <a
+                href="mailto:suedeciviii@gmail.com"
                 className="inline-flex items-center justify-center px-6 py-3 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors"
               >
                 Contact Admin Team
               </a>
-              <a 
-                href="https://discord.gg/civplayers" 
-                target="_blank" 
+              <a
+                href="https://discord.gg/teVt5pt"
+                target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center justify-center px-6 py-3 border border-primary/30 rounded-lg hover:bg-primary/10 transition-colors"
               >

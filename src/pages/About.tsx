@@ -29,14 +29,6 @@ const About = () => {
     }
   ];
 
-  const milestones = [
-    { year: "2020", event: "League Founded", description: "CivPlayers Civ3 League was established by passionate community members" },
-    { year: "2021", event: "First Major Tournament", description: "Inaugural championship with 50+ participants" },
-    { year: "2022", event: "Hunger Games Success", description: "Our most popular tournament format was born" },
-    { year: "2023", event: "500 Members", description: "Reached 500 active community members" },
-    { year: "2024", event: "International Recognition", description: "Became the premier Civ3 multiplayer community" }
-  ];
-
   return (
     <div className="min-h-screen bg-background">
       <Header />
@@ -47,10 +39,27 @@ const About = () => {
           <h1 className="text-4xl md:text-5xl font-bold text-gradient mb-4">
             About the League
           </h1>
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-            The premier destination for competitive Civilization III multiplayer gaming, 
-            bringing together strategic minds from around the world.
-          </p>
+          <div className="flex flex-col md:flex-row justify-center items-stretch gap-8 mb-12">
+            <div className="flex-1 flex">
+              <Card className="gaming-card flex-1 flex flex-col">
+                <CardContent className="p-8 text-center flex-1 flex flex-col justify-center">
+                  <p className="text-lg text-muted-foreground leading-relaxed">
+                    After 6 years of being out of service, we are proud to announce the return of the Civ 3 ladder! Despite some bumps along the road, the Civ 3 community has remained passionate and tightly knit, and there has been a recent wave of new players picking the game up on steam and learning to play multiplayer. With this influx of newer players, we’ve been able to have multiple games running and more consistent activity every day. We hope to continue to expand and keep this amazing game alive.
+                  </p>
+                </CardContent>
+              </Card>
+            </div>
+
+            <div className="flex-1 flex">
+              <Card className="gaming-card flex-1 flex flex-col">
+                <CardContent className="p-8 text-center flex-1 flex flex-col justify-center">
+                  <p className="text-lg text-muted-foreground leading-relaxed">
+                    The community has a rich history of tactics, stories, and creative mods. Vanilla Civ 3 doesn’t make for a great multiplayer experience, due to game length, imbalances, and inconclusive endings. As a result, league games are played with mods that make for a fair, conclusive match, that can be finished in under 3 hours.
+                  </p>
+                </CardContent>
+              </Card>
+            </div>
+          </div>
         </div>
 
         {/* Mission Statement */}
@@ -156,28 +165,6 @@ const About = () => {
           </div>
         </div>
 
-        {/* History Timeline */}
-        <div className="mb-12">
-          <h2 className="text-3xl font-bold text-primary mb-8 text-center">Our Journey</h2>
-          <Card className="gaming-card">
-            <CardContent className="p-8">
-              <div className="space-y-8">
-                {milestones.map((milestone, index) => (
-                  <div key={index} className="flex items-start gap-6">
-                    <div className="flex-shrink-0 w-16 h-16 bg-primary/20 rounded-full flex items-center justify-center border-2 border-primary">
-                      <span className="text-primary font-bold text-sm">{milestone.year}</span>
-                    </div>
-                    <div className="flex-grow">
-                      <h3 className="text-xl font-semibold text-foreground mb-2">{milestone.event}</h3>
-                      <p className="text-muted-foreground leading-relaxed">{milestone.description}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-
         {/* Join Us */}
         <Card className="gaming-card">
           <CardContent className="p-8 text-center">
@@ -190,7 +177,7 @@ const About = () => {
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <a 
-                href="https://discord.gg/civplayers" 
+                href="https://discord.gg/teVt5pt" 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="btn-hero inline-flex items-center justify-center px-6 py-3 text-lg"
@@ -198,7 +185,7 @@ const About = () => {
                 Join Discord Community
               </a>
               <a 
-                href="https://steamcommunity.com/groups/civplayers" 
+                href="https://steamcommunity.com/groups/CivPlayersCiv3" 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="inline-flex items-center justify-center px-6 py-3 text-lg border border-primary/30 rounded-lg hover:bg-primary/10 transition-colors"

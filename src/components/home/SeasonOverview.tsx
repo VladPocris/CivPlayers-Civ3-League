@@ -117,7 +117,7 @@ const SeasonOverview = () => {
               2024 Season Highlights
             </h3>
             <p className="text-muted-foreground leading-relaxed max-w-3xl mx-auto">
-              The 2024 season showcased incredible competition with over 500 active players participating 
+              The 2024 season showcased incredible competition with over 50 active players participating 
               in hundreds of matches. Suede claimed the top spot with an impressive 2246 rating, 
               while Halu demonstrated remarkable dedication with 492 games played and 229 victories. 
               The season featured multiple tournaments, special events, and countless strategic battles 
