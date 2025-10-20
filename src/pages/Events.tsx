@@ -28,12 +28,23 @@ const Events = () => {
 
   useEffect(() => {
     let cancelled = false;
+    const parseEventEndDate = (dateStr: string): number => {
+      if (!dateStr) return 0;
+      // Split by en dash, em dash, or hyphen, take the last segment as the end date
+      const parts = dateStr.split(/\s*[–—-]\s*/).map((p) => p.trim()).filter(Boolean);
+      const endPart = parts.length > 1 ? parts[parts.length - 1] : parts[0];
+      const t = Date.parse(endPart);
+      return isNaN(t) ? 0 : t;
+    };
     const load = async () => {
       try {
         const res = await fetch(`${import.meta.env.BASE_URL}data/events.json`);
         if (!res.ok) throw new Error('Failed to fetch events');
         const json = await res.json();
-        if (!cancelled) setEvents(json);
+        const sorted = Array.isArray(json)
+          ? json.slice().sort((a: EventItem, b: EventItem) => parseEventEndDate(b.date) - parseEventEndDate(a.date))
+          : [];
+        if (!cancelled) setEvents(sorted);
       } catch (err) {
         console.error('Error loading events.json', err);
       }

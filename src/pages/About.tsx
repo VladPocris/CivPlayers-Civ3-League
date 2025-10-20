@@ -60,32 +60,31 @@ const About = () => {
           </CardContent>
         </Card>
 
-        <div className="flex flex-col md:flex-row justify-center items-stretch gap-8 mb-12 max-w-7xl mx-auto">
-            <div className="flex-1 flex">
-              <Card className="gaming-card flex-1 flex flex-col">
-                <CardContent className="p-8 text-center flex-1 flex flex-col justify-center">
-                  <p className="text-left text-lg leading-relaxed" style={{ color: '#fff' }}>
-                    After 6 years of being out of service, we are proud to announce the return of the Civ 3 ladder! Despite some bumps along the road, the Civ 3 community has remained passionate and tightly knit, and there has been a recent wave of new players picking the game up on steam and learning to play multiplayer. With this influx of newer players, we've been able to have multiple games running and more consistent activity every day. We hope to continue to expand and keep this amazing game alive.
-                  </p>
-                </CardContent>
-              </Card>
-            </div>
-
-            <div className="flex-1 flex">
-              <Card className="gaming-card flex-1 flex flex-col">
-                <CardContent className="p-8 text-center flex-1 flex flex-col justify-center">
-                  <p className="text-left text-lg leading-relaxed" style={{ color: '#fff' }}>
-                    The community has a rich history of tactics, stories, and creative mods. Vanilla Civ 3 doesn't make for a great multiplayer experience, due to game length, imbalances, and inconclusive endings. As a result, league games are played with mods that make for a fair, conclusive match, that can be finished in under 3 hours.
-                  </p>
-                </CardContent>
-              </Card>
-            </div>
+        <div className="flex flex-col md:flex-row justify-center items-stretch gap-8 mb-12 max-w-7xl mx-auto h-full">
+          <div className="flex-1 flex h-full items-stretch">
+            <Card className="gaming-card flex-1 flex flex-col h-full">
+              <CardContent className="p-8 text-center flex-1 flex flex-col justify-center h-full">
+                <p className="text-left text-lg leading-relaxed" style={{ color: '#fff' }}>
+                  After 6 years of being out of service, we are proud to announce the return of the Civ 3 ladder! Despite some bumps along the road, the Civ 3 community has remained passionate and tightly knit, and there has been a recent wave of new players picking the game up on steam and learning to play multiplayer. With this influx of newer players, we've been able to have multiple games running and more consistent activity every day. We hope to continue to expand and keep this amazing game alive.
+                </p>
+              </CardContent>
+            </Card>
           </div>
+          <div className="flex-1 flex h-full items-stretch">
+            <Card className="gaming-card flex-1 flex flex-col h-full">
+              <CardContent className="p-8 text-center flex-1 flex flex-col justify-center h-full">
+                <p className="text-left text-lg leading-relaxed" style={{ color: '#fff' }}>
+                  The community has a rich history of tactics, stories, and creative mods. Vanilla Civ 3 doesn't make for a great multiplayer experience, due to game length, imbalances, and inconclusive endings. As a result, league games are played with mods that make for a fair, conclusive match, that can be finished in under 3 hours.
+                </p>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
 
         {/* What We Do */}
         <div className="mb-12">
           <h2 className="text-3xl font-bold text-primary mb-8 text-center">What We Do</h2>
-          <div className="grid md:grid-cols-2 gap-8">
+          <div className="grid md:grid-cols-4 gap-8">
             <Card className="gaming-card">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">

@@ -113,16 +113,13 @@ const OldLeaderboards = () => {
                     key={key}
                     value={key}
                     className={cn(
-                      "active-leaderboard-tab font-bold border border-[var(--civ3-border)] shadow-md transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-[var(--civ3-border)] focus-visible:ring-offset-2 text-sm sm:text-base",
+                      "active-leaderboard-tab font-bold border border-[var(--civ3-border)] shadow-md transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-[var(--civ3-border)] focus-visible:ring-offset-2 text-sm sm:text-base text-white hover:text-white",
                       currentTab === key
                         ? ""
-                        : "text-[var(--civ3-blue)] hover:bg-black hover:text-white"
+                        : "hover:bg-black"
                     )}
                   >
                     {key}
-                    <span className="hidden sm:inline">
-                      {" Leaderboard"}
-                    </span>
                   </TabsTrigger>
                 ))}
               </TabsList>

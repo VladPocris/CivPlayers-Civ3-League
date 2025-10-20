@@ -34,6 +34,12 @@ type EventItem = {
   twitchLink?: string;
   participants?: string;
   prize?: string;
+  // Ordered rich content blocks for event details rendering
+  content?: Array<
+    | { type: "paragraph"; text: string }
+    | { type: "image"; src: string; alt?: string }
+    | { type: "link"; url: string; label?: string }
+  >;
   bracket?: {
     rounds: Array<{
       name: string;
@@ -479,19 +485,244 @@ const Admin = () => {
                       />
                     </div>
 
-                    <div>
-                      <label className="block text-xs md:text-sm font-medium text-muted-foreground mb-2">
-                        Long Description
-                      </label>
-                      <textarea
-                        className="w-full p-2 md:p-3 border border-border rounded bg-background text-foreground min-h-[100px] text-sm md:text-base"
-                        value={ev.longDescription || ""}
-                        onChange={(e) => {
-                          const copy = (eventsStructured || []).slice();
-                          copy[ei] = { ...copy[ei], longDescription: e.target.value };
-                          setEventsStructured(copy);
-                        }}
-                      />
+                    {/* Legacy Long Description management (no separate editor) */}
+                    {(ev.longDescription && ev.longDescription !== "N/A") && (
+                      <div className="border border-amber-500/30 bg-amber-500/5 rounded p-3">
+                        <div className="flex items-center justify-between mb-2">
+                          <label className="text-xs md:text-sm font-medium text-foreground">
+                            Legacy Long Description detected
+                          </label>
+                          <div className="flex gap-2">
+                            {/* Convert only if no ordered content exists yet */}
+                            {(!ev.content || ev.content.length === 0) && (
+                              <Button
+                                variant="outline"
+                                size="sm"
+                                onClick={() => {
+                                  const copy = (eventsStructured || []).slice();
+                                  const raw = (copy[ei].longDescription || "").trim();
+                                  const blocks = raw
+                                    .split(/\n\s*\n/)
+                                    .map((p) => p.trim())
+                                    .filter(Boolean)
+                                    .map((text) => ({ type: "paragraph" as const, text }));
+                                  copy[ei] = { ...copy[ei], content: blocks };
+                                  setEventsStructured(copy);
+                                  setStatus("✓ Converted legacy long description into ordered blocks");
+                                }}
+                                className="text-foreground hover:text-primary hover:bg-primary/10 text-xs"
+                              >
+                                Convert to blocks
+                              </Button>
+                            )}
+                            <Button
+                              variant="destructive"
+                              size="sm"
+                              onClick={() => {
+                                const copy = (eventsStructured || []).slice();
+                                copy[ei] = { ...copy[ei], longDescription: "" };
+                                setEventsStructured(copy);
+                                setStatus("✓ Removed legacy long description");
+                              }}
+                              className="text-white bg-red-600 hover:bg-red-700 text-xs"
+                            >
+                              Remove legacy text
+                            </Button>
+                          </div>
+                        </div>
+                        <div className="max-h-40 overflow-auto text-xs md:text-sm whitespace-pre-wrap text-foreground/90 border border-border/50 rounded p-2 bg-background">
+                          {ev.longDescription}
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Ordered Details Content Blocks */}
+                    <div className="border-t border-border pt-4">
+                      <div className="flex items-center justify-between mb-3">
+                        <label className="text-xs md:text-sm font-medium text-foreground">Event Details (ordered blocks)</label>
+                        <div className="flex gap-2">
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => {
+                              const copy = (eventsStructured || []).slice();
+                              const list = copy[ei].content ? copy[ei].content.slice() : [];
+                              list.push({ type: "paragraph", text: "" });
+                              copy[ei] = { ...copy[ei], content: list };
+                              setEventsStructured(copy);
+                            }}
+                            className="text-foreground hover:text-primary hover:bg-primary/10 text-xs"
+                          >
+                            <Plus className="w-3 h-3 mr-1" /> Paragraph
+                          </Button>
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => {
+                              const copy = (eventsStructured || []).slice();
+                              const list = copy[ei].content ? copy[ei].content.slice() : [];
+                              list.push({ type: "image", src: "", alt: "" });
+                              copy[ei] = { ...copy[ei], content: list };
+                              setEventsStructured(copy);
+                            }}
+                            className="text-foreground hover:text-primary hover:bg-primary/10 text-xs"
+                          >
+                            <Plus className="w-3 h-3 mr-1" /> Image
+                          </Button>
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => {
+                              const copy = (eventsStructured || []).slice();
+                              const list = copy[ei].content ? copy[ei].content.slice() : [];
+                              list.push({ type: "link", url: "", label: "" });
+                              copy[ei] = { ...copy[ei], content: list };
+                              setEventsStructured(copy);
+                            }}
+                            className="text-foreground hover:text-primary hover:bg-primary/10 text-xs"
+                          >
+                            <Plus className="w-3 h-3 mr-1" /> Link
+                          </Button>
+                        </div>
+                      </div>
+
+                      <div className="space-y-3">
+                        {(ev.content || []).map((block, bi) => (
+                          <div key={bi} className="p-3 border border-border rounded bg-muted/10">
+                            <div className="flex items-center justify-between mb-2">
+                              <div className="flex items-center gap-2">
+                                <Badge variant="outline" className="text-xs">{bi + 1}</Badge>
+                                <span className="text-xs uppercase tracking-wide text-muted-foreground">
+                                  {block.type}
+                                </span>
+                              </div>
+                              <div className="flex items-center gap-2">
+                                <Button
+                                  variant="outline"
+                                  size="sm"
+                                  onClick={() => {
+                                    const copy = (eventsStructured || []).slice();
+                                    const list = (copy[ei].content || []).slice();
+                                    if (bi > 0) {
+                                      const tmp = list[bi - 1];
+                                      list[bi - 1] = list[bi];
+                                      list[bi] = tmp;
+                                      copy[ei] = { ...copy[ei], content: list };
+                                      setEventsStructured(copy);
+                                    }
+                                  }}
+                                  className="text-foreground hover:text-primary hover:bg-primary/10 text-xs"
+                                >
+                                  ↑
+                                </Button>
+                                <Button
+                                  variant="outline"
+                                  size="sm"
+                                  onClick={() => {
+                                    const copy = (eventsStructured || []).slice();
+                                    const list = (copy[ei].content || []).slice();
+                                    if (bi < list.length - 1) {
+                                      const tmp = list[bi + 1];
+                                      list[bi + 1] = list[bi];
+                                      list[bi] = tmp;
+                                      copy[ei] = { ...copy[ei], content: list };
+                                      setEventsStructured(copy);
+                                    }
+                                  }}
+                                  className="text-foreground hover:text-primary hover:bg-primary/10 text-xs"
+                                >
+                                  ↓
+                                </Button>
+                                <Button
+                                  variant="ghost"
+                                  size="sm"
+                                  onClick={() => {
+                                    const copy = (eventsStructured || []).slice();
+                                    const list = (copy[ei].content || []).slice();
+                                    list.splice(bi, 1);
+                                    copy[ei] = { ...copy[ei], content: list };
+                                    setEventsStructured(copy);
+                                  }}
+                                  className="hover:bg-red-500/10 text-xs"
+                                >
+                                  <Trash2 className="w-3 h-3 text-red-500" />
+                                </Button>
+                              </div>
+                            </div>
+
+                            {block.type === "paragraph" && (
+                              <textarea
+                                className="w-full p-2 border border-border rounded bg-background text-foreground min-h-[80px] text-sm"
+                                placeholder="Paragraph text…"
+                                value={block.text}
+                                onChange={(e) => {
+                                  const copy = (eventsStructured || []).slice();
+                                  const list = (copy[ei].content || []).slice();
+                                  list[bi] = { ...(list[bi] as any), text: e.target.value };
+                                  copy[ei] = { ...copy[ei], content: list };
+                                  setEventsStructured(copy);
+                                }}
+                              />
+                            )}
+                            {block.type === "image" && (
+                              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                                <input
+                                  className="p-2 border border-border rounded bg-background text-foreground text-sm"
+                                  placeholder="Image path or URL"
+                                  value={block.src}
+                                  onChange={(e) => {
+                                    const copy = (eventsStructured || []).slice();
+                                    const list = (copy[ei].content || []).slice();
+                                    list[bi] = { ...(list[bi] as any), src: e.target.value };
+                                    copy[ei] = { ...copy[ei], content: list };
+                                    setEventsStructured(copy);
+                                  }}
+                                />
+                                <input
+                                  className="p-2 border border-border rounded bg-background text-foreground text-sm"
+                                  placeholder="Alt text (optional)"
+                                  value={(block as any).alt || ""}
+                                  onChange={(e) => {
+                                    const copy = (eventsStructured || []).slice();
+                                    const list = (copy[ei].content || []).slice();
+                                    list[bi] = { ...(list[bi] as any), alt: e.target.value };
+                                    copy[ei] = { ...copy[ei], content: list };
+                                    setEventsStructured(copy);
+                                  }}
+                                />
+                              </div>
+                            )}
+                            {block.type === "link" && (
+                              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                                <input
+                                  className="p-2 border border-border rounded bg-background text-foreground text-sm"
+                                  placeholder="Label (optional)"
+                                  value={(block as any).label || ""}
+                                  onChange={(e) => {
+                                    const copy = (eventsStructured || []).slice();
+                                    const list = (copy[ei].content || []).slice();
+                                    list[bi] = { ...(list[bi] as any), label: e.target.value };
+                                    copy[ei] = { ...copy[ei], content: list };
+                                    setEventsStructured(copy);
+                                  }}
+                                />
+                                <input
+                                  className="p-2 border border-border rounded bg-background text-foreground text-sm"
+                                  placeholder="URL"
+                                  value={(block as any).url}
+                                  onChange={(e) => {
+                                    const copy = (eventsStructured || []).slice();
+                                    const list = (copy[ei].content || []).slice();
+                                    list[bi] = { ...(list[bi] as any), url: e.target.value };
+                                    copy[ei] = { ...copy[ei], content: list };
+                                    setEventsStructured(copy);
+                                  }}
+                                />
+                              </div>
+                            )}
+                          </div>
+                        ))}
+                      </div>
                     </div>
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -563,29 +794,44 @@ const Admin = () => {
                     {/* Bracket Editor */}
                     {ev.bracket?.rounds && (
                       <div className="border-t border-border pt-4 space-y-3">
-                        <div className="flex items-center justify-between">
+                        <div className="flex items-center justify-between mb-2">
                           <label className="text-xs md:text-sm font-medium text-foreground">
                             Bracket Rounds
                           </label>
-                          <Button
-                            variant="destructive"
-                            size="sm"
-                            onClick={() => {
-                              const copy = (eventsStructured || []).slice();
-                              delete copy[ei].bracket;
-                              setEventsStructured(copy);
-                            }}
-                            className="bg-red-600 hover:bg-red-700 text-white text-xs"
-                          >
-                            <Trash2 className="w-3 h-3 mr-1" />
-                            Remove Bracket
-                          </Button>
+                          <div className="flex gap-2">
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              onClick={() => {
+                                const copy = (eventsStructured || []).slice();
+                                copy[ei].bracket!.rounds.push({ name: `Round ${copy[ei].bracket!.rounds.length + 1}`, matches: [] });
+                                setEventsStructured(copy);
+                              }}
+                              className="text-foreground hover:text-primary hover:bg-primary/10 text-xs"
+                            >
+                              <Plus className="w-3 h-3 mr-1" />
+                              Add Round
+                            </Button>
+                            <Button
+                              variant="destructive"
+                              size="sm"
+                              onClick={() => {
+                                const copy = (eventsStructured || []).slice();
+                                delete copy[ei].bracket;
+                                setEventsStructured(copy);
+                              }}
+                              className="bg-red-600 hover:bg-red-700 text-white text-xs"
+                            >
+                              <Trash2 className="w-3 h-3 mr-1" />
+                              Remove Bracket
+                            </Button>
+                          </div>
                         </div>
                         {ev.bracket.rounds.map((round, ri) => (
                           <Card key={ri} className="bg-muted/20 border border-border">
-                            <CardHeader className="p-3 md:p-4">
+                            <CardHeader className="p-3 md:p-4 flex flex-col md:flex-row md:items-center md:justify-between gap-2">
                               <input
-                                className="w-full p-2 border border-border rounded bg-background text-foreground font-semibold text-sm md:text-base"
+                                className="w-full md:w-auto p-2 border border-border rounded bg-background text-foreground font-semibold text-sm md:text-base"
                                 value={round.name}
                                 onChange={(e) => {
                                   const copy = (eventsStructured || []).slice();
@@ -593,12 +839,52 @@ const Admin = () => {
                                   setEventsStructured(copy);
                                 }}
                               />
+                              <div className="flex gap-2 mt-2 md:mt-0">
+                                <Button
+                                  variant="outline"
+                                  size="sm"
+                                  onClick={() => {
+                                    const copy = (eventsStructured || []).slice();
+                                    copy[ei].bracket!.rounds[ri].matches.push({ p1: '', p2: '' });
+                                    setEventsStructured(copy);
+                                  }}
+                                  className="text-foreground hover:text-primary hover:bg-primary/10 text-xs"
+                                >
+                                  <Plus className="w-3 h-3 mr-1" />
+                                  Add Match
+                                </Button>
+                                <Button
+                                  variant="destructive"
+                                  size="sm"
+                                  onClick={() => {
+                                    const copy = (eventsStructured || []).slice();
+                                    copy[ei].bracket!.rounds.splice(ri, 1);
+                                    setEventsStructured(copy);
+                                  }}
+                                  className="bg-red-600 hover:bg-red-700 text-white text-xs"
+                                >
+                                  <Trash2 className="w-3 h-3 mr-1" />
+                                  Remove Round
+                                </Button>
+                              </div>
                             </CardHeader>
                             <CardContent className="p-3 md:p-4 space-y-2">
                               {round.matches.map((match, mi) => (
                                 <div key={mi} className="bg-background/50 p-2 md:p-3 rounded border border-border/50 space-y-2">
                                   <div className="flex items-center justify-between mb-2">
                                     <Badge variant="outline" className="text-xs">Match {mi + 1}</Badge>
+                                    <Button
+                                      variant="ghost"
+                                      size="sm"
+                                      onClick={() => {
+                                        const copy = (eventsStructured || []).slice();
+                                        copy[ei].bracket!.rounds[ri].matches.splice(mi, 1);
+                                        setEventsStructured(copy);
+                                      }}
+                                      className="hover:bg-red-500/10 text-xs"
+                                    >
+                                      <Trash2 className="w-3 h-3 text-red-500" />
+                                    </Button>
                                     {match.score && (
                                       <Badge className="bg-primary/20 text-primary text-xs">{match.score}</Badge>
                                     )}

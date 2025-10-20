@@ -132,7 +132,7 @@ const HallOfFame = () => {
       <Header />
 
       <main className="container mx-auto px-4 py-8 md:py-12 space-y-8 md:space-y-12">
-        <section className="text-center space-y-3 md:space-y-4 px-4">
+        <section className="text-center space-y-3 md:space-y-4 px-4 mb-4">
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight text-gradient drop-shadow-sm">Hall of Fame</h1>
           <p className="text-base md:text-xl text-muted-foreground/90 leading-relaxed tracking-wide max-w-4xl mx-auto">Celebrating champions and standout players through the years.</p>
         </section>
@@ -304,6 +304,15 @@ const HallOfFame = () => {
                       </Recharts.BarChart>
                     </Recharts.ResponsiveContainer>
                   </div>
+                  {/* Custom legend below chart */}
+                  <div className="flex flex-wrap justify-center gap-4 mt-4">
+                    {list.map((entry) => (
+                      <div key={entry.name} className="flex items-center gap-2">
+                        <span className="inline-block w-3 h-3 rounded-full" style={{ backgroundColor: entry.fill }}></span>
+                        <span className="text-sm font-medium text-white">{entry.name}</span>
+                      </div>
+                    ))}
+                  </div>
                 </CardContent>
               </Card>
             ))}
@@ -358,6 +367,7 @@ const HallOfFame = () => {
                           <Recharts.Tooltip 
                             content={CustomTooltip}
                           />
+                          {/* No built-in legend, use custom below chart */}
                           <Recharts.Line 
                             type="monotone"
                             dataKey="winRate" 
@@ -372,6 +382,14 @@ const HallOfFame = () => {
                           </Recharts.Line>
                         </Recharts.LineChart>
                       </Recharts.ResponsiveContainer>
+                    </div>
+                    {/* Custom legend below chart: Name - value, no color */}
+                    <div className="flex flex-wrap justify-center gap-4 mt-4">
+                      {list.map((entry) => (
+                        <span key={entry.name} className="text-sm font-medium text-white">
+                          {entry.name} - {entry.winRate}%
+                        </span>
+                      ))}
                     </div>
                   </CardContent>
                 </Card>

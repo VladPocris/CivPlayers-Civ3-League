@@ -46,6 +46,17 @@ export default function EventDetails() {
   const [event, setEvent] = useState<EventItem | null>(null);
   useDocumentTitle(event ? `${event.title} - Event` : "Event - Civ 3 League");
 
+  // Resolve a URL that might be relative to the site base path (GitHub Pages basename)
+  const resolveUrl = (u: string): string => {
+    if (!u) return u;
+    const url = String(u).trim();
+    if (/^https?:\/\//i.test(url)) return url; // absolute http(s)
+    if (url.startsWith("/")) return url; // already absolute path
+    // treat as relative to BASE_URL (public/ root)
+    const cleaned = url.replace(/^\.\/?/, "");
+    return `${import.meta.env.BASE_URL}${cleaned}`;
+  };
+
   useEffect(() => {
     let cancelled = false;
     const load = async () => {
@@ -71,7 +82,7 @@ export default function EventDetails() {
       <Header />
       <main className="container mx-auto px-4 py-12">
         <div className="mb-6">
-          <Button variant="outline" asChild className="text-foreground hover:text-primary hover:bg-primary/10">
+              <Button variant="outline" asChild className="text-foreground hover:text-primary hover:bg-primary/10">
             <Link to="/events">
               <ChevronLeft className="w-4 h-4 mr-2" /> Back to Events
             </Link>
@@ -124,27 +135,97 @@ export default function EventDetails() {
             </div>
 
             {/* Description */}
-            {event.description && (
-              <Card className="gaming-card">
-                <CardHeader>
-                  <CardTitle className="text-foreground">Overview</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-white leading-relaxed">{event.description}</p>
-                </CardContent>
-              </Card>
-            )}
-            {event.longDescription && (
+            {/* Ordered Content Blocks (preferred) inside a Card */}
+            {Array.isArray((event as any).content) && (event as any).content.length > 0 ? (
               <Card className="gaming-card">
                 <CardHeader>
                   <CardTitle className="text-foreground">Details</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <div className="prose prose-invert max-w-none">
-                    <p className="text-white leading-relaxed">{event.longDescription}</p>
+                  <div className="space-y-4 text-foreground/90 text-base md:text-lg leading-relaxed">
+                    {(event as any).content.map((block: any, idx: number) => {
+                      if (!block || !block.type) return null;
+                      switch (block.type) {
+                        case "paragraph": {
+                          const text = String(block.text || "").trim();
+                          if (!text) return null;
+                          return (
+                            <p key={idx} className="whitespace-pre-wrap leading-relaxed text-base md:text-lg">{text}</p>
+                          );
+                        }
+                        case "image": {
+                          const src = resolveUrl(String(block.src || "").trim());
+                          if (!src) return null;
+                          return (
+                            <figure key={idx} className="flex flex-col items-center gap-2">
+                              <img
+                                src={src}
+                                alt={block.alt || "Event image"}
+                                className="max-h-[400px] rounded border border-border shadow"
+                                loading="lazy"
+                              />
+                              {block.alt ? (
+                                <figcaption className="text-xs text-muted-foreground">{block.alt}</figcaption>
+                              ) : null}
+                            </figure>
+                          );
+                        }
+                        case "link": {
+                          const url = resolveUrl(String(block.url || "").trim());
+                          if (!url) return null;
+                          const label = String(block.label || url);
+                          return (
+                            <p key={idx}>
+                              <a
+                                href={url}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="text-primary hover:underline break-all"
+                              >
+                                {label}
+                              </a>
+                            </p>
+                          );
+                        }
+                        default:
+                          return null;
+                      }
+                    })}
                   </div>
                 </CardContent>
               </Card>
+            ) : (
+              <>
+                {/* Fallback: Overview in Card */}
+                {event.description && event.description !== "N/A" && (
+                  <Card className="gaming-card">
+                    <CardHeader>
+                      <CardTitle className="text-foreground">Overview</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <p className="text-white leading-relaxed whitespace-pre-wrap text-base md:text-lg">{event.description}</p>
+                    </CardContent>
+                  </Card>
+                )}
+
+                {/* Fallback: Details in Card */}
+                {event.longDescription && event.longDescription !== "N/A" && (
+                  <Card className="gaming-card">
+                    <CardHeader>
+                      <CardTitle className="text-foreground">Details</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="prose prose-invert max-w-none text-base md:text-lg">
+                        {event.longDescription
+                          .split(/\n\s*\n/)
+                          .map((para, idx) => (
+                            <p key={idx} className="text-white leading-relaxed whitespace-pre-wrap text-base md:text-lg">{para}</p>
+                          ))}
+                      </div>
+                    </CardContent>
+                  </Card>
+                )}
+              </>
             )}
 
             {/* Bracket */}
@@ -339,14 +420,25 @@ export default function EventDetails() {
               {/* YouTube Button */}
               {event.youtubeLink && event.youtubeLink !== "N/A" && (
                 <Button
-                  variant="outline"
+                  variant="default"
                   asChild
-                  className="text-foreground hover:text-primary hover:bg-primary/10"
-                  disabled={event.status === "completed"}
-                  style={event.status === "completed" ? { opacity: 0.5, pointerEvents: 'none' } : {}}
+                  className="bg-red-600 hover:bg-red-700 text-white"
                 >
                   <a href={event.youtubeLink} target="_blank" rel="noopener noreferrer">
                     Watch on YouTube
+                    <ExternalLink className="w-4 h-4 ml-2" />
+                  </a>
+                </Button>
+              )}
+              {/* Twitch Button */}
+              {event.twitchLink && event.twitchLink !== "N/A" && (
+                <Button
+                  variant="default"
+                  asChild
+                  className="bg-purple-600 hover:bg-purple-700 text-white"
+                >
+                  <a href={event.twitchLink} target="_blank" rel="noopener noreferrer">
+                    Watch on Twitch
                     <ExternalLink className="w-4 h-4 ml-2" />
                   </a>
                 </Button>
@@ -356,8 +448,6 @@ export default function EventDetails() {
                 variant="outline"
                 asChild
                 className="text-foreground hover:text-primary hover:bg-primary/10"
-                disabled={event.status === "completed"}
-                style={event.status === "completed" ? { opacity: 0.5, pointerEvents: 'none' } : {}}
               >
                 <a href="https://discord.gg/teVt5pt" target="_blank" rel="noopener noreferrer">
                   Join Discord
@@ -369,8 +459,6 @@ export default function EventDetails() {
                 variant="outline"
                 asChild
                 className="text-foreground hover:text-primary hover:bg-primary/10"
-                disabled={event.status === "completed"}
-                style={event.status === "completed" ? { opacity: 0.5, pointerEvents: 'none' } : {}}
               >
                 <a href="https://steamcommunity.com/groups/CivPlayersCiv3" target="_blank" rel="noopener noreferrer">
                   Join Steam

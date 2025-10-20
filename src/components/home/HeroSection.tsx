@@ -4,9 +4,17 @@ import { Trophy, Users, Calendar, Target, ExternalLink } from "lucide-react";
 
 const HeroSection = () => {
   return (
-    <div className="relative overflow-hidden bg-hero">
+    <div
+      className="relative overflow-hidden bg-hero"
+      style={{
+        backgroundImage: `linear-gradient(rgba(26,42,58,0.45), rgba(26,42,58,0.45)), url('/civ3-assets/civ3_bg.jpg')`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
+      }}
+    >
       {/* Background Pattern */}
-      <div className="absolute inset-0 opacity-50">
+      <div className="absolute inset-0 opacity-50 pointer-events-none">
         <svg className="w-full h-full" width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg">
           <g fill="none" fillRule="evenodd">
             <g fill="rgb(251 191 36)" fillOpacity="0.05">
@@ -15,29 +23,21 @@ const HeroSection = () => {
           </g>
         </svg>
       </div>
-      
+
       <div className="relative container mx-auto px-4 py-20">
-        
         <div className="text-center space-y-8">
           {/* Main Hero Content */}
           <div className="space-y-4">
-            {/* Mobile logo (above title) */}
-            <img
-              src={import.meta.env.BASE_URL + "civ3-assets/Logo/logo.png"}
-              alt="CivPlayers Logo"
-              className="mx-auto mb-4 w-16 h-16 object-contain md:hidden"
-            />
-
-            <div className="relative inline-block">
+            {/* Logo and Title side by side, always visible */}
+            <div className="flex flex-col items-center justify-center md:flex-row md:items-center md:justify-center gap-4 md:gap-8 mb-4">
+              <img
+                src={import.meta.env.BASE_URL + "civ3-assets/Logo/logo.png"}
+                alt="CivPlayers Logo"
+                className="w-24 h-24 sm:w-32 sm:h-32 md:w-40 md:h-40 lg:w-56 lg:h-56 object-contain drop-shadow-2xl"
+              />
               <h1 className="text-5xl md:text-7xl font-bold text-gradient tracking-tight">
                 CivPlayers
               </h1>
-              {/* Logo - positioned absolutely next to title */}
-              <img 
-                src={import.meta.env.BASE_URL + "civ3-assets/Logo/logo.png"} 
-                alt="CivPlayers Logo" 
-                className="absolute right-full top-1/2 -translate-y-1/2 mr-4 md:mr-6 w-16 h-16 md:w-20 md:h-20 lg:w-24 lg:h-24 object-contain hidden md:block"
-              />
             </div>
             <h2 className="text-2xl md:text-3xl font-semibold text-foreground">
               Welcome to the League!

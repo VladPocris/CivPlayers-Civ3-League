@@ -70,6 +70,30 @@ const Modes = () => {
         "Average game length: under 3 hours.",
       ],
     },
+    {
+      icon: Star,
+      title: "Medieval Japan (MDJ)",
+      description: `MDJ is a unique mode set in the Medieval era, featuring only Japanese civilizations and a custom map. It emphasizes samurai warfare, feudal strategy, and resourceful play. The mode is fast-paced and rewards both aggression and clever defense.`,
+      details: [
+        "All players use Japanese civs with unique samurai units.",
+        "Custom map designed for balanced feudal warfare.",
+        "Focus on medieval techs, castles, and resource control.",
+        "Short, intense matches with high replay value.",
+        "Ideal for players who enjoy tactical combat and quick decision-making.",
+      ],
+    },
+    {
+      icon: Users,
+      title: "MediMPT",
+      description: `MediMPT is a Medieval-era team mode that blends the classic MPT format with a focus on knights, castles, and feudal economies. It’s played on a tiny map with medieval civs and features unique balance changes for this era.`,
+      details: [
+        "Teams compete using only medieval-era civilizations.",
+        "Tiny map for fast-paced, high-stakes action.",
+        "Unique unit and tech balance for the medieval period.",
+        "Emphasis on teamwork, castle building, and knight warfare.",
+        "Matches are quick (about 2 hours) and highly strategic.",
+      ],
+    },
   ];
 
   const lesserModes = [

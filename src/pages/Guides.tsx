@@ -95,7 +95,7 @@ const Guides = () => {
         <Card className="gaming-card">
           <CardHeader>
             <CardTitle className="text-3xl text-primary text-center">{activeGuide.title}</CardTitle>
-            <p className="text-muted-foreground leading-relaxed text-center text-lg">{activeGuide.description}</p>
+            <p className="text-white leading-relaxed text-center text-lg">{activeGuide.description}</p>
           </CardHeader>
           <CardContent className="space-y-8">
             {/* Video Tutorials */}
@@ -121,7 +121,7 @@ const Guides = () => {
                             </div>
                           </div>
                           <div className="p-3 border-t border-border/50 bg-background/80">
-                            <p className="text-sm font-medium text-foreground">{video.label}</p>
+                            <p className="text-sm font-medium text-white">{video.label}</p>
                           </div>
                         </div>
                       </DialogTrigger>
@@ -165,7 +165,7 @@ const Guides = () => {
                     >
                       <a href={guide.url} target="_blank" rel="noopener noreferrer">
                         <FileText className="w-5 h-5 mr-3 flex-shrink-0" />
-                        <span className="text-left">{guide.label}</span>
+                        <span className="text-left text-white">{guide.label}</span>
                         <ExternalLink className="w-4 h-4 ml-auto flex-shrink-0" />
                       </a>
                     </Button>
@@ -191,7 +191,7 @@ const Guides = () => {
                     >
                       <a href={tool.url} target="_blank" rel="noopener noreferrer">
                         <ExternalLink className="w-5 h-5 mr-3 flex-shrink-0" />
-                        <span className="text-left">{tool.label}</span>
+                        <span className="text-left text-white">{tool.label}</span>
                         <ExternalLink className="w-4 h-4 ml-auto flex-shrink-0" />
                       </a>
                     </Button>
@@ -203,7 +203,7 @@ const Guides = () => {
             {/* Note */}
             {activeGuide.note && (
               <div className="bg-primary/10 border border-primary/30 rounded-lg p-4">
-                <p className="text-sm text-foreground italic text-center">{activeGuide.note}</p>
+                <p className="text-sm text-white italic text-center">{activeGuide.note}</p>
               </div>
             )}
 
@@ -228,7 +228,7 @@ const Guides = () => {
                             className="w-full h-auto hover:opacity-90 transition-opacity"
                           />
                           <div className="p-3 border-t border-border/50">
-                            <p className="text-sm text-muted-foreground text-center">{image.alt}</p>
+                            <p className="text-sm text-white text-center">{image.alt}</p>
                           </div>
                         </div>
                       </DialogTrigger>
@@ -258,7 +258,7 @@ const Guides = () => {
           <CardContent className="p-8 text-center">
             <BookOpen className="w-12 h-12 text-primary mx-auto mb-4" />
             <h2 className="text-2xl font-bold text-foreground mb-3">Need More Help?</h2>
-            <p className="text-muted-foreground mb-6 max-w-2xl mx-auto leading-relaxed">
+            <p className="text-white mb-6 max-w-2xl mx-auto leading-relaxed">
               Join our Discord community to ask questions, share strategies, and connect with experienced players who can help you improve your game.
             </p>
             <Button asChild className="btn-hero">
