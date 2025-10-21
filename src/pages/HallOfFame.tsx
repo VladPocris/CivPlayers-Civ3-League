@@ -11,6 +11,11 @@ import { ChevronDown, ChevronUp, Trophy, Gamepad2, Award, TrendingUp } from "luc
 
 const champions = [
   {
+    year: 2024,
+    name: "Suede",
+    standings: ["Suede - 2246", "cheeze - 1963", "rabdag - 1949", "rever - 1832", "Halu - 1814"],
+  },
+  {
     year: 2023,
     name: "Antiquity",
     standings: ["Antiquity", "rabdag", "rever", "SaberBoothTiger", "kismic"],
@@ -45,6 +50,11 @@ const champions = [
 ];
 
 const mostGamesByYear = {
+  2024: [
+    { name: "Halu", games: 492 },
+    { name: "Silent Knight", games: 382 },
+    { name: "zaxxon", games: 374 },
+  ],
   2023: [
     { name: "Silent Knight", games: 728 },
     { name: "Sooty", games: 649 },
@@ -63,6 +73,11 @@ const mostGamesByYear = {
 };
 
 const mostWinsByYear = {
+  2024: [
+    { name: "Halu", wins: 229, fill: "#f97316" },
+    { name: "Silent Knight", wins: 222, fill: "#06b6d4" },
+    { name: "Zardoz", wins: 190, fill: "#8b5cf6" },
+  ],
   2023: [
     { name: "Silent Knight", wins: 349, fill: "#f97316" },
     { name: "Sooty", wins: 332, fill: "#06b6d4" },
@@ -87,6 +102,11 @@ const mostWinsByYear = {
 };
 
 const winRateByYear = {
+  2024: [
+    { name: "rabdag", winRate: 71.2, fill: "#f97316" },
+    { name: "Suede", winRate: 64.0, fill: "#06b6d4" },
+    { name: "Carlot", winRate: 61.5, fill: "#8b5cf6" },
+  ],
   2023: [
     { name: "Antiquity", winRate: 67.9, fill: "#f97316" },
     { name: "Suede", winRate: 67.3, fill: "#06b6d4" },
