@@ -51,9 +51,9 @@ const champions = [
 
 const mostGamesByYear = {
   2024: [
-    { name: "Halu", games: 492 },
+    { name: "Halu", games: 495 },
     { name: "Silent Knight", games: 382 },
-    { name: "zaxxon", games: 374 },
+    { name: "zaxxon", games: 377 },
   ],
   2023: [
     { name: "Silent Knight", games: 728 },
@@ -74,9 +74,11 @@ const mostGamesByYear = {
 
 const mostWinsByYear = {
   2024: [
-    { name: "Halu", wins: 229, fill: "#f97316" },
+    { name: "Halu", wins: 230, fill: "#f97316" },
     { name: "Silent Knight", wins: 222, fill: "#06b6d4" },
     { name: "Zardoz", wins: 190, fill: "#8b5cf6" },
+    { name: "maclunkey", wins: 175, fill: "#00ff08ff" },
+    { name: "zaxxon", wins: 175, fill: "#005c54ff" },
   ],
   2023: [
     { name: "Silent Knight", wins: 349, fill: "#f97316" },
