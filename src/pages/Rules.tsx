@@ -33,7 +33,10 @@ const Rules = () => {
     const load = async () => {
       try {
         // Add cache-busting timestamp to force fresh data
-        const res = await fetch(`${import.meta.env.BASE_URL}data/rules.json?v=${Date.now()}`);
+        const res = await fetch(
+          `${import.meta.env.BASE_URL}data/rules.json?v=${Date.now()}`,
+          { cache: "no-store" }
+        );
         if (!res.ok) throw new Error('Failed to fetch rules');
         const json = await res.json();
         if (!cancelled) setRuleCategories(json);

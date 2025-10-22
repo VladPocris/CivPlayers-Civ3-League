@@ -76,7 +76,10 @@ const Admin = () => {
     setStatus("Loading...");
     try {
       // Add cache-busting timestamp to force fresh data
-      const res = await fetch(`${import.meta.env.BASE_URL}data/${key}.json?v=${Date.now()}`);
+      const res = await fetch(
+        `${import.meta.env.BASE_URL}data/${key}.json?v=${Date.now()}`,
+        { cache: "no-store" }
+      );
       if (!res.ok) throw new Error(`Failed to load /data/${key}.json`);
       const json = await res.json();
       if (key === "rules") setRulesStructured(Array.isArray(json) ? json : []);
