@@ -7,7 +7,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Trophy, Users, Shuffle, Sparkles, ChevronDown } from "lucide-react";
 import { GameMode, LeaderboardEntry, fetchModeData } from "@/lib/leaderboardData";
 
-type RatedPlayer = { name: string; rating: number };
+type RatedPlayer = { name: string; rating: number; pos?: number };
 
 function combinations<T>(arr: T[], k: number): T[][] {
   const result: T[][] = [];
@@ -61,7 +61,7 @@ export default function TeamGenerator() {
       .finally(() => setLoading(false));
   }, [mode]);
 
-  const suggestions = useMemo(() => data.map((d) => d.player), [data]);
+  const suggestions = useMemo(() => ["New Player", ...data.map((d) => d.player)], [data]);
   const ratingByName = useMemo(() => {
     const m = new Map<string, number>();
     data.forEach((d) => m.set(d.player.toLowerCase(), d.rating));
@@ -92,15 +92,17 @@ export default function TeamGenerator() {
     setWarning(null);
     // Build rated players list
     const entered = names.map((n) => n.trim()).filter((n) => n.length > 0);
-    // Duplicate detection (case-insensitive)
+    // Duplicate detection (case-insensitive), but allow duplicates for 'New Player'
     const seen = new Set<string>();
     for (const n of entered) {
       const key = n.toLowerCase();
-      if (seen.has(key)) {
-        setError(`Duplicate player detected: ${n}`);
-        return;
+      if (key !== "new player") {
+        if (seen.has(key)) {
+          setError(`Duplicate player detected: ${n}`);
+          return;
+        }
+        seen.add(key);
       }
-      seen.add(key);
     }
     const provided = entered;
     if (provided.length < 4) {
@@ -121,10 +123,11 @@ export default function TeamGenerator() {
     const positionMap = new Map<string, number>(); // Track original input position
     for (let i = 0; i < provided.length; i++) {
       const n = provided[i];
-      positionMap.set(n.toLowerCase(), i + 1);
-      const r = ratingByName.get(n.toLowerCase());
+      const lower = n.toLowerCase();
+      positionMap.set(lower, i + 1);
+      const r = lower === "new player" ? 1200 : ratingByName.get(lower);
       if (r == null) missing.push(n);
-      else rated.push({ name: n, rating: r });
+      else rated.push({ name: n, rating: r, pos: i + 1 });
     }
     if (missing.length) {
       setError(`Player(s) not found for ${mode}: ${missing.join(", ")}`);
@@ -173,8 +176,9 @@ export default function TeamGenerator() {
 
     const allCombos = combinations(rest, k);
     for (const A of allCombos) {
-      const Aset = new Set(A.map((p) => p.name));
-      const B = rest.filter((p) => !Aset.has(p.name));
+      // Use object identity to support duplicate names like "New Player"
+      const Aset = new Set<RatedPlayer>(A);
+      const B = rest.filter((p) => !Aset.has(p));
       const sumA = A.reduce((s, p) => s + p.rating, 0);
       const sumB = B.reduce((s, p) => s + p.rating, 0);
 
@@ -269,7 +273,17 @@ export default function TeamGenerator() {
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
                     <label className="block text-sm font-medium text-muted-foreground mb-1">Game Mode</label>
-                    <Select value={mode} onValueChange={(v) => { setMode(v as GameMode); setResult(null); }}>
+                    <Select
+                      value={mode}
+                      onValueChange={(v) => {
+                        setMode(v as GameMode);
+                        // Clear all inputs and state when mode changes to avoid stale calculations
+                        setNames(Array(8).fill(""));
+                        setResult(null);
+                        setError(null);
+                        setWarning(null);
+                      }}
+                    >
                       <SelectTrigger className="w-full">
                         <div className="flex items-center justify-between w-full">
                           <SelectValue placeholder="Select mode" />
@@ -347,14 +361,14 @@ export default function TeamGenerator() {
           {result.captains[0].name.split(' ')[0]} vs {result.captains[1].name.split(' ')[0]}
         </p>
         <p className="text-lg text-white mb-3">
-          {result.splitA.map(p => result.positionMap.get(p.name.toLowerCase())).join(', ')} vs{' '}
-          {result.splitB.map(p => result.positionMap.get(p.name.toLowerCase())).join(', ')}
+          {result.splitA.map(p => (p.pos ?? result.positionMap.get(p.name.toLowerCase()))).join(', ')} vs{' '}
+          {result.splitB.map(p => (p.pos ?? result.positionMap.get(p.name.toLowerCase()))).join(', ')}
         </p>
         <p className="text-sm text-muted-foreground flex items-center justify-center gap-1">
           <Sparkles className="w-4 h-4" /> Captain 2 picks{' '}
           {result.recommendation === 'A'
-            ? result.splitA.map(p => result.positionMap.get(p.name.toLowerCase())).join(', ')
-            : result.splitB.map(p => result.positionMap.get(p.name.toLowerCase())).join(', ')}
+            ? result.splitA.map(p => (p.pos ?? result.positionMap.get(p.name.toLowerCase()))).join(', ')
+            : result.splitB.map(p => (p.pos ?? result.positionMap.get(p.name.toLowerCase()))).join(', ')}
         </p>
       </div>
     </div>
@@ -373,13 +387,13 @@ export default function TeamGenerator() {
                 {/* Pick A Final Teams */}
                 <div className="bg-muted/30 p-4 rounded-lg border border-border/50">
                   <h3 className="font-semibold text-white mb-1">Pick A</h3>
-                  <p className="text-xs text-muted-foreground mb-3">If Captain 2 picks {result.splitA.map(p => result.positionMap.get(p.name.toLowerCase())).join(', ')}</p>
+                  <p className="text-xs text-muted-foreground mb-3">If Captain 2 picks {result.splitA.map(p => (p.pos ?? result.positionMap.get(p.name.toLowerCase()))).join(', ')}</p>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div className="p-3 rounded border border-border/50 bg-background/60">
                       <p className="font-semibold text-primary mb-2">Final Team A</p>
                       <ul className="space-y-1 text-sm text-white">
-                        {[result.captains[0], ...result.splitB].map((p) => (
-                          <li key={p.name}>{p.name} <span className="font-mono">({rounded(p.rating)})</span></li>
+                        {[result.captains[0], ...result.splitB].map((p, idx) => (
+                          <li key={`${p.name}-${p.pos ?? idx}`}>{p.name} <span className="font-mono">({rounded(p.rating)})</span></li>
                         ))}
                       </ul>
                       <p className="mt-2 text-sm text-white">Total ELO: <span className="font-mono">{rounded(result.optionA.sum1)}</span></p>
@@ -388,8 +402,8 @@ export default function TeamGenerator() {
                     <div className="p-3 rounded border border-border/50 bg-background/60">
                       <p className="font-semibold text-primary mb-2">Final Team B</p>
                       <ul className="space-y-1 text-sm text-white">
-                        {[result.captains[1], ...result.splitA].map((p) => (
-                          <li key={p.name}>{p.name} <span className="font-mono">({rounded(p.rating)})</span></li>
+                        {[result.captains[1], ...result.splitA].map((p, idx) => (
+                          <li key={`${p.name}-${p.pos ?? idx}`}>{p.name} <span className="font-mono">({rounded(p.rating)})</span></li>
                         ))}
                       </ul>
                       <p className="mt-2 text-sm text-white">Total ELO: <span className="font-mono">{rounded(result.optionA.sum2)}</span></p>
@@ -402,13 +416,13 @@ export default function TeamGenerator() {
                 {/* Pick B Final Teams */}
                 <div className="bg-muted/30 p-4 rounded-lg border border-border/50">
                   <h3 className="font-semibold text-white mb-1">Pick B</h3>
-                  <p className="text-xs text-muted-foreground mb-3">If Captain 2 picks {result.splitB.map(p => result.positionMap.get(p.name.toLowerCase())).join(', ')}</p>
+                  <p className="text-xs text-muted-foreground mb-3">If Captain 2 picks {result.splitB.map(p => (p.pos ?? result.positionMap.get(p.name.toLowerCase()))).join(', ')}</p>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div className="p-3 rounded border border-border/50 bg-background/60">
                       <p className="font-semibold text-primary mb-2">Final Team A</p>
                       <ul className="space-y-1 text-sm text-white">
-                        {[result.captains[0], ...result.splitA].map((p) => (
-                          <li key={p.name}>{p.name} <span className="font-mono">({rounded(p.rating)})</span></li>
+                        {[result.captains[0], ...result.splitA].map((p, idx) => (
+                          <li key={`${p.name}-${p.pos ?? idx}`}>{p.name} <span className="font-mono">({rounded(p.rating)})</span></li>
                         ))}
                       </ul>
                       <p className="mt-2 text-sm text-white">Total ELO: <span className="font-mono">{rounded(result.optionB.sum1)}</span></p>
@@ -417,8 +431,8 @@ export default function TeamGenerator() {
                     <div className="p-3 rounded border border-border/50 bg-background/60">
                       <p className="font-semibold text-primary mb-2">Final Team B</p>
                       <ul className="space-y-1 text-sm text-white">
-                        {[result.captains[1], ...result.splitB].map((p) => (
-                          <li key={p.name}>{p.name} <span className="font-mono">({rounded(p.rating)})</span></li>
+                        {[result.captains[1], ...result.splitB].map((p, idx) => (
+                          <li key={`${p.name}-${p.pos ?? idx}`}>{p.name} <span className="font-mono">({rounded(p.rating)})</span></li>
                         ))}
                       </ul>
                       <p className="mt-2 text-sm text-white">Total ELO: <span className="font-mono">{rounded(result.optionB.sum2)}</span></p>
