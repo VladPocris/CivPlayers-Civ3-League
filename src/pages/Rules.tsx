@@ -58,8 +58,7 @@ const Rules = () => {
             Ladder Rules & Guidelines
           </h1>
           <p className="text-xl leading-relaxed tracking-wide max-w-3xl mx-auto" style={{ color: '#fff' }}>
-            These are the official rules for all ladder games. Please read them carefully before playing.
-            Hosts and players are expected to know and follow these rules at all times.
+            Hello
           </p>
         </div>
 

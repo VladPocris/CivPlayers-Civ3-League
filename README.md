@@ -210,7 +210,23 @@ CivPlayers-Civ3-League/
 
 ---
 
-## 🚦 Getting Started
+## � Video Tutorials
+
+**Complete walkthrough videos** covering admin panel usage, web updates, and basic code modifications:
+
+👉 **[Access Video Tutorials](https://mega.nz/folder/yVkATZIY#pvSXQ1gHPInbOwATtO7Ymg)**
+
+Topics covered:
+- Admin panel navigation and features
+- How to update events, guides, and rules
+- Managing leaderboard data
+- Basic code changes and customization
+- Deployment and content updates
+- Important note: Setting the link on events admin panel to N/A, makes the buttons hidden for that particular event.
+
+---
+
+## 🚀 Getting Started
 
 ### Prerequisites
 - Node.js 18+ and npm
@@ -321,13 +337,7 @@ Contributions are welcome! Here's how:
 
 ---
 
-## 📄 License
-
-This project is open source and available under the [MIT License](LICENSE).
-
----
-
-## 🙏 Acknowledgments
+##  Acknowledgments
 
 - **CivPlayers Community** – For the passion and dedication to Civilization III multiplayer
 - **shadcn/ui** – For the beautiful component library
