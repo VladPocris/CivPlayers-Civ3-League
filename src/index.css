@@ -87,6 +87,20 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Fix mobile landscape viewport */
+html, body {
+  width: 100%;
+  overflow-x: hidden;
+  margin: 0;
+  padding: 0;
+}
+
+#root {
+  width: 100%;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
 /* CivPlayers League Design System - Gaming/Esports Theme */
 
 @layer base {
