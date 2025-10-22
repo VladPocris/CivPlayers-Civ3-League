@@ -101,6 +101,19 @@ html, body {
   overflow-x: hidden;
 }
 
+/* iPhone safe area support for rounded corners and notch */
+@supports (padding: max(0px)) {
+  body {
+    padding-left: max(0px, env(safe-area-inset-left));
+    padding-right: max(0px, env(safe-area-inset-right));
+  }
+  
+  #root {
+    padding-left: max(0px, env(safe-area-inset-left));
+    padding-right: max(0px, env(safe-area-inset-right));
+  }
+}
+
 /* CivPlayers League Design System - Gaming/Esports Theme */
 
 @layer base {

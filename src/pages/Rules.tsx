@@ -58,7 +58,7 @@ const Rules = () => {
             Ladder Rules & Guidelines
           </h1>
           <p className="text-xl leading-relaxed tracking-wide max-w-3xl mx-auto" style={{ color: '#fff' }}>
-            Hello
+            Official rules and guidelines for competitive play in the Civ3 League. Please read carefully to ensure fair and enjoyable matches for all players.
           </p>
         </div>
 
