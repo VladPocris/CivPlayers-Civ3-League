@@ -38,7 +38,8 @@ const Events = () => {
     };
     const load = async () => {
       try {
-        const res = await fetch(`${import.meta.env.BASE_URL}data/events.json`);
+        // Add cache-busting timestamp to force fresh data
+        const res = await fetch(`${import.meta.env.BASE_URL}data/events.json?v=${Date.now()}`);
         if (!res.ok) throw new Error('Failed to fetch events');
         const json = await res.json();
         const sorted = Array.isArray(json)

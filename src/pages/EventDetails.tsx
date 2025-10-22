@@ -61,7 +61,8 @@ export default function EventDetails() {
     let cancelled = false;
     const load = async () => {
       try {
-        const res = await fetch(`${import.meta.env.BASE_URL}data/events.json`);
+        // Add cache-busting timestamp to force fresh data
+        const res = await fetch(`${import.meta.env.BASE_URL}data/events.json?v=${Date.now()}`);
         if (!res.ok) throw new Error("Failed to fetch events");
         const json: EventItem[] = await res.json();
         if (cancelled) return;
