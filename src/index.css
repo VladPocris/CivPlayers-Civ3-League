@@ -115,6 +115,13 @@ body {
   overflow-x: hidden;
 }
 
+/* Make containers full-width on mobile landscape */
+@media (max-height: 768px) and (orientation: landscape) {
+  .container {
+    max-width: 100% !important;
+  }
+}
+
 /* CivPlayers League Design System - Gaming/Esports Theme */
 
 @layer base {
