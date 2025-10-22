@@ -132,35 +132,5 @@
         "alt": "MDJ Units"
       }
     ]
-  },
-  {
-    "id": "mpt",
-    "title": "MPT",
-    "description": "",
-    "steamGuides": [
-      {
-        "url": "",
-        "label": ""
-      }
-    ],
-    "videos": [
-      {
-        "id": "8WeGVE84mVU",
-        "label": ""
-      }
-    ],
-    "tools": [
-      {
-        "url": "",
-        "label": ""
-      }
-    ],
-    "images": [
-      {
-        "src": "https://i.imgur.com/YT42VCv.png",
-        "alt": ""
-      }
-    ],
-    "note": "12312312312"
   }
 ]

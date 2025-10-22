@@ -509,57 +509,5 @@
         "text": "Who will be crowned the ELO Champion for 2023?"
       }
     ]
-  },
-  {
-    "id": 11,
-    "title": "New Event",
-    "date": "December 31, 2023 – January 1, 2024",
-    "status": "upcoming",
-    "description": "",
-    "winners": "",
-    "participants": "",
-    "prize": "",
-    "content": [
-      {
-        "type": "paragraph",
-        "text": "Test"
-      },
-      {
-        "type": "image",
-        "src": "https://i.imgur.com/8ldqRC0.png",
-        "alt": ""
-      },
-      {
-        "type": "link",
-        "url": "",
-        "label": ""
-      }
-    ],
-    "bracket": {
-      "rounds": [
-        {
-          "name": "Semi-Finals",
-          "matches": [
-            {
-              "p1": "Player 1",
-              "p2": "Player 2"
-            },
-            {
-              "p1": "Player 3",
-              "p2": "Player 4"
-            }
-          ]
-        },
-        {
-          "name": "Finals",
-          "matches": [
-            {
-              "p1": "Player 1",
-              "p2": "Player 2"
-            }
-          ]
-        }
-      ]
-    }
   }
 ]
