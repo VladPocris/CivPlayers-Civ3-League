@@ -1,6 +1,6 @@
 # 🏛️ Civilization 3 Players League
 
-[![Live Site](https://img.shields.io/badge/Live-Site-brightgreen)](https://vladpocris.github.io/CivPlayers-Civ3-League/)
+[![Live Site](https://img.shields.io/badge/Live-Site-brightgreen)](https://civplayersciv3league.com/)
 [![React](https://img.shields.io/badge/React-18-blue.svg)](https://reactjs.org/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5-blue.svg)](https://www.typescriptlang.org/)
 [![Vite](https://img.shields.io/badge/Vite-5-purple.svg)](https://vitejs.dev/)
@@ -266,8 +266,8 @@ npm run preview
 The site auto-deploys to GitHub Pages on push to `main`:
 
 1. Push changes to `main` branch
-2. GitHub Actions builds and deploys to `gh-pages`
-3. Live at: `https://vladpocris.github.io/CivPlayers-Civ3-League/`
+2. GitHub Actions builds and deploys to `main`
+3. Live at: `https://civplayersciv3league.com/`
 
 ---
 
@@ -276,8 +276,7 @@ The site auto-deploys to GitHub Pages on push to `main`:
 ### Updating Leaderboards
 1. Edit your Google Sheets with player data
 2. File → Share → Publish to web → CSV
-3. Update the CSV URL in `src/lib/leaderboardData.ts` (if needed)
-4. Data updates automatically on page load
+3. Data updates automatically on page load
 
 ### Adding Events
 1. Go to `/admin`
@@ -350,7 +349,7 @@ Contributions are welcome! Here's how:
 
 - **GitHub**: [@VladPocris](https://github.com/VladPocris)
 - **Portfolio**: [@VladPocris](https://vladpocris.github.io/InteractiveCV/)
-- **League Website**: [CivPlayers Civ3 League](https://vladpocris.github.io/CivPlayers-Civ3-League/)
+- **League Website**: [CivPlayers Civ3 League](https://civplayersciv3league.com/)
 
 ---
 
