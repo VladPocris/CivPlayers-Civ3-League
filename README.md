@@ -1,3 +1,4 @@
+https://github.com/Natmeris/civ3league <- Moved repo on request.
 # 🏛️ Civilization 3 Players League
 
 [![Live Site](https://img.shields.io/badge/Live-Site-brightgreen)](https://civplayersciv3league.com/)
